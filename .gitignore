@@ -1,0 +1,15 @@
+*.log
+.cache
+.DS_Store
+.idea
+.vscode
+.npmrc
+
+sn-map-ext/
+node_modules/
+coverage/
+dist/
+core/esm/
+test/rendering/test-report
+test/rendering/artifacts
+src/static/Wm5Local.js

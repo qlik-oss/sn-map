@@ -1,0 +1,159 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/map
+  # Available images https://hub.docker.com/r/circleci/node/tags/
+
+aliases:
+  - &restore_yarn_cache
+    name: Restore yarn cache
+    keys:
+      - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - yarn-packages-{{ .Branch }}
+      - yarn-packages-
+  - &save_yarn_cache
+    name: Save yarn cache
+    paths:
+      - ~/.cache/yarn
+    key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+jobs:
+  install:
+    <<: *defaults
+    docker:
+      - image: circleci/node:16.10-browsers
+    steps:
+      - checkout
+      # Setup and login to qlik npm registry so that we can access internal deps (ex: @qlik-trial/geo-webmap)
+      - attach_workspace:
+          at: ~/map
+      - run:
+          name: Login to Qlik NPM registry
+          command: echo $QLIK_NPM_DEV_ENCODED | base64 -d >> ~/.npmrc
+      - restore_cache: *restore_yarn_cache
+      - run: yarn install --frozen-lockfile
+      - save_cache: *save_yarn_cache
+
+      - store_artifacts:
+          path: package.json
+
+      - persist_to_workspace:
+          root: ~/map
+          paths:
+            - .
+
+  build:
+    <<: *defaults
+    docker:
+      - image: circleci/node:16.10-browsers
+      - image: qlikcore/engine:12.1126.0
+        command: -S AcceptEULA=yes
+      - image: mcr.microsoft.com/playwright:focal
+    steps:
+      - attach_workspace:
+          at: ~/map
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Lint
+          command: yarn lint
+      - store_artifacts:
+          path: coverage
+      - persist_to_workspace:
+          root: ~/map
+          paths:
+            - .
+
+  publish-dev:
+    <<: *defaults
+    docker:
+      - image: circleci/node:16.10-browsers
+    steps:
+      - attach_workspace:
+          at: ~/map
+      - run: zip -r "sn-map-ext.zip" "./sn-map-ext"
+      - store_artifacts:
+          path: ./sn-map-ext.zip
+
+  publish:
+    <<: *defaults
+    docker:
+      - image: circleci/node:16.10-browsers
+    steps:
+      - attach_workspace:
+          at: ~/map
+      - run:
+          name: Publish
+          command: |
+            set -euo pipefail
+            PROJ_VER=v$(cat package.json | jq -r '.version')
+            TAG_NAME=$(git tag --points-at HEAD)
+            if [ "$TAG_NAME" == "$PROJ_VER" ]
+            then
+              echo $QLIK_NPM_DEV_ENCODED | base64 -d > ~/.npmrc
+              npm publish
+            fi
+
+  test:
+    environment:
+      CC_TEST_REPORTER_ID: c56054fc95a077713c5287d098f0389be0a0a63682a6ba2390b0597a20cc2074
+    working_directory: ~/map
+    docker:
+      - image: circleci/node:16.10-browsers
+    steps:
+      - attach_workspace:
+          at: ~/map
+
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Run unit tests
+          command: |
+            ./cc-test-reporter before-build
+            yarn test:unit
+            ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      - run:
+          name: Install playwright
+          command: npx playwright install
+          when: always
+      - run:
+          name: Run rendering tests
+          command: |
+            yarn test:rendering
+          when: always
+      - store_artifacts:
+          path: test/rendering/map.render.ts-snapshots
+      - store_artifacts:
+          path: test/rendering/artifacts
+      - store_artifacts:
+          path: test/rendering/test-report
+
+workflows:
+  version: 2
+  build-all:
+    jobs:
+      - install:
+          context: deploy-secrets
+      - build:
+          context: deploy-secrets
+          requires:
+            - install
+      - publish-dev:
+          requires:
+            - build
+      - publish:
+          context: deploy-secrets
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
+      - test:
+          context: deploy-secrets
+          requires:
+            - build

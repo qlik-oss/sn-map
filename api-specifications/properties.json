@@ -1,0 +1,552 @@
+{
+  "scriptappy": "1.0.0",
+  "info": {
+    "name": "@nebula.js/sn-map:properties",
+    "description": "Map generic object definition",
+    "version": "0.7.1",
+    "license": "MIT",
+    "stability": "experimental",
+    "x-qlik-visibility": "public"
+  },
+  "entries": {
+    "properties": {
+      "kind": "namespace",
+      "entries": {
+        "gaLayers": {
+          "description": "Map layers",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/gaLayers"
+          }
+        },
+        "mapSettings": {
+          "description": "Map settings",
+          "kind": "object",
+          "entries": {
+            "autoZoomOnSelection": {
+              "description": "Set to true if you want to auto zoom when making selections.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "baseMap": {
+              "description": "Set the base map provided by the map server.\nBase map options are provided bt the map server. It will default to an empty base map if no server is provided by the nebula configuration.",
+              "optional": true,
+              "defaultValue": "default",
+              "type": "string"
+            },
+            "mapLanguage": {
+              "description": "Sets the basemap language. Will default to showing local languages if other options than `'auto'` or `'english'` are provided.",
+              "optional": true,
+              "defaultValue": "auto",
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'auto'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'english'"
+                }
+              ],
+              "type": "string"
+            },
+            "projection": {
+              "description": "Sets the basemap coordinate reference system.\nProjection options are provided by the maps server.",
+              "optional": true,
+              "defaultValue": "default",
+              "type": "string"
+            },
+            "showDebugInfo": {
+              "description": "Set to true if you want to show debug information on the map.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "showScaleBar": {
+              "description": "Set to true if you want to show the scalebar on the map.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "useImperialUnits": {
+              "description": "Set to true if you want the scale bar to use the imperial metric system.\nOnly applicable if `'showScaleBar': true`.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          }
+        },
+        "showTitles": {
+          "description": "Show title for the visualization.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "subtitle": {
+          "description": "Visualization subtitle.",
+          "optional": true,
+          "defaultValue": "",
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "StringExpression"
+            }
+          ],
+          "type": "any"
+        },
+        "title": {
+          "description": "Visualization title.",
+          "optional": true,
+          "defaultValue": "",
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "StringExpression"
+            }
+          ],
+          "type": "any"
+        },
+        "version": {
+          "description": "Current version of this generic object definition",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AttributeDimensionProperties": {
+      "description": "Extends `NxAttrDimDef`, see Engine API: `NxAttrDimDef`.",
+      "extends": [
+        {
+          "type": "NxAttrDimDef"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "id": {
+          "description": "One of: `colorByAlternative`: colors the chart using different dimensions (can be used together with color.mode=\"byDimension\") or `colorByExpression` together with color.mode=\"byExpression\".",
+          "type": "string"
+        }
+      }
+    },
+    "capabilities": {
+      "kind": "object",
+      "entries": {
+        "layers": {
+          "description": "A list of map layers that the WMS server supports.",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/layers"
+          }
+        },
+        "transparent": {
+          "description": "Option to set the transparency if the WMS supports it.",
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "color": {
+      "description": "Set to define the coloring of the shapes.",
+      "kind": "object",
+      "entries": {
+        "mode": {
+          "description": "Sets the coloring mode for the visualization when auto-coloring has been switched off (`\"auto\": false`).",
+          "kind": "literal",
+          "value": "'primary'"
+        },
+        "paletteColor": {
+          "description": "The paletteColor object is used to define the color when you color by single color `(\"mode\": \"primary\")`.",
+          "type": "#/definitions/paletteColor"
+        }
+      }
+    },
+    "DimensionProperties": {
+      "description": "Extends `NxDimension`, see Engine API: `NxDimension`.",
+      "extends": [
+        {
+          "type": "NxDimension"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "qAttributeDimensions": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/AttributeDimensionProperties"
+          }
+        },
+        "qDef": {
+          "type": "#/definitions/InlineDimensionDef"
+        }
+      }
+    },
+    "ExpressionProperty": {
+      "kind": "object",
+      "entries": {
+        "label": {
+          "description": "Label for the expression",
+          "type": "string"
+        },
+        "key": {
+          "description": "Expression or library id",
+          "type": "string"
+        },
+        "type": {
+          "description": "How to interpret the key",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'expression'"
+            },
+            {
+              "kind": "literal",
+              "value": "'libraryItem'"
+            }
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "gaLayers": {
+      "description": "Map layers",
+      "kind": "union",
+      "items": [
+        {
+          "type": "#/definitions/PointLayer"
+        },
+        {
+          "type": "#/definitions/GeodataLayer"
+        }
+      ],
+      "type": "any"
+    },
+    "GeodataLayer": {
+      "description": "GeodataLayer layers enable you to display a custom base map for your map visualization.",
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Defined the layer type",
+          "kind": "literal",
+          "value": "'GeodataLayer'"
+        },
+        "cId": {
+          "description": "ID that must be unique within the current chart.",
+          "type": "string"
+        },
+        "dataType": {
+          "description": "Type of data source.",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'tms'"
+            },
+            {
+              "kind": "literal",
+              "value": "'wms'"
+            },
+            {
+              "kind": "literal",
+              "value": "'image'"
+            }
+          ],
+          "type": "string"
+        },
+        "tms": {
+          "type": "#/definitions/tms"
+        },
+        "wms": {
+          "type": "#/definitions/wms"
+        },
+        "image": {
+          "type": "#/definitions/image"
+        }
+      }
+    },
+    "image": {
+      "description": "Settings to render an image from an url. The image will be rendered in a rectangle defined by two corners in coordinates.",
+      "kind": "object",
+      "entries": {
+        "url": {
+          "description": "URL to use as source. The URL is an expression that is evaluated when the selection changes.",
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "StringExpression"
+            }
+          ],
+          "type": "any"
+        },
+        "attribution": {
+          "description": "Attribution to be presented at the bottom of the map. May contain anchor html tags for links.",
+          "type": "string"
+        },
+        "minX": {
+          "description": "Min X of rectangle.",
+          "type": "number"
+        },
+        "minY": {
+          "description": "Min Y of rectangle.",
+          "type": "number"
+        },
+        "maxX": {
+          "description": "Max X of rectangle.",
+          "type": "number"
+        },
+        "maxY": {
+          "description": "Max Y of rectangle.",
+          "type": "number"
+        }
+      }
+    },
+    "InlineDimensionDef": {
+      "description": "Extends `NxInlineDimensionDef`, see Engine API: `NxInlineDimensionDef`.",
+      "extends": [
+        {
+          "type": "NxInlineDimensionDef"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "autoSort": {
+          "description": "Set to automatically sort the dimension.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "cId": {
+          "description": "ID used by the Qlik Sense. Must be unique within the current chart.",
+          "optional": true,
+          "type": "string"
+        },
+        "othersLabel": {
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "StringExpression"
+            }
+          ],
+          "type": "any"
+        }
+      }
+    },
+    "layers": {
+      "description": "Layers from a Web Map Service that can be displayed on the map.",
+      "kind": "object",
+      "entries": {
+        "name": {
+          "description": "Layer name used when building up the URL syntax.",
+          "type": "string"
+        },
+        "selected": {
+          "description": "Set to true if the layer should be displayed.",
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "paletteColor": {
+      "description": "Color information structure. Holds the actual color and index in palette.",
+      "kind": "object",
+      "entries": {
+        "color": {
+          "description": "Color as hex string (mandatory if index: -1)",
+          "type": "string"
+        },
+        "index": {
+          "description": "Index in palette",
+          "type": "number"
+        }
+      }
+    },
+    "PointLayer": {
+      "description": "PointLayer overlays individual locations on a map, representing them with shapes.",
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Defines the layer type",
+          "kind": "literal",
+          "value": "'PointLayer'"
+        },
+        "cId": {
+          "description": "ID that must be unique within the current chart.",
+          "type": "string"
+        },
+        "qHyperCubeDef": {
+          "type": "#/definitions/qHyperCubeDef"
+        },
+        "size": {
+          "description": "Set to define the size of the shape.",
+          "type": "#/definitions/size"
+        },
+        "color": {
+          "description": "Set to use automatic coloring.",
+          "type": "#/definitions/color"
+        },
+        "locationOrLatitude": {
+          "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationNamesAuto": {
+          "description": "If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "locationType": {
+          "description": "Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.",
+          "optional": true,
+          "type": "string"
+        },
+        "locationCountry": {
+          "description": "Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationAdmin1": {
+          "description": "Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationAdmin2": {
+          "description": "Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "longitude": {
+          "description": "Longitude field used if isLatLong is true.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "isLatLong": {
+          "description": "If true, the location is specified as latitude and longitude fields in locationOrLatitude and longitude. Otherwise the location is a geometry or name in locationOrLatitude.",
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "qHyperCubeDef": {
+      "description": "Extends `HyperCubeDef`, see Engine API: `HyperCubeDef`.",
+      "kind": "object",
+      "entries": {
+        "qDimensions": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/DimensionProperties"
+          }
+        },
+        "qSuppressMissing": {
+          "defaultValue": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "size": {
+      "description": "Set to define the size of the shapes.",
+      "kind": "object",
+      "entries": {
+        "radiusMin": {
+          "description": "Sets the minimum radius of symbol in pixels.",
+          "type": "number"
+        },
+        "radiusMax": {
+          "description": "Sets the maximum radius of symbol in pixels.",
+          "type": "number"
+        }
+      }
+    },
+    "tms": {
+      "description": "Settings to render a background layer from a Tile Map Service.",
+      "kind": "object",
+      "entries": {
+        "url": {
+          "description": "URL to use as source. ${X}, ${Y}, ${Z} can be used as variables. The URL is an expression that is evaluated when the selection changes.",
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "StringExpression"
+            }
+          ],
+          "type": "any"
+        },
+        "attribution": {
+          "description": "Attribution to be presented at the bottom of the map. May contain anchor html tags for links.",
+          "type": "string"
+        },
+        "tileSize": {
+          "description": "Tile size in pixels.",
+          "type": "number"
+        },
+        "tileWidth": {
+          "description": "Width in geographic units of tiles.",
+          "type": "number"
+        },
+        "tileHeight": {
+          "description": "Height in geographic units of tiles",
+          "type": "number"
+        },
+        "originLeft": {
+          "description": "The origin of tiles in left-right-direction in same length unit as for Tile Height.",
+          "type": "number"
+        },
+        "originTop": {
+          "description": "The origin of tiles in up-down-direction.",
+          "type": "number"
+        }
+      }
+    },
+    "wms": {
+      "description": "Settings to render a background layer from a Web Map Service.",
+      "kind": "object",
+      "entries": {
+        "url": {
+          "description": "URL for a wms server to use as source.",
+          "type": "string"
+        },
+        "attribution": {
+          "description": "Attribution to be presented at the bottom of the map. May contain anchor html tags for links.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Which version of the WMS protocol to use. Default 1.1.0",
+          "optional": true,
+          "type": "string"
+        },
+        "hasWmsLoaded": {
+          "description": "Used by Qlik Sense. Set to true if you want to use the different wms settings.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "selectedCrs": {
+          "description": "The coordinate reference system to use. Only applicable if `'hasWmsLoaded': true`.",
+          "type": "string"
+        },
+        "selectedFormat": {
+          "description": "Which image format to use for the generated map images. Only applicable if `'hasWmsLoaded': true`.",
+          "type": "string"
+        },
+        "capabilities": {
+          "description": "Only applicable if `'hasWmsLoaded': true`.",
+          "type": "#/definitions/capabilities"
+        }
+      }
+    }
+  }
+}

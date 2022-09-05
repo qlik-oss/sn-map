@@ -1,0 +1,6 @@
+# Ignore type definitions
+**/*.d.ts
+# Ignore JS files for now
+**/*.js
+
+node_modules

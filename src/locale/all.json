@@ -1,0 +1,582 @@
+{
+  "geo_error_invalidGeometry": {
+    "id": "geo.error.invalidGeometry",
+    "locale": {
+      "en-US": "The data contains invalid geometries that could not be shown on the map. Review your data for errors and try again.",
+      "zh-TW": "資料中包含無法顯示在地圖上的無效幾何圖形。檢閱資料中的錯誤並重試。",
+      "zh-CN": "数据包含无法在地图上显示的无效的几何形状。审核您的数据是否有错误，然后重试。",
+      "tr-TR": "Veriler, haritada gösterilmeyen geçersiz geometriler içeriyor. Verilerinizde hata olup olmadığını inceleyin ve yeniden deneyin.",
+      "sv-SE": "Dina data innehåller ogiltiga geometriska former som inte kan visas på kartan. Granska dina data och försök igen.",
+      "it-IT": "I dati contengono geometrie non valide che non possono essere mostrate sulla mappa. Controllare se i dati contengono errori e riprovare.",
+      "es-ES": "Los datos contienen geometrías no válidas que no se han podido mostrar en el mapa. Revise sus datos por si hay errores e inténtelo de nuevo.",
+      "de-DE": "Die Daten enthalten ungültige Geometrien, die nicht auf der Karte angezeigt werden konnten. Überprüfen Sie Ihre Daten auf Fehler und versuchen Sie es erneut.",
+      "pl-PL": "Dane zawierają niepoprawne geometrie, których nie można pokazać na mapie. Przejrzyj dane pod kątem błędów i spróbuj ponownie.",
+      "nl-NL": "De gegevens bevatten ongeldige geometrieën die niet op de kaart kunnen worden getoond. Controleer uw gegevens op fouten en probeer het opnieuw.",
+      "ko-KR": "데이터에 맵에 표시할 수 없는 잘못된 도형이 있습니다. 데이터에 오류가 있는지 검토하고 다시 시도하십시오.",
+      "pt-BR": "Os dados contêm geometrias inválidas que não puderam ser mostradas no mapa. Reveja seus dados em busca de erros e tente novamente.",
+      "fr-FR": "Les données contiennent des formes géométriques non valides qu'il est impossible d'afficher sur la carte. Recherchez des erreurs dans les données, puis réessayez.",
+      "ja-JP": "データに無効なジオメトリが含まれており、マップ上に表示できませんでした。データのエラーを確認してもう一度試してください。",
+      "ru-RU": "Данные содержат недопустимые геометрии, которые не удалось отобразить на карте. Проверьте данные на наличие ошибок и повторите попытку."
+    }
+  },
+  "geo_error_failedLookup": {
+    "id": "geo.error.failedLookup",
+    "locale": {
+      "en-US": "Failed to get a response from the location server. Check your connection and try again.",
+      "zh-TW": "無法取得來自本機伺服器的回應。檢查您的連線並重試。",
+      "zh-CN": "未能获得来自位置服务器的响应。请检查您的连接并重试。",
+      "tr-TR": "Konum sunucusundan bir yanıt alınamadı. Bağlantınızı kontrol edin ve yeniden deneyin.",
+      "sv-SE": "Fick inget svar från platsservern. Kontrollera din anslutning och försök igen.",
+      "it-IT": "Impossibile ottenere una risposta dal server della posizione. Controllare la connessione e riprovare.",
+      "es-ES": "Error al obtener respuesta del servidor de ubicación. Compruebe su conexión e inténtelo de nuevo.",
+      "de-DE": "Es konnte keine Antwort vom Standortserver erhalten werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "pl-PL": "Nie uzyskano odpowiedzi od serwera lokalizacji. Sprawdź połączenie i spróbuj ponownie.",
+      "nl-NL": "Geen reactie van de locatieserver ontvangen. Controleer uw verbinding en probeer het opnieuw.",
+      "ko-KR": "위치 서버에서 응답을 받지 못했습니다. 연결을 확인하고 다시 시도하십시오.",
+      "pt-BR": "Falha ao obter uma resposta do servidor de localização. Verifique sua conexão e tente novamente.",
+      "fr-FR": "Impossible d'obtenir une réponse de la part du serveur d'emplacement. Vérifiez votre connexion, puis réessayez.",
+      "ja-JP": "ロケーション サーバーから応答を取得できませんでした。接続を確認し、もう一度お試しください。",
+      "ru-RU": "Не удалось получить отклик от сервера определения местоположения. Проверьте подключение и повторите попытку."
+    }
+  },
+  "Object_Disclaimer_LimitedData": {
+    "id": "Object.Disclaimer.LimitedData",
+    "locale": {
+      "en-US": "Currently showing a limited data set.",
+      "zh-TW": "目前顯示的是有限的資料集。",
+      "zh-CN": "当前正显示有限的数据集。",
+      "tr-TR": "Şu anda sınırlı bir veri kümesi gösteriliyor.",
+      "sv-SE": "Just nu visas en begränsad uppsättning data.",
+      "it-IT": "Attualmente viene visualizzata una serie di dati limitata.",
+      "es-ES": "Mostrando actualmente un conjunto limitado de datos.",
+      "de-DE": "Zurzeit wird nur ein beschränkter Datensatz angezeigt.",
+      "pl-PL": "Aktualnie przedstawiany jest ograniczony zestaw danych.",
+      "nl-NL": "Momenteel wordt een beperkte gegevensverzameling getoond.",
+      "ko-KR": "현재 제한된 데이터 집합을 표시하고 있습니다.",
+      "pt-BR": "Mostrando um conjunto de dados limitado.",
+      "fr-FR": "Affichage d'un ensemble de données limité pour l'instant.",
+      "ja-JP": "現在、限定的なデータ セットを表示しています。",
+      "ru-RU": "В настоящее время отображается ограниченный набор данных."
+    }
+  },
+  "geo_error_unsuccessfulLookup": {
+    "id": "geo.error.unsuccessfulLookup",
+    "locale": {
+      "en-US": "The following locations could not be found: {0}. Review the values in your data and try again.",
+      "zh-TW": "找不到下列位置：{0}。檢閱資料中的值並重試。",
+      "zh-CN": "无法找到以下位置：{0}。审核您数据中的值并重试。",
+      "tr-TR": "Şu konumlar bulunamadı: {0}. Verilerinizdeki değerleri inceleyin ve yeniden deneyin.",
+      "sv-SE": "Följande platser kunde inte hittas: {0}. Granska värdena i dina data och försök igen.",
+      "it-IT": "Impossibile trovare le posizioni seguenti: {0}. Esaminare i valori presenti nei dati e riprovare.",
+      "es-ES": "No se pudieron encontrar las siguientes localizaciones: {0}. Revise los valores de sus datos y vuelva a intentarlo.",
+      "de-DE": "Folgende Standorte konnten nicht gefunden werden: {0}. Überprüfen Sie die Werte Ihrer Daten und versuchen Sie es erneut.",
+      "pl-PL": "Nie można znaleźć następujących lokalizacji: {0}. Przejrzyj wartości w swoich danych i spróbuj ponownie.",
+      "nl-NL": "De volgende locaties zijn niet gevonden: {0}. Controleer de waarden in uw gegevens en probeer het opnieuw.",
+      "ko-KR": "다음 위치를 찾을 수 없습니다. {0}. 데이터의 값을 검토하고 다시 시도하십시오.",
+      "pt-BR": "Não foi possível encontrar as seguintes localizações: {0}. Reveja os valores nos seus dados e tente novamente.",
+      "fr-FR": "Impossible de trouver les emplacements suivants : {0}. Vérifiez les valeurs des données, puis réessayez.",
+      "ja-JP": "次の場所が見つかりませんでした: {0}。データの値を確認して、もう一度試してください。",
+      "ru-RU": "Не удалось найти следующие местоположения: {0}. Проверьте значения данных и повторите попытку."
+    }
+  },
+  "geo_error_ambiguousLookup": {
+    "id": "geo.error.ambiguousLookup",
+    "locale": {
+      "en-US": "The following locations had more than one result: {0}. Set a custom scope to clarify which locations to display.",
+      "zh-TW": "下列位置具有多個結果：{0}。設定自訂範圍以釐清要顯示哪些位置。",
+      "zh-CN": "以下位置具有多个结果：{0}。设置自定义范围以阐明显示哪些位置。",
+      "tr-TR": "Şu konumlarda birden fazla sonuç var: {0}  Hangi konumların görüntüleneceğini netleştirmek için özel bir kapsam belirleyin.",
+      "sv-SE": "Följande platser gav mer än ett resultat: {0}. Ange en anpassad omfattning för att förtydliga vilka platser som ska visas.",
+      "it-IT": "Le posizioni seguenti hanno restituito più di un risultato: {0}. Impostare un ambito personalizzato per determinare le posizioni da visualizzare.",
+      "es-ES": "Las siguientes localizaciones mostraron más de un resultado: {0}. Defina un ámbito personalizado para clarificar qué localizaciones mostrar.",
+      "de-DE": "Die folgenden Standorte ergaben mehr als ein Ergebnis: {0}. Legen Sie einen benutzerdefinierten Bereich fest, um klarzustellen, welche Standorte angezeigt werden sollen.",
+      "pl-PL": "W przypadku następujących lokalizacji wystąpił więcej niż jeden wynik: {0}. Ustaw zasięg niestandardowy, aby ustalić lokalizacje, które będą wyświetlane.",
+      "nl-NL": "De volgende locaties hadden meerdere resultaten: {0}. Stel een aangepast zoekniveau in om aan te geven welke locaties moeten worden weergegeven.",
+      "ko-KR": "다음 위치에는 두 개 이상의 결과가 있습니다. {0}. 사용자 지정 범위를 설정하여 표시할 위치를 명확히 지정합니다.",
+      "pt-BR": "As seguintes localizações apresentaram mais de um resultado: {0}. Defina um escopo personalizado para especificar quais localizações devem ser exibidas.",
+      "fr-FR": "Plusieurs résultats correspondent aux emplacements suivants : {0}. Définissez une étendue personnalisée pour clarifier les emplacements à afficher.",
+      "ja-JP": "次の場所には 1 つ以上の結果があります: {0}。カスタム範囲を設定して、表示する場所を明確にします。",
+      "ru-RU": "Для следующих местоположений существует несколько результатов: {0}. Задайте пользовательскую область отображения местоположений."
+    }
+  },
+  "geo_error_invalidWidth": {
+    "id": "geo.error.invalidWidth",
+    "locale": {
+      "en-US": "Some lines could not be shown because of invalid data in the width expression. Review your data for errors and try again.",
+      "zh-TW": "有些線條無法顯示，因為寬度運算式中有無效的資料。檢閱資料中的錯誤並重試。",
+      "zh-CN": "有些行因为宽度表达式中的无效数据而无法显示。审核您的数据是否有错误，然后重试。",
+      "tr-TR": "Genişlik ifadesindeki geçersiz veri sebebiyle bazı çizgiler gösterilemedi. Verilerinizde hata olup olmadığını inceleyin ve yeniden deneyin.",
+      "sv-SE": "Vissa linjer kunde inte visas på grund av ogiltiga data i bredduttrycket. Granska dina data och försök igen.",
+      "it-IT": "Impossibile visualizzare alcune linee a causa di dati non validi nell'espressione della larghezza. Controllare se i dati contengono errori e riprovare.",
+      "es-ES": "Algunas líneas no se pudieron mostrar debido a datos no válidos en la expresión del ancho. Revise sus datos por si hay errores e inténtelo de nuevo.",
+      "de-DE": "Einige Linien konnten aufgrund von ungültigen Daten in der Breitenformel nicht angezeigt werden. Überprüfen Sie Ihre Daten auf Fehler und versuchen Sie es erneut.",
+      "pl-PL": "Nie można pokazać niektórych linii z powodu niepoprawnych danych w wyrażeniu szerokości. Przejrzyj dane pod kątem błędów i spróbuj ponownie.",
+      "nl-NL": "Sommige lijnen kunnen niet worden weergegeven vanwege ongeldige gegevens in de breedte-uitdrukking. Controleer uw gegevens op fouten en probeer het opnieuw.",
+      "ko-KR": "너비 표현식의 데이터가 잘못되어 일부 선을 표시할 수 없습니다. 데이터에 오류가 있는지 검토하고 다시 시도하십시오.",
+      "pt-BR": "Algumas linhas não puderam ser mostradas devido a dados inválidos na expressão de largura. Reveja seus dados para ver se há erros e tente novamente.",
+      "fr-FR": "Impossible d'afficher certaines lignes, car l'expression de largeur contient des données non valides. Recherchez les erreurs figurant dans les données, puis réessayez.",
+      "ja-JP": "幅の式に無効なデータがあるため、一部の線を表示できませんでした。データにエラーがないかを確認し、再度お試し下さい。",
+      "ru-RU": "Не удалось отобразить некоторые строки, так как выражение ширины содержит недопустимые данные. Проверьте данные на наличие ошибок и повторите попытку."
+    }
+  },
+  "geo_error_invalidWeight": {
+    "id": "geo.error.invalidWeight",
+    "locale": {
+      "en-US": "Some density points could not be shown because of invalid data in the weight expression. Review your data for errors and try again.",
+      "zh-TW": "有些密度無法顯示，因為權重運算式中有無效的資料。檢閱資料中的錯誤並重試。",
+      "zh-CN": "有些行因为权重表达式中的无效数据而无法显示。审核您的数据是否有错误，然后重试。",
+      "tr-TR": "Ağırlık ifadesindeki geçersiz veri sebebiyle bazı çizgiler gösterilemedi. Verilerinizde hata olup olmadığını inceleyin ve yeniden deneyin.",
+      "sv-SE": "Vissa täthetspunkter kunde inte visas på grund av ogiltiga data i viktuttrycket. Granska dina data och försök igen.",
+      "it-IT": "Impossibile visualizzare alcuni punti di densità a causa di dati non validi nell'espressione del peso. Controllare se i dati contengono errori e riprovare.",
+      "es-ES": "Algunos puntos de densidad no se pudieron mostrar debido a datos no válidos en la expresión de la ponderación. Revise sus datos por si hay errores e inténtelo de nuevo.",
+      "de-DE": "Einige Dichtepunkte konnten aufgrund von ungültigen Daten in der Gewichtungsformel nicht angezeigt werden. Überprüfen Sie Ihre Daten auf Fehler und versuchen Sie es erneut.",
+      "pl-PL": "Nie można pokazać niektórych punktów gęstości z powodu niepoprawnych danych w wyrażeniu wagi. Przejrzyj dane pod kątem błędów i spróbuj ponownie.",
+      "nl-NL": "Sommige dichtheidspunten kunnen niet worden weergegeven vanwege ongeldige gegevens in de gewichtsuitdrukking. Controleer uw gegevens op fouten en probeer het opnieuw.",
+      "ko-KR": "가중치 표현식의 데이터가 잘못되어 일부 밀도 점을 표시할 수 없습니다. 데이터에 오류가 있는지 검토하고 다시 시도하십시오.",
+      "pt-BR": "Alguns pontos de densidade não puderam ser mostrados devido a dados inválidos na expressão de peso. Reveja seus dados para ver se há erros e tente novamente.",
+      "fr-FR": "Impossible d'afficher certains points de densité, car l'expression de poids contient des données non valides. Recherchez les erreurs figurant dans les données, puis réessayez.",
+      "ja-JP": "重みの式に無効なデータがあるため、一部の密度ポイントを表示できませんでした。データにエラーがないかを確認し、再度お試し下さい。",
+      "ru-RU": "Не удалось отобразить некоторые точки плотности, так как выражение веса содержит недопустимые данные. Проверьте данные на наличие ошибок и повторите попытку."
+    }
+  },
+  "geo_error_invalidUrl": {
+    "id": "geo.error.invalidUrl",
+    "locale": {
+      "en-US": "Invalid URL. Error when formatting expression: {0}.",
+      "zh-TW": "無效 URL。格式化運算式時發生錯誤： {0}。",
+      "zh-CN": "无效URL 在格式化表达式时出错： {0}。",
+      "tr-TR": "Geçersiz URL. İfadeyi biçimlendirmede hata: {0}.",
+      "sv-SE": "Ogiltig URL Fel när uttrycket formaterades:  {0}.",
+      "it-IT": "URL non valido. Errore durante la formattazione dell'espressione: {0}.",
+      "es-ES": "URL no válida. Error al dar formato a la expresión:  {0}.",
+      "de-DE": "Ungültige URL Fehler beim Formatieren von Formel:  {0}.",
+      "pl-PL": "Nieprawidłowy URL. Błąd podczas formatowania wyrażenia: {0}.",
+      "nl-NL": "Ongeldig URL. Fout bij het formatteren van de uitdrukking: {0}.",
+      "ko-KR": "URL이(가) 잘못되었습니다. 표현식: {0}의 서식을 지정할 때 오류가 발생했습니다.",
+      "pt-BR": "URL inválido. Erro ao formatar a expressão: {0}.",
+      "fr-FR": "URL non valide. Erreur lors du formatage de l'expression :  {0}.",
+      "ja-JP": "URL が無効です。数式の書式設定でエラーが発生しました:  {0}。",
+      "ru-RU": "Недопустимый URL. Ошибка в ходе форматирования выражения:  {0}."
+    }
+  },
+  "geo_error_offline": {
+    "id": "geo.error.offline",
+    "locale": {
+      "en-US": "Cannot connect to the location server. Check your internet connection and try again.",
+      "zh-TW": "無法連接本機伺服器。檢查您的網際網路連線並重試。",
+      "zh-CN": "无法连接至位置服务器。请检查您的互联网连接并重试。",
+      "tr-TR": "Konum sunucusuna bağlanılamıyor. İnternet bağlantınızı kontrol edin ve yeniden deneyin.",
+      "sv-SE": "Det går inte att ansluta till platsservern. Kontrollera din internetanslutning och försök igen.",
+      "it-IT": "Impossibile connettersi al server della posizione. Controllare la connessione Internet e riprovare.",
+      "es-ES": "No se puede conectar con el servidor remoto. Compruebe su conexión a Internet e inténtelo de nuevo.",
+      "de-DE": "Keine Verbindung zum Standortserver möglich. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+      "pl-PL": "Nie można nawiązać połączenia z serwerem lokalizacji. Sprawdź połączenie internetowe i spróbuj ponownie.",
+      "nl-NL": "Kan geen verbinding maken met de locatieserver. Controleer uw internetverbinding en probeer het opnieuw.",
+      "ko-KR": "위치 서버에 연결할 수 없습니다. 인터넷 연결을 확인하고 다시 시도하십시오.",
+      "pt-BR": "Não é possível conectar ao servidor de localização. Verifique sua conexão com a Internet e tente novamente.",
+      "fr-FR": "Impossible d'établir la connexion avec le serveur d'emplacement. Vérifiez votre connexion Internet, puis réessayez.",
+      "ja-JP": "ロケーション サーバーに接続できません。インターネットに接続できることを確認して、もう一度お試しください。",
+      "ru-RU": "Не удалось подключиться к серверу определения местоположения. Проверьте интернет-подключение и повторите попытку."
+    }
+  },
+  "geo_findLocation_error_permissionDenied": {
+    "id": "geo.findLocation.error.permissionDenied",
+    "locale": {
+      "en-US": "Permission denied",
+      "zh-TW": "權限遭拒",
+      "zh-CN": "拒绝访问",
+      "tr-TR": "İzin reddedildi",
+      "sv-SE": "Tillstånd nekat",
+      "it-IT": "Autorizzazione negata",
+      "es-ES": "Permiso denegado",
+      "de-DE": "Berechtigung verweigert",
+      "pl-PL": "Odmowa uprawnień",
+      "nl-NL": "Toegang geweigerd",
+      "ko-KR": "사용 권한이 거부됨",
+      "pt-BR": "Permissão negada",
+      "fr-FR": "Autorisation refusée",
+      "ja-JP": "権限拒否",
+      "ru-RU": "В разрешении отказано"
+    }
+  },
+  "geo_findLocation_error_permissionDeniedMessage": {
+    "id": "geo.findLocation.error.permissionDeniedMessage",
+    "locale": {
+      "en-US": "You need to allow the browser to know your location.",
+      "zh-TW": "您需要允許瀏覽器知道您的位置。",
+      "zh-CN": "您需要允许浏览器知道您的位置。",
+      "tr-TR": "Tarayıcının, konumunuzu bilmesine izin vermeniz gerekir.",
+      "sv-SE": "Du måste tillåta webbläsaren att veta din plats.",
+      "it-IT": "È necessario consentire al browser di rilevare la posizione.",
+      "es-ES": "Debe permitir que el navegador conozca su ubicación.",
+      "de-DE": "Sie müssen zulassen, dass der Browser Ihren Standort kennt.",
+      "pl-PL": "Musisz zezwolić przeglądarce na uzyskiwanie danych o Twojej lokalizacji.",
+      "nl-NL": "U moet de browser toegang tot uw locatie toestaan.",
+      "ko-KR": "브라우저에서 위치를 알 수 있어야 합니다.",
+      "pt-BR": "Você precisa permitir que o navegador saiba sua localização.",
+      "fr-FR": "Vous devez autoriser le navigateur à localiser votre emplacement.",
+      "ja-JP": "ブラウザーに場所情報を知らせる許可をする必要があります。",
+      "ru-RU": "Необходимо разрешить браузеру определять местоположение."
+    }
+  },
+  "geo_findLocation_error_positionUnavailable": {
+    "id": "geo.findLocation.error.positionUnavailable",
+    "locale": {
+      "en-US": "Position unavailable",
+      "zh-TW": "位置不可用",
+      "zh-CN": "位置不可用",
+      "tr-TR": "Konum mevcut değil",
+      "sv-SE": "Position ej tillgänglig",
+      "it-IT": "Posizione non disponibile",
+      "es-ES": "Posición no disponible",
+      "de-DE": "Position nicht verfügbar",
+      "pl-PL": "Położenie niedostępne",
+      "nl-NL": "Positie niet beschikbaar",
+      "ko-KR": "위치를 사용할 수 없음",
+      "pt-BR": "Posição indisponível",
+      "fr-FR": "Position indisponible",
+      "ja-JP": "位置情報利用不可",
+      "ru-RU": "Местоположение недоступно"
+    }
+  },
+  "geo_findLocation_error_positionUnavailableMessage": {
+    "id": "geo.findLocation.error.positionUnavailableMessage",
+    "locale": {
+      "en-US": "Position could not be acquired. Check that you have WiFi, GPS or other positioning services enabled.",
+      "zh-TW": "無法取得位置。請確認您已啟用 WiFi、GPS 或其他定位服務。",
+      "zh-CN": "无法获得位置。确定您已启用了 WiFi、GPS 或其他定位服务。",
+      "tr-TR": "Konum alınamadı. Wi-Fi bağlantınız olduğunu, GPS veya diğer konumlandırma hizmetlerinin etkin olduğunu kontrol edin.",
+      "sv-SE": "Position kunde inte fastställas. Kontrollera att Wi-Fi-, GPS- eller andra positioneringstjänster är aktiverade.",
+      "it-IT": "Impossibile acquisire la posizione. Verificare che il WiFi, il GPS o altri servizi di localizzazione siano abilitati.",
+      "es-ES": "No se pudo obtener la posición. Compruebe que tiene WiFi, GPS u otros servicios de posicionamiento habilitados.",
+      "de-DE": "Die Position konnte nicht abgerufen werden. Prüfen Sie, ob WiFi, GPS oder ein anderer Positionierungsdienst aktiviert ist.",
+      "pl-PL": "Uzyskanie pozycji było niemożliwe. Sprawdź, czy masz włączoną sieć WiFi, GPS lub inne usługi lokalizacji.",
+      "nl-NL": "Positie kan niet worden verkregen. Controleer of wifi, GPS of andere plaatsbepalingsservices zijn ingeschakeld.",
+      "ko-KR": "위치를 가져올 수 없습니다. WiFi, GPS 또는 다른 위치 서비스를 사용할 수 있는지 확인하십시오.",
+      "pt-BR": "Não foi possível adquirir a posição. Verifique se você tem Wi-Fi, GPS ou outros serviços de posicionamento ativados.",
+      "fr-FR": "Impossible d'acquérir la position. Vérifiez que le Wi-Fi, le GPS ou d'autres services de localisation sont activés.",
+      "ja-JP": "位置情報を取得できませんでした。WiFi、GPS、または他の測位サービスが有効になっていることを確認してください、",
+      "ru-RU": "Не удалось найти местоположение. Убедитесь, что WiFi, GPS или другая служба определения местоположения активны."
+    }
+  },
+  "geo_findLocation_error_timeout": {
+    "id": "geo.findLocation.error.timeout",
+    "locale": {
+      "en-US": "Timed out",
+      "zh-TW": "已逾時",
+      "zh-CN": "已经超时",
+      "tr-TR": "Süre aşımı",
+      "sv-SE": "Överskred tidsgränsen",
+      "it-IT": "Tempo scaduto",
+      "es-ES": "Tiempo de espera agotado",
+      "de-DE": "Zeit überschritten",
+      "pl-PL": "Upłynął limit czasu",
+      "nl-NL": "Time-out opgetreden",
+      "ko-KR": "시간 초과",
+      "pt-BR": "Tempo esgotado",
+      "fr-FR": "Délai d'attente dépassé",
+      "ja-JP": "タイムアウト",
+      "ru-RU": "Время ожидания истекло"
+    }
+  },
+  "geo_findLocation_error_timeoutMessage": {
+    "id": "geo.findLocation.error.timeoutMessage",
+    "locale": {
+      "en-US": "Location lookup failed, the operation timed out.",
+      "zh-TW": "位置查詢失敗，操作已逾時。",
+      "zh-CN": "位置查找失败，操作已超时。",
+      "tr-TR": "Konum arama başarısız, işlem zaman aşımına uğradı.",
+      "sv-SE": "Platssökning misslyckades, tidsgränsen överskreds.",
+      "it-IT": "Ricerca della posizione non riuscita. Timeout dell'operazione.",
+      "es-ES": "La búsqueda de ubicación ha fallado, la operación ha caducado.",
+      "de-DE": "Die Standortsuche ist fehlgeschlagen, die Zeit für den Vorgang ist überschritten.",
+      "pl-PL": "Wyszukiwanie lokalizacji nie powiodło się. Upłynął limit czasu operacji.",
+      "nl-NL": "Locatie zoeken is mislukt omdat er een time-out is opgetreden.",
+      "ko-KR": "위치 조회가 실패하고 작업 시간이 초과되었습니다.",
+      "pt-BR": "A pesquisa de localização falhou, a operação expirou.",
+      "fr-FR": "Échec de la recherche d'emplacement, le délai de l'opération a expiré.",
+      "ja-JP": "場所検出に失敗しました、操作がタイムアウトしました。",
+      "ru-RU": "Не удалось найти местоположение, время ожидания операции истекло."
+    }
+  },
+  "geo_findLocation_error_unknownError": {
+    "id": "geo.findLocation.error.unknownError",
+    "locale": {
+      "en-US": "Unknown error",
+      "zh-TW": "不明錯誤",
+      "zh-CN": "未知错误",
+      "tr-TR": "Bilinmeyen hata",
+      "sv-SE": "Okänt fel",
+      "it-IT": "Errore sconosciuto",
+      "es-ES": "Error desconocido",
+      "de-DE": "Unbekannter Fehler",
+      "pl-PL": "Nieznany błąd",
+      "nl-NL": "Onbekende fout",
+      "ko-KR": "알 수 없는 오류",
+      "pt-BR": "Erro desconhecido",
+      "fr-FR": "Erreur inconnue",
+      "ja-JP": "不明なエラーです",
+      "ru-RU": "Неизвестная ошибка"
+    }
+  },
+  "geo_findLocation_error_unknownErrorMessage": {
+    "id": "geo.findLocation.error.unknownErrorMessage",
+    "locale": {
+      "en-US": "Failed to acquire location for unknown reasons.",
+      "zh-TW": "由於不明原因，無法取得位置。",
+      "zh-CN": "出于未知的原因，无法获取位置。",
+      "tr-TR": "Bilinmeyen sebeple konum bilgisi alınamadı.",
+      "sv-SE": "Kunde inte fastställa plats av okända skäl.",
+      "it-IT": "Impossibile acquisire la posizione per motivi sconosciuti.",
+      "es-ES": "Error al obtener la ubicación por razones desconocidas.",
+      "de-DE": "Der Standort konnte aus unbekannten Gründen nicht abgerufen werden.",
+      "pl-PL": "Uzyskanie lokalizacji nie powiodło się z nieznanych przyczyn.",
+      "nl-NL": "Locatie kan niet worden verkregen door een onbekende oorzaak.",
+      "ko-KR": "알 수 없는 이유로 인해 위치를 가져오지 못했습니다.",
+      "pt-BR": "Falha ao adquirir localização por motivos desconhecidos.",
+      "fr-FR": "Impossible d'acquérir l'emplacement pour des raisons inconnues.",
+      "ja-JP": "不明な原因により、場所の取得に失敗しました。",
+      "ru-RU": "Не удалось найти местоположение по неизвестным причинам."
+    }
+  },
+  "geo_findLocation_findingLocation": {
+    "id": "geo.findLocation.findingLocation",
+    "locale": {
+      "en-US": "Finding location",
+      "zh-TW": "正在尋找位置",
+      "zh-CN": "查找位置",
+      "tr-TR": "Konum bulunuyor",
+      "sv-SE": "Hittar plats",
+      "it-IT": "Ricerca posizione",
+      "es-ES": "Buscando ubicación",
+      "de-DE": "Standort wird gesucht",
+      "pl-PL": "Znajdowanie lokalizacji",
+      "nl-NL": "Locatie zoeken",
+      "ko-KR": "위치를 찾는 중",
+      "pt-BR": "Encontrando localização",
+      "fr-FR": "Recherche de l'emplacement",
+      "ja-JP": "場所を検出中",
+      "ru-RU": "Поиск местоположения"
+    }
+  },
+  "geo_dropmenu_noName": {
+    "id": "geo.dropmenu.noName",
+    "locale": {
+      "en-US": "No name",
+      "zh-TW": "沒有名稱",
+      "zh-CN": "无名称",
+      "tr-TR": "Ad yok",
+      "sv-SE": "Inget namn",
+      "it-IT": "Senza nome",
+      "es-ES": "Sin nombre",
+      "de-DE": "Kein Name",
+      "pl-PL": "Bez nazwy",
+      "nl-NL": "Geen naam",
+      "ko-KR": "이름 없음",
+      "pt-BR": "Sem nome",
+      "fr-FR": "Sans nom",
+      "ja-JP": "名前なし",
+      "ru-RU": "Имя отсутствует"
+    }
+  },
+  "Object_Error": {
+    "id": "Object.Error",
+    "locale": {
+      "en-US": "Error",
+      "zh-TW": "錯誤",
+      "zh-CN": "错误",
+      "tr-TR": "Hata",
+      "sv-SE": "Fel",
+      "it-IT": "Errore",
+      "es-ES": "Error",
+      "de-DE": "Fehler",
+      "pl-PL": "Błąd",
+      "nl-NL": "Fout",
+      "ko-KR": "오류",
+      "pt-BR": "Erro",
+      "fr-FR": "Erreur",
+      "ja-JP": "エラー",
+      "ru-RU": "Ошибка"
+    }
+  },
+  "properties_compression_density": {
+    "id": "properties.compression.density",
+    "locale": {
+      "en-US": "Density",
+      "zh-TW": "密度",
+      "zh-CN": "密度",
+      "tr-TR": "Yoğunluk",
+      "sv-SE": "Täthet",
+      "it-IT": "Densità",
+      "es-ES": "Densidad",
+      "de-DE": "Dichte",
+      "pl-PL": "Gęstość",
+      "nl-NL": "Dichtheid",
+      "ko-KR": "밀도",
+      "pt-BR": "Densidade",
+      "fr-FR": "Densité",
+      "ja-JP": "密度",
+      "ru-RU": "Плотность"
+    }
+  },
+  "properties_dimensionLimits_others": {
+    "id": "properties.dimensionLimits.others",
+    "locale": {
+      "en-US": "Others",
+      "zh-TW": "其他",
+      "zh-CN": "其他",
+      "tr-TR": "Diğerleri",
+      "sv-SE": "Övriga",
+      "it-IT": "Altri",
+      "es-ES": "Otros",
+      "de-DE": "Sonstige",
+      "pl-PL": "Inne",
+      "nl-NL": "Overige",
+      "ko-KR": "기타",
+      "pt-BR": "Outros",
+      "fr-FR": "Autres",
+      "ja-JP": "その他",
+      "ru-RU": "Другие"
+    }
+  },
+  "properties_dataPoints_labelmode_share": {
+    "id": "properties.dataPoints.labelmode.share",
+    "locale": {
+      "en-US": "Share",
+      "zh-TW": "佔有率",
+      "zh-CN": "份额",
+      "tr-TR": "Pay",
+      "sv-SE": "Andel",
+      "it-IT": "Percentuale",
+      "es-ES": "Cuota",
+      "de-DE": "Anteil",
+      "pl-PL": "Udział",
+      "nl-NL": "Aandeel",
+      "ko-KR": "공유",
+      "pt-BR": "Percentual",
+      "fr-FR": "Part",
+      "ja-JP": "割合",
+      "ru-RU": "Доля"
+    }
+  },
+  "geo_AreaLayer": {
+    "id": "geo.AreaLayer",
+    "locale": {
+      "en-US": "Area layer",
+      "zh-TW": "區域圖層",
+      "zh-CN": "区域层",
+      "tr-TR": "Bölge katmanı",
+      "sv-SE": "Ytskikt",
+      "it-IT": "Livello aree",
+      "es-ES": "Capa de área",
+      "de-DE": "Gebietsebene",
+      "pl-PL": "Warstwa obszaru",
+      "nl-NL": "Gebiedslaag",
+      "ko-KR": "영역 레이어",
+      "pt-BR": "Camada de área",
+      "fr-FR": "Couche de zones",
+      "ja-JP": "エリア レイヤー",
+      "ru-RU": "Слой области"
+    }
+  },
+  "geo_PointLayer": {
+    "id": "geo.PointLayer",
+    "locale": {
+      "en-US": "Point layer",
+      "zh-TW": "點圖層",
+      "zh-CN": "点层",
+      "tr-TR": "Nokta katmanı",
+      "sv-SE": "Punktskikt",
+      "it-IT": "Livello punti",
+      "es-ES": "Capa de puntos",
+      "de-DE": "Punktebene",
+      "pl-PL": "Warstwa punktów",
+      "nl-NL": "Puntlaag",
+      "ko-KR": "포인트 레이어",
+      "pt-BR": "Camada de ponto",
+      "fr-FR": "Couche de points",
+      "ja-JP": "ポイント レイヤー",
+      "ru-RU": "Слой точек"
+    }
+  },
+  "geo_LineLayer": {
+    "id": "geo.LineLayer",
+    "locale": {
+      "en-US": "Line layer",
+      "zh-TW": "線路圖層",
+      "zh-CN": "线路层",
+      "tr-TR": "Çizgi katmanı",
+      "sv-SE": "Linjeskikt",
+      "it-IT": "Livello linee",
+      "es-ES": "Capa de líneas",
+      "de-DE": "Linienebene",
+      "pl-PL": "Warstwa linii",
+      "nl-NL": "Lijnlaag",
+      "ko-KR": "선 레이어",
+      "pt-BR": "Camada de linha",
+      "fr-FR": "Couche de lignes",
+      "ja-JP": "ライン レイヤー",
+      "ru-RU": "Слой линии"
+    }
+  },
+  "geo_DensityLayer": {
+    "id": "geo.DensityLayer",
+    "locale": {
+      "en-US": "Density layer",
+      "zh-TW": "密度圖層",
+      "zh-CN": "密度层",
+      "tr-TR": "Yoğunluk katmanı",
+      "sv-SE": "Täthetsskikt",
+      "it-IT": "Livello densità",
+      "es-ES": "Capa de densidad",
+      "de-DE": "Dichteebene",
+      "pl-PL": "Warstwa gęstości",
+      "nl-NL": "Dichtheidslaag",
+      "ko-KR": "밀도 레이어",
+      "pt-BR": "Adicionar como camada de densidade",
+      "fr-FR": "Couche de densité",
+      "ja-JP": "密度レイヤー",
+      "ru-RU": "Слой плотности"
+    }
+  },
+  "geo_ChartLayer": {
+    "id": "geo.ChartLayer",
+    "locale": {
+      "en-US": "Chart layer",
+      "zh-TW": "圖表圖層",
+      "zh-CN": "图表层",
+      "tr-TR": "Grafik katmanı",
+      "sv-SE": "Diagramskikt",
+      "it-IT": "Livello grafico",
+      "es-ES": "Capa de gráfico",
+      "de-DE": "Diagrammebene",
+      "pl-PL": "Warstwa wykresu",
+      "nl-NL": "Diagramlaag",
+      "ko-KR": "차트 레이어",
+      "pt-BR": "Camada de gráfico",
+      "fr-FR": "Couche de graphiques",
+      "ja-JP": "チャート レイヤー",
+      "ru-RU": "Слой диаграммы"
+    }
+  },
+  "geo_GeodataLayer": {
+    "id": "geo.GeodataLayer",
+    "locale": {
+      "en-US": "Background layer",
+      "zh-TW": "背景圖層",
+      "zh-CN": "背景层",
+      "tr-TR": "Arka plan katmanı",
+      "sv-SE": "Bakgrundsskikt",
+      "it-IT": "Livello sfondo",
+      "es-ES": "Capa de fondo",
+      "de-DE": "Hintergrundebene",
+      "pl-PL": "Warstwa tła",
+      "nl-NL": "Achtergrondlaag",
+      "ko-KR": "백그라운드 레이어",
+      "pt-BR": "Camada de plano de fundo",
+      "fr-FR": "Couche d'arrière-plan",
+      "ja-JP": "背景レイヤー",
+      "ru-RU": "Фоновый слой"
+    }
+  }
+}
