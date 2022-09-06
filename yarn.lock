@@ -1605,11 +1605,6 @@
     "@types/node" "*"
     playwright-core "1.24.2"
 
-"@qlik-trial/geo-webmap@6.24.0":
-  version "6.24.0"
-  resolved "https://npm.pkg.github.com/download/@qlik-trial/geo-webmap/6.24.0/94b55b1b8f502683a62471210d1d7e9ec6fcf451#94b55b1b8f502683a62471210d1d7e9ec6fcf451"
-  integrity sha512-REPMeLu2ZII0vNWV335NHSECOPauYXLrUSHY3/yuO2scZRJwBnbJZQBr3mEI+Dueap3+8yDoj4zWB2+UpRjI6g==
-
 "@rollup/plugin-commonjs@22.0.0":
   version "22.0.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-22.0.0.tgz#f4d87016e2fbf187a593ab9f46626fe05b59e8bd"
