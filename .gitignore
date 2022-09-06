@@ -12,4 +12,3 @@ dist/
 core/esm/
 test/rendering/test-report
 test/rendering/artifacts
-src/static/Wm5Local.js
