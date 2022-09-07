@@ -121,6 +121,7 @@ nuked.render({
           key: 'latitude',
           type: 'expression'
         },
+        isLatLong: true,
         id: 'tWTdanX'
       }
     ],
