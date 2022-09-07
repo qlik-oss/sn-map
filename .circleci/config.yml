@@ -68,7 +68,7 @@ jobs:
       - store_artifacts:
           path: ./sn-map-ext.zip
 
-    publish:
+  publish:
     <<: *defaults
     docker:
       - image: circleci/node:16.10-browsers
