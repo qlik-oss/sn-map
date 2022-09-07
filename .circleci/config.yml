@@ -30,7 +30,7 @@ jobs:
       - store_artifacts:
           path: package.json
       - persist_to_workspace:
-          root: ~/scatter
+          root: ~/map
           paths:
             - .
 
