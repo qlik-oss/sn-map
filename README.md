@@ -1,6 +1,6 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/qlik-oss/sn-map/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/qlik-oss/sn-map/tree/main)
-[![Maintainability](https://api.codeclimate.com/v1/badges/1166aaa6a2e06f8de9eb/maintainability)](https://codeclimate.com/repos/60ba2ff677769346e5000f42/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1166aaa6a2e06f8de9eb/test_coverage)](https://codeclimate.com/repos/60ba2ff677769346e5000f42/test_coverage)
+[![CircleCI](https://circleci.com/gh/qlik-oss/sn-map.svg?style=shield)](https://circleci.com/gh/qlik-oss/sn-map)
+[![Maintainability](https://api.codeclimate.com/v1/badges/60070fd29821d0b03f82/maintainability)](https://codeclimate.com/github/qlik-oss/sn-map/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/60070fd29821d0b03f82/test_coverage)](https://codeclimate.com/github/qlik-oss/sn-map/test_coverage)
 
 # sn-map
 
