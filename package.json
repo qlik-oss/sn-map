@@ -43,7 +43,8 @@
     "minor-release": "git pull && yarn version --message 'chore: v%s' --minor && git push --follow-tags",
     "patch-release": "git pull && yarn version --message 'chore: v%s' --patch && git push --follow-tags",
     "pre-release": "git pull && yarn version --prerelease --message 'chore: v%s' --preid='pre' && git push --follow-tags",
-    "version": "yarn spec && git add api-specifications"
+    "version": "yarn spec && git add api-specifications",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -77,9 +78,11 @@
     "eslint-plugin-mocha": "5.2.1",
     "eslint-plugin-prettier": "3.4.0",
     "fs-extra": "8.1.0",
+    "husky": "^8.0.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.3",
     "prettier": "2.3.0",
+    "pretty-quick": "^3.1.3",
     "qlik-chart-modules": "^0.13.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
