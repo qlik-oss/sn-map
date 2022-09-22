@@ -19,28 +19,43 @@ interface BoundingBox {
  * Class that extract information from a Element element to build up a WMS layer object
  */
 class WMSLayer {
-  title: string;
   name: string;
+  title: string;
+  parentTitle?: string;
   srs: string[];
   crs: string[];
   latLonBoundingBox?: LatLonBoundingBox;
   boundingBox: BoundingBox[];
-
   constructor(layer: Element) {
-    this.name = this.parseName(layer); // Name of the layer
-    this.title = this.parseTitle(layer); // Title of the layer
+    this.name = this.parseElement(layer, 'Name'); // Name of the layer
+    this.title = this.parseElement(layer, 'Title'); // Title of the layer
+    this.parentTitle = this.parseParentTitle(layer);
     this.latLonBoundingBox = this.parseLatLonBoundingBox(layer); // latLonBoundingBox (optional);
     this.boundingBox = this.parseBoundingBoxes(layer); // boundingBox
     this.srs = this.parseSRS(layer);
     this.crs = this.parseCRS(layer);
   }
 
-  private parseName(layer: Element) {
-    return layer.querySelector('Name')?.textContent || '';
+  private parseElement(layer: Element, selector: string) {
+    return layer.querySelector(selector)?.textContent || '';
   }
 
-  private parseTitle(layer: Element) {
-    return layer.querySelector('Title')?.textContent || '';
+  private parseParentTitle(layer: Element) {
+    const parent = layer.parentElement;
+    if (parent && this.isSubtitle(parent)) {
+      return this.parseElement(parent, 'Title');
+    }
+  }
+
+  private isSubtitle(parent: Element) {
+    let hasNameChild = false;
+    for (let i = 0; i < parent.children.length; i++) {
+      hasNameChild = parent.children[i].tagName === 'Name';
+      if (hasNameChild) {
+        break;
+      }
+    }
+    return parent.tagName === 'Layer' && !hasNameChild;
   }
 
   private parseLatLonBoundingBox(layer: Element) {
