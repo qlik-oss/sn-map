@@ -1,6 +1,3 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/60070fd29821d0b03f82/maintainability)](https://codeclimate.com/github/qlik-oss/sn-map/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/60070fd29821d0b03f82/test_coverage)](https://codeclimate.com/github/qlik-oss/sn-map/test_coverage)
-
 # sn-map
 
 ## A map for nebula.js.
