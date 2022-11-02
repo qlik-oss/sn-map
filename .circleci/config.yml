@@ -50,6 +50,9 @@ jobs:
       - run:
           name: Lint
           command: yarn lint
+      - run:
+          name: Typing
+          command: yarn types:check
       - store_artifacts:
           path: coverage
       - persist_to_workspace:
