@@ -14,6 +14,7 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
       </GetMap>
     </Request>
     <Layer>
+      <Title>Parent</Title>
       <CRS>EPSG:3857</CRS>
       <SRS>EPSG:102100</SRS>
       <Layer queryable="1">
@@ -38,8 +39,10 @@ describe('The WMSCapbabilities', () => {
     expect(layers.length).toEqual(2);
     expect(layers[0].name.trim()).toEqual('0');
     expect(layers[0].title.trim()).toEqual('Foo');
+    expect(layers[0].parentTitle?.trim()).toEqual('Parent');
     expect(layers[1].name.trim()).toEqual('1');
     expect(layers[1].title.trim()).toEqual('Bar');
+    expect(layers[1].parentTitle?.trim()).toEqual('Parent');
   });
   it('format parser should return the right image formats', () => {
     const capabilities = new WMSCapabilities(xml);
