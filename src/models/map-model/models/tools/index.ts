@@ -1,11 +1,13 @@
 import ScaleBarTool from './scale-bar';
 import { getValue } from 'qlik-chart-modules';
+import Tooltip from './tooltip';
 
 export class ToolsModel {
   map?: idevio.map.WebMap;
   panTool: idevio.map.PanTool;
   zoomTool: idevio.map.ZoomTool;
   scaleBarTool: ScaleBarTool;
+  toolTip?: Tooltip;
   debugLayer?: idevio.map.WebMapInfoLayer;
 
   constructor() {
@@ -17,8 +19,10 @@ export class ToolsModel {
     this.scaleBarTool = new ScaleBarTool();
   }
 
-  setMap(map: idevio.map.WebMap) {
+  initialize(map: idevio.map.WebMap) {
     this.map = map;
+    this.createDebugLayer();
+    this.createToolTip();
   }
 
   createDebugLayer() {
@@ -37,6 +41,11 @@ export class ToolsModel {
       visible: false,
     };
     this.debugLayer = new idevio.map.WebMapInfoLayer(this.map, options);
+  }
+
+  createToolTip() {
+    if (!this.map) return;
+    this.toolTip = new Tooltip(this.map);
   }
 
   update(mapSettings: MapSettings) {

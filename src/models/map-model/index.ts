@@ -35,8 +35,7 @@ export class MapModel implements MapModelInterFace {
     this.map = new idevio.map.WebMap(wmOptions);
     this.baseMapModel = new BaseMapModel(this.map);
     this.attributionModel = new AttributionModel(this.map);
-    this.toolsModel.setMap(this.map);
-    this.toolsModel.createDebugLayer();
+    this.toolsModel.initialize(this.map);
     this.layers = new LayersHandler(this);
 
     MapUtils.registerMap(this.id, this.map);
