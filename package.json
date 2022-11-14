@@ -53,7 +53,7 @@
     "@babel/preset-typescript": "^7.14.5",
     "@jest/types": "^27.0.6",
     "@material-ui/core": "^4.11.4",
-    "@nebula.js/cli": "2.13.0",
+    "@nebula.js/cli": "3.0.4",
     "@nebula.js/cli-build": "2.13.0",
     "@nebula.js/cli-sense": "3.0.4",
     "@nebula.js/cli-serve": "3.0.4",
