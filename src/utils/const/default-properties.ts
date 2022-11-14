@@ -1,4 +1,4 @@
-const DefaultPropeties = {
+const DEFAULT_PROPERTIES = {
   COLOR: [
     { index: 6, color: '#4477aa' },
     { index: 9, color: '#f8981d' },
@@ -11,4 +11,4 @@ const DefaultPropeties = {
   ],
 };
 
-export default DefaultPropeties;
+export default DEFAULT_PROPERTIES;

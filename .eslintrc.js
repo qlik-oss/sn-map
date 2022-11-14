@@ -20,21 +20,14 @@ module.exports = {
     // Disallows awaiting a value that is not a Thenable
     '@typescript-eslint/await-thenable': 'error',
 
-    // Bans “// @ts-ignore” comments from being used
-    '@typescript-eslint/ban-ts-ignore': 'error',
-
-    // Enforce consistent brace style for blocks
-    // "@typescript-eslint/brace-style": ["warn", "1tbs"],
+    // This rule reports any usage of @ts-ignore, including a fixer to replace with @ts-expect-error.
+    '@typescript-eslint/prefer-ts-expect-error': 'error',
 
     // Enforce camelCase naming convention
-    '@typescript-eslint/camelcase': 'error',
-
-    // Require PascalCased class and interface names
-    '@typescript-eslint/class-name-casing': [
+    '@typescript-eslint/naming-convention': [
       'error',
-      {
-        allowUnderscorePrefix: true,
-      },
+      { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE'], leadingUnderscore: 'allow' },
+      { selector: 'class', format: ['PascalCase'] },
     ],
 
     // Enforce consistent indentation
@@ -49,17 +42,8 @@ module.exports = {
     // Disallow generic Array constructors
     '@typescript-eslint/no-array-constructor': 'error',
 
-    // Disallow usage of the any type
-    // "@typescript-eslint/no-explicit-any": "warn",
-
     // Disallow extra non-null assertion
     '@typescript-eslint/no-extra-non-null-assertion': ['error'],
-
-    // Requires Promise-like values to be handled appropriately.
-    // "@typescript-eslint/no-floating-promises": ["error"],
-
-    // Disallow iterating over an array with a for-in loop
-    // "@typescript-eslint/no-for-in-array": "error",
 
     // Enforce valid definition of new and constructor
     '@typescript-eslint/no-misused-new': 'error',
@@ -72,17 +56,8 @@ module.exports = {
       },
     ],
 
-    // Disallows non-null assertions using the ! postfix operator
-    // "@typescript-eslint/no-non-null-assertion": "error",
-
     // Disallows invocation of require()
     '@typescript-eslint/no-require-imports': 'warn',
-
-    // Prevents conditionals where the type is always truthy or always falsy
-    // "@typescript-eslint/no-unnecessary-condition": "warn",
-
-    // Disallow unused expressions
-    // "@typescript-eslint/no-unused-expressions": "warn",
 
     // Disallow unused variables
     '@typescript-eslint/no-unused-vars': [
@@ -92,41 +67,14 @@ module.exports = {
       },
     ],
 
-    // Prefer a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated
-    // "@typescript-eslint/prefer-for-of": "warn",
-
-    // Enforce the usage of the nullish coalescing operator instead of logical chaining
-    // "@typescript-eslint/prefer-nullish-coalescing": "warn",
-
-    // Prefer using concise optional chain expressions instead of chained logical ands
-    // "@typescript-eslint/prefer-optional-chain": "warn",
-
-    // Requires that private members are marked as readonly if they're never modified outside of the constructor
-    // "@typescript-eslint/prefer-readonly": "warn",
-
     // Prefer RegExp#exec() over String#match() if no global flag is provided
     '@typescript-eslint/prefer-regexp-exec': 'error',
-
-    // Enforce the use of String#startsWith and String#endsWith instead of other equivalent methods of checking substrings
-    // "@typescript-eslint/prefer-string-starts-ends-with": "warn",
 
     // Requires any function or method that returns a Promise to be marked async
     '@typescript-eslint/promise-function-async': 'error',
 
     // Enforce the consistent use of either backticks, double, or single quotes
     '@typescript-eslint/quotes': ['error', 'single'],
-
-    // Enforce giving compare argument to Array#sort
-    // "@typescript-eslint/require-array-sort-compare": "warn",
-
-    // Disallow async functions which have no await expression
-    //  '@typescript-eslint/require-await': 'error',
-
-    // When adding two variables, operands must both be of type number or of type string
-    // "@typescript-eslint/restrict-plus-operands": "warn",
-
-    // Enforce template literal expressions to be of string type
-    // "@typescript-eslint/restrict-template-expressions": "warn",
 
     // Rules for awaiting returned promises
     '@typescript-eslint/return-await': 'error',
