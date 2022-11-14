@@ -1,5 +1,6 @@
 declare interface NxHyperCubeDef {
   qDimensions: NxDimension[];
+  qMeasures: NxMeasure[];
 }
 
 declare interface NxDimension {
@@ -9,11 +10,22 @@ declare interface NxDimension {
   qAttributeDimensions: NxAttrDimDef[];
 }
 
+declare interface NxMeasure {
+  qLibraryId: string;
+  qDef: NxInlineMeasureDef;
+}
+
 declare interface NxInlineDimensionDef {
   qFieldDefs: string[];
   cId: string;
   qLabelExpression?: string | undefined;
   qSortCriterias: any[]; // SortCriteria[]
+}
+
+declare interface NxInlineMeasureDef {
+  cId: string;
+  qDef: string;
+  qLabel?: string;
 }
 
 declare interface NxAttrExprDef {
@@ -109,4 +121,5 @@ declare interface ExpressionProp {
   type: string;
   activeDimensionIndex?: number;
   qNumFormat?: any;
+  activeMeasureIndex?: number;
 }

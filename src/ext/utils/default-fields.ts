@@ -1,7 +1,7 @@
 import { getValue } from 'qlik-chart-modules';
 import { FieldsModel } from '../../models/fields-model';
 import DefaultProperties from '../../utils/const/default-properties';
-import Utils from './util';
+import Utils from '../../utils/util';
 
 module DefaultFields {
   export function setLocation(dimension: NxDimension, layerProps: LayerProperties) {

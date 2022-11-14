@@ -1,5 +1,5 @@
 import LayerType from '../../../utils/const/layer-type';
-import Util from '../../utils/util';
+import Util from '../../../utils/util';
 import getOptionsProperties from '../common/options/initial-properties';
 import getFormatProperties from './formats/initial-properties';
 

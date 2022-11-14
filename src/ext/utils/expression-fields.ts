@@ -1,5 +1,5 @@
 import { setValue, getValue } from 'qlik-chart-modules';
-import Utils from './util';
+import Utils from '../../utils/util';
 
 module ExpressionFields {
   /**
