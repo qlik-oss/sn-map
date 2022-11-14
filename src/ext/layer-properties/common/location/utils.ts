@@ -1,5 +1,6 @@
 import { getValue } from 'qlik-chart-modules';
 import ExpressionFields from '../../../utils/expression-fields';
+import { setAttributeExpression } from '../../../utils/attribute-expressions';
 
 module LocationUtils {
   export function updateLocationAttributeExpressions(props: LayerProperties) {
@@ -29,14 +30,7 @@ module LocationUtils {
   }
 
   export function setLocationAttributeExpression(props: LayerProperties, dimIndex: number = 0) {
-    const value = props.locationOrLatitude;
-    const hqDef = props.qHyperCubeDef;
-    const libDef = getValue(hqDef, `qDimensions.${dimIndex}.qLibraryId`);
-    const fieldDef = getValue(hqDef, `qDimensions.${dimIndex}.qDef.qFieldDefs.0`);
-    ExpressionFields.removeExpression('locationOrLatitude', hqDef);
-    if (value.key !== libDef && !ExpressionFields.expressionAndFieldEquals(value.key, fieldDef)) {
-      ExpressionFields.addExpression('locationOrLatitude', value, hqDef);
-    }
+    setAttributeExpression(props, 'locationOrLatitude', 'locationOrLatitude', false, dimIndex);
   }
 
   export function clearExpressions(hqDef: NxHyperCubeDef) {

@@ -1,5 +1,8 @@
 import LayerType from '../../../../utils/const/layer-type';
 import numberFormatProperties from '../../../utils/numberFormatProperties';
+import ExpressionFields from '../../../utils/expression-fields';
+import { setAttributeExpression } from '../../../utils/attribute-expressions';
+import { getValue } from 'qlik-chart-modules';
 
 // Should only be used for max/min width/radius of bubble layer and line layer.
 const getSizeFromSliderValue = (value: number) => {
@@ -13,25 +16,6 @@ const getSizeFromSliderValue = (value: number) => {
     return 70 + (value - 60) * 4;
   }
 };
-
-function libraryMeasureWorkaround(props: LayerProperties, expr: ExpressionProp) {
-  const idx = expr.activeMeasureIndex;
-  if (idx !== undefined && props.qHyperCubeDef.qMeasures.length > idx) {
-    try {
-      const measure = props.qHyperCubeDef.qMeasures[idx];
-      if (measure.qLibraryId) {
-        expr.type = 'libraryItem';
-        expr.label = measure.qLibraryId;
-        expr.key = measure.qLibraryId;
-      } else {
-        const qDef = measure.qDef || ({} as any);
-        expr.type = 'expression';
-        expr.key = qDef.qDef;
-        expr.label = qDef.qLabel || qDef.qDef || '';
-      }
-    } catch {}
-  }
-}
 
 const getSizeLayout = (translator: TranslatorType) => ({
   sizeField: function (type: string) {
@@ -52,8 +36,9 @@ const getSizeLayout = (translator: TranslatorType) => ({
       libraryItemType: 'measure',
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = props.size.expression;
-        libraryMeasureWorkaround(props, expr);
+        const expr = getValue(props, 'size.expression');
+        ExpressionFields.setLibraryMeasureWorkaround(props, expr);
+        setAttributeExpression(props, 'size.expression', 'size', true, 0);
       },
     };
   },

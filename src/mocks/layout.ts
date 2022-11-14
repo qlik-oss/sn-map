@@ -11,6 +11,9 @@ const size: SizeProperties = {
   radiusMin: 4,
   radiusMax: 12,
   sliderSingle: 16,
+  autoRadiusValueRange: true,
+  expression: { key: 'expression-size', type: 'expression-type' },
+  slider: [0, 16],
 };
 
 const location = {

@@ -1,8 +1,10 @@
 import LocationUtils from '../location/utils';
+import { setAttributeExpression } from '../../../utils/attribute-expressions';
 
 module DataUtils {
   export function updateAttributeExpressions(props: LayerProperties) {
     LocationUtils.updateLocationAttributeExpressions(props);
+    setAttributeExpression(props, 'size.expression', 'size', true, 0);
   }
 }
 
