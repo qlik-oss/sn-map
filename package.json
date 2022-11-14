@@ -90,6 +90,6 @@
     "typescript": "^3.9.10"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=2.3.0"
+    "@nebula.js/stardust": ">=3.0.4"
   }
 }
