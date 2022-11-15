@@ -4,11 +4,8 @@
 
 import * as nebula from '@nebula.js/stardust';
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { render } from '@testing-library/react';
 import useViewState from '../use-view-state';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('use-view-state', () => {
   const Component = () => {
@@ -28,7 +25,7 @@ describe('use-view-state', () => {
   });
 
   it('should trigger useEffect', () => {
-    mount(<Component />);
+    render(<Component />);
     expect(setViewState).toHaveBeenCalled();
   });
 });
