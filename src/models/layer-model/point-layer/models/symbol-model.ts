@@ -11,7 +11,6 @@ export class SymbolModel {
 
   addSymbol(data: PointData[], layoutService: LayoutService) {
     return data.map((pointData: PointData) => {
-      console.log('pointData===', pointData);
       const style = this.collectStyle(pointData, layoutService);
       const key = this.makeKey(style);
 
