@@ -6,7 +6,10 @@ import Map from '../components/map';
 type UseRenderProps = {
   core: {
     element: HTMLElement;
-    webmap: Function;
+    webmap: {
+      isLoading: boolean;
+      error: string;
+    };
   };
   setWebMapRef: Function;
 };
@@ -28,7 +31,7 @@ const UseRender = ({ core, setWebMapRef }: UseRenderProps) => {
     if (root) {
       root.render(<Map setWebMapRef={setWebMapRef} />);
     }
-  }, [core]);
+  }, [core?.webmap]);
 };
 
 export default UseRender;
