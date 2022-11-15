@@ -40,7 +40,7 @@ export class SymbolModel {
     const qHyperCube = layoutService.getLayoutValue('qHyperCube');
     const dimensionExpressionInfo = dataUtils.getDimensionExpressionInfo('size', qHyperCube);
 
-    const valuesMinMax = dataUtils.getMinMax(dimensionExpressionInfo, qHyperCube); // null if not attribute dependent size
+    const valuesMinMax = dataUtils.getMinMax(qHyperCube, dimensionExpressionInfo); // null if not attribute dependent size
     const sizeMinMax = autoRadiusValueRange === false ? [radiusValueMin, radiusValueMax] : valuesMinMax || [0, 0];
     const singleSize = Math.round((radiusMin + radiusMax) / 2);
 
@@ -48,11 +48,8 @@ export class SymbolModel {
     if (dimensionExpressionInfo?.dimensionIndex === 0) {
       sizeFromExpression = pointData.qAttrExps?.qValues[dimensionExpressionInfo.index]?.qNum;
     }
-    console.log('sizeFromExpression===', sizeFromExpression);
     const size = (sizeFromExpression ?? singleSize) as number;
-    console.log('size===', size);
     const result = this.calculateSymbolSize(size, sizeMinMax[0], sizeMinMax[1], radiusMin, radiusMax).size;
-    console.log('result===', result);
     return result;
   }
 

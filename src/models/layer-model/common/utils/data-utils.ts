@@ -20,8 +20,8 @@ module DataUtils {
    * @param id Id of the expression
    * @param hq hyper cube def
    */
-  export function getDimensionExpressionInfo(id: string, hq?: NxHyperCube): DimensionExpressionInfo | undefined {
-    if (!hq || !hq.qDimensionInfo[0]) return;
+  export function getDimensionExpressionInfo(id: string, hq: NxHyperCube): DimensionExpressionInfo | undefined {
+    if (hq.qDimensionInfo.length === 0) return;
     //There can be more than one dimension
     for (let n = 0; n < hq.qDimensionInfo.length; n++) {
       const exprdefs = hq.qDimensionInfo[n].qAttrExprInfo;
@@ -39,8 +39,8 @@ module DataUtils {
   /**
    * Range of values for specified dimension expression id. Returns null if not defined or values are  not numeric.
    */
-  export function getMinMax(dimensionExpressionInfo: DimensionExpressionInfo | undefined, hq: NxHyperCube) {
-    if (dimensionExpressionInfo == null) {
+  export function getMinMax(hq: NxHyperCube, dimensionExpressionInfo?: DimensionExpressionInfo) {
+    if (!dimensionExpressionInfo) {
       return;
     }
     const dimInfo = hq.qDimensionInfo[dimensionExpressionInfo.dimensionIndex];
