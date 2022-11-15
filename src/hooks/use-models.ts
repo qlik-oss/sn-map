@@ -13,7 +13,7 @@ type UseModelsProps = {
   webMapRef: React.RefObject<HTMLElement> | undefined;
 };
 
-const UseModels = ({ core, webMapRef }: UseModelsProps) => {
+const useModels = ({ core, webMapRef }: UseModelsProps) => {
   const app = useApp();
   const layout = useStaleLayout();
   const rect = useRect();
@@ -53,4 +53,4 @@ const UseModels = ({ core, webMapRef }: UseModelsProps) => {
   return mapModel;
 };
 
-export default UseModels;
+export default useModels;
