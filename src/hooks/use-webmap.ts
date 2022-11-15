@@ -9,7 +9,7 @@ const isWmLoaded = () => win.idevio?.Connection?.status === 'OK';
 const isWmLoading = () => win.idevio?.Connection?.status === 'LOADING';
 const isWmFailed = () => win.idevio?.Connection?.status === 'FAILED';
 
-const UseWebmap = (options?: Options): UseWebmapProps => {
+const useWebmap = (options?: Options): UseWebmapProps => {
   const host = options?.configuration?.serverUrl;
   const key = options?.configuration?.serverKey;
 
@@ -104,4 +104,4 @@ const UseWebmap = (options?: Options): UseWebmapProps => {
   return state;
 };
 
-export default UseWebmap;
+export default useWebmap;

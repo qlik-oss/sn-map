@@ -4,12 +4,9 @@
 
 import * as nebula from '@nebula.js/stardust';
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { render } from '@testing-library/react';
 
 import useWebmap from '../use-webmap';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('use-webmap', () => {
   let state: any;
@@ -37,20 +34,20 @@ describe('use-webmap', () => {
   });
 
   it('should trigger the useEffect', () => {
-    mount(<Component />);
+    render(<Component />);
     expect(win.onIdevioWebMapError).toBeDefined();
   });
 
   it('should set connection status to Loading from Failed', () => {
     win.idevio.Connection.status = 'FAILED';
-    mount(<Component />);
+    render(<Component />);
     expect(win.onIdevioWebMapError).toBeDefined();
     expect(win.idevio.Connection.status).toEqual('LOADING');
   });
 
   it('should update the state when the map is loaded', () => {
     win.idevio.Connection.status = 'OK';
-    mount(<Component />);
+    render(<Component />);
     expect(setState).toHaveBeenCalled();
   });
 });

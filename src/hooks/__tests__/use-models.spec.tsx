@@ -4,19 +4,17 @@
 
 import * as nebula from '@nebula.js/stardust';
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { render } from '@testing-library/react';
 import webmapMock from '../../mocks/webmap';
 import mockLayout from '../../mocks/layout';
 import * as mapModelModule from '../../models/map-model';
 import useModels from '../use-models';
 
-Enzyme.configure({ adapter: new Adapter() });
-
 describe('use-models', () => {
   global.idevio = webmapMock.idevio;
   const webmapElement = document.createElement('div');
   const webMapRef: any = { offsetHeight: 100, current: webmapElement };
+  const dummyReturn: any = {};
   let core: any;
   let Component: any;
   let mapModel: any;
@@ -28,9 +26,9 @@ describe('use-models', () => {
     jest.spyOn(mapModelModule, 'MapModel').mockReturnValue(mapModel);
     jest.spyOn(nebula, 'useEffect').mockImplementation(React.useEffect);
     jest.spyOn(nebula, 'useState').mockImplementation(React.useState);
-    jest.spyOn(nebula, 'useApp').mockReturnValue({});
+    jest.spyOn(nebula, 'useApp').mockReturnValue(dummyReturn);
     jest.spyOn(nebula, 'useStaleLayout').mockReturnValue(mockLayout.map);
-    jest.spyOn(nebula, 'useRect').mockReturnValue({});
+    jest.spyOn(nebula, 'useRect').mockReturnValue(dummyReturn);
     core = {
       element: document.createElement('div'),
       webmap: webmapMock,
@@ -39,7 +37,7 @@ describe('use-models', () => {
       useModels({ core, webMapRef });
       return <div />;
     };
-    mount(<Component />);
+    render(<Component />);
   });
 
   afterEach(() => {

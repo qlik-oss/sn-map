@@ -11,7 +11,7 @@ export default function supernova(env: EnvironmentType) {
     qae: createQae(),
     ext: ext(env),
     component() {
-      // webMapRef contains the react referrence of the map element in the DOM
+      // webMapRef contains the react reference of the map element in the DOM
       const [webMapRef, setWebMapRef] = useState();
       const core = useCore();
       const mapModel = useModels({ core, webMapRef });

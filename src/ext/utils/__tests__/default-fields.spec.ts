@@ -5,7 +5,7 @@ import { FieldsModel } from '../../../models/fields-model';
 jest.mock('../../../models/fields-model');
 
 describe('Default fields', () => {
-  const FieldsModelMock = FieldsModel as jest.Mocked<typeof FieldsModel>;
+  const fieldsModelMock = FieldsModel as jest.Mocked<typeof FieldsModel>;
   let layerProperties: LayerProperties;
   let dimension: NxDimension;
 
@@ -31,7 +31,7 @@ describe('Default fields', () => {
     it('should set fields from qFieldDefs when field key equals locationDefault', () => {
       layerProperties.locationOrLatitude.key = 'field';
       layerProperties.locationDefault = 'field';
-      FieldsModelMock.relatedFieldName.mockImplementation();
+      fieldsModelMock.relatedFieldName.mockImplementation();
       defaultFields.setLocation(dimension, layerProperties);
 
       expect(layerProperties.locationOrLatitude.key).toEqual('[dimension]');
@@ -41,10 +41,10 @@ describe('Default fields', () => {
 
     it('should set related fields when field key is missing', () => {
       layerProperties.locationOrLatitude.key = '';
-      FieldsModelMock.relatedFieldName.mockImplementation(() => 'relatedField');
+      fieldsModelMock.relatedFieldName.mockImplementation(() => 'relatedField');
       defaultFields.setLocation(dimension, layerProperties);
 
-      expect(FieldsModelMock.relatedFieldName).toHaveBeenCalled();
+      expect(fieldsModelMock.relatedFieldName).toHaveBeenCalled();
       expect(layerProperties.locationOrLatitude.key).toEqual('[relatedField]');
       expect(layerProperties.locationOrLatitude.label).toEqual('relatedField');
       expect(layerProperties.locationOrLatitude.type).toEqual('expression');
@@ -66,8 +66,8 @@ describe('Default fields', () => {
       dimension.qDef.qFieldDefs = [];
       dimension.qLibraryId = 'libraryField';
       layerProperties.locationOrLatitude.key = '';
-      FieldsModelMock.fieldNameFromLibraryDimension.mockImplementation(() => 'exist');
-      FieldsModelMock.relatedFieldName.mockImplementation(() => 'relatedField');
+      fieldsModelMock.fieldNameFromLibraryDimension.mockImplementation(() => 'exist');
+      fieldsModelMock.relatedFieldName.mockImplementation(() => 'relatedField');
       defaultFields.setLocation(dimension, layerProperties);
 
       expect(layerProperties.locationOrLatitude.key).toEqual('[relatedField]');
