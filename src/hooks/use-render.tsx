@@ -6,15 +6,26 @@ import Map from '../components/map';
 type UseRenderProps = {
   core: {
     element: HTMLElement;
-    setWebMapRef: Function;
+    webmap: Function;
   };
   setWebMapRef: Function;
 };
 
+type ReactRoot = {
+  render: Function;
+};
+
 const UseRender = ({ core, setWebMapRef }: UseRenderProps) => {
+  let root: ReactRoot;
+
   useEffect(() => {
     if (core?.element) {
-      const root = createRoot(core.element);
+      root = createRoot(core.element!);
+    }
+  }, [core?.element]);
+
+  useEffect(() => {
+    if (root) {
       root.render(<Map setWebMapRef={setWebMapRef} />);
     }
   }, [core]);
