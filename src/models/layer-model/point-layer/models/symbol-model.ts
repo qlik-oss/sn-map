@@ -12,7 +12,7 @@ export class SymbolModel {
   addSymbol(data: PointData[], layoutService: LayoutService) {
     return data.map((pointData: PointData) => {
       console.log('pointData===', pointData);
-      const style = this.collectStyle(layoutService);
+      const style = this.collectStyle(pointData, layoutService);
       const key = this.makeKey(style);
 
       if (!this.symbols[key]) {
@@ -22,8 +22,8 @@ export class SymbolModel {
     });
   }
 
-  private collectStyle(layoutService: LayoutService) {
-    const size = this.getSize(layoutService) as number;
+  private collectStyle(pointData: PointData, layoutService: LayoutService) {
+    const size = this.getSize(pointData, layoutService) as number;
     const color = this.getColor(layoutService) as string;
     return {
       size,
@@ -31,22 +31,25 @@ export class SymbolModel {
     };
   }
 
-  private getSize(layoutService: LayoutService) {
+  private getSize(pointData: PointData, layoutService: LayoutService) {
     const radiusMin = layoutService.getLayoutValue('size.radiusMin') as number;
     const radiusMax = layoutService.getLayoutValue('size.radiusMax') as number;
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
     const radiusValueMin = layoutService.getLayoutValue('size.radiusValueMin');
     const radiusValueMax = layoutService.getLayoutValue('size.radiusValueMax');
+    const qHyperCube = layoutService.getLayoutValue('qHyperCube');
+    const dimensionExpressionInfo = dataUtils.getDimensionExpressionInfo('size', qHyperCube);
 
-    const valuesMinMax = dataUtils.getMinMax('size', layoutService.getLayoutValue('qHyperCube')); // null if not attribute dependent size
-    console.log('valuesMinMax===', valuesMinMax);
+    const valuesMinMax = dataUtils.getMinMax(dimensionExpressionInfo, qHyperCube); // null if not attribute dependent size
     const sizeMinMax = autoRadiusValueRange === false ? [radiusValueMin, radiusValueMax] : valuesMinMax || [0, 0];
     const singleSize = Math.round((radiusMin + radiusMax) / 2);
 
-    // const sizearr = DataUtils.getNumericData('size', dataPage, layoutService.getLayoutValue('qHyperCube'));
-    const sizearr = [];
-    const rowIndex = 0;
-    const size = (!sizearr.length ? singleSize : sizearr[rowIndex]) as number;
+    let sizeFromExpression;
+    if (dimensionExpressionInfo?.dimensionIndex === 0) {
+      sizeFromExpression = pointData.qAttrExps?.qValues[dimensionExpressionInfo.index]?.qNum;
+    }
+    console.log('sizeFromExpression===', sizeFromExpression);
+    const size = (sizeFromExpression ?? singleSize) as number;
     console.log('size===', size);
     const result = this.calculateSymbolSize(size, sizeMinMax[0], sizeMinMax[1], radiusMin, radiusMax).size;
     console.log('result===', result);

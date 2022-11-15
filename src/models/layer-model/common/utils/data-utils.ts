@@ -20,8 +20,8 @@ module DataUtils {
    * @param id Id of the expression
    * @param hq hyper cube def
    */
-  export function getDimensionExpressionIndex(id: string, hq?: NxHyperCube) {
-    if (!hq || !hq.qDimensionInfo[0]) return null;
+  export function getDimensionExpressionInfo(id: string, hq?: NxHyperCube): DimensionExpressionInfo | undefined {
+    if (!hq || !hq.qDimensionInfo[0]) return;
     //There can be more than one dimension
     for (let n = 0; n < hq.qDimensionInfo.length; n++) {
       const exprdefs = hq.qDimensionInfo[n].qAttrExprInfo;
@@ -33,25 +33,21 @@ module DataUtils {
         if (exprdefs2[i].id === id) return { index: i, isDim: true, dimensionIndex: n };
       }
     }
-    return null;
+    return;
   }
 
   /**
    * Range of values for specified dimension expression id. Returns null if not defined or values are  not numeric.
    */
-  export function getMinMax(id: string, hq: NxHyperCube) {
-    const indexInfo = getDimensionExpressionIndex(id, hq);
-    if (indexInfo == null) {
-      return null;
+  export function getMinMax(dimensionExpressionInfo: DimensionExpressionInfo | undefined, hq: NxHyperCube) {
+    if (dimensionExpressionInfo == null) {
+      return;
     }
-    const dimInfo = hq.qDimensionInfo[indexInfo.dimensionIndex];
-    if (!dimInfo) {
-      return null;
-    }
-    const index = indexInfo.index;
+    const dimInfo = hq.qDimensionInfo[dimensionExpressionInfo.dimensionIndex];
+    const index = dimensionExpressionInfo.index;
     const attrInfo = dimInfo.qAttrExprInfo[index];
     if (!attrInfo || isNaN(attrInfo.qMin) || isNaN(attrInfo.qMax)) {
-      return null;
+      return;
     }
     return [attrInfo.qMin, attrInfo.qMax];
   }

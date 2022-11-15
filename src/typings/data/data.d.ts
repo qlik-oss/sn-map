@@ -20,4 +20,12 @@ declare interface LocationData {
   locationAdmin2?: string;
 }
 
-declare interface PointData extends Data {}
+declare interface PointData extends Data {
+  qAttrExps?: NxAttributeExpressionValues;
+}
+
+declare interface DimensionExpressionInfo {
+  index: number;
+  isDim: bolean;
+  dimensionIndex: number;
+}

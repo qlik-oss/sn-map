@@ -39,10 +39,12 @@ export class PointLayerDataModel extends DataModel {
 
       const elemData = this.getElemData(cell);
       const locationData = this.getLocationData(cell, meta.location);
-
+      const qAttrExps = cell.qAttrExps;
+      console.log('dataPage row===', row);
       return {
         ...locationData,
         ...elemData,
+        qAttrExps,
       };
     });
   }

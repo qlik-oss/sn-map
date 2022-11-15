@@ -95,7 +95,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
         props.size.radiusMax = getSizeFromSliderValue(props.size.slider[1]);
       },
       show: function (props: PointLayerProperties) {
-        return props.size.expression?.key && props.size.expression?.key.length > 0;
+        return props.size.expression?.key?.length > 0;
       },
     };
   },
@@ -133,7 +133,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
         props.size.radiusMax = val + d;
       },
       show: function (props: PointLayerProperties) {
-        return !(props.size.expression?.key && props.size.expression?.key.length > 0);
+        return !(props.size.expression?.key?.length > 0);
       },
     };
   },
@@ -149,16 +149,16 @@ const getSizeLayout = (translator: TranslatorType) => ({
         { value: false, translation: 'Common.Custom' },
       ],
       show: function (props: PointLayerProperties) {
-        return props.size.expression?.key && props.size.expression?.key.length > 0;
+        return props.size.expression?.key?.length > 0;
       },
     };
   },
   minSizeValue: function (type: string) {
     let translation = '';
-    if (type === 'LineLayer') {
-      translation = 'geo.properties.width.min';
-    } else {
-      translation = 'geo.properties.radius.min';
+    switch (type) {
+      default:
+        translation = 'geo.properties.radius.min';
+        break;
     }
     return {
       ref: 'size.radiusValueMin',
@@ -167,16 +167,16 @@ const getSizeLayout = (translator: TranslatorType) => ({
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression?.key && props.size.expression?.key.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression?.key?.length > 0;
       },
     };
   },
   maxSizeValue: function (type: string) {
     let translation = '';
-    if (type === 'LineLayer') {
-      translation = 'geo.properties.width.max';
-    } else {
-      translation = 'geo.properties.radius.max';
+    switch (type) {
+      default:
+        translation = 'geo.properties.radius.max';
+        break;
     }
     return {
       ref: 'size.radiusValueMax',
@@ -185,7 +185,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression?.key && props.size.expression?.key.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression?.key?.length > 0;
       },
     };
   },
