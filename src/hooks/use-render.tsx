@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { useEffect } from '@nebula.js/stardust';
 import Map from '../components/map';
 
@@ -14,7 +14,8 @@ type UseRenderProps = {
 const UseRender = ({ core, setWebMapRef }: UseRenderProps) => {
   useEffect(() => {
     if (core?.element) {
-      ReactDOM.render(<Map setWebMapRef={setWebMapRef} />, core.element);
+      const root = createRoot(core.element);
+      root.render(<Map setWebMapRef={setWebMapRef} />);
     }
   }, [core]);
 };

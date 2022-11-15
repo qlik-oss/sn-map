@@ -4,11 +4,8 @@
 
 import * as nebula from '@nebula.js/stardust';
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { render } from '@testing-library/react';
 import useRender from '../use-render';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('use-render', () => {
   jest.spyOn(nebula, 'useEffect').mockImplementation(React.useEffect);
@@ -25,7 +22,7 @@ describe('use-render', () => {
   });
 
   it('should trigger useEffect', () => {
-    mount(<Component />);
+    render(<Component />);
     expect(webmapElement.querySelector('.map-root')).toBeDefined();
   });
 });

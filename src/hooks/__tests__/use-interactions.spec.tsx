@@ -4,8 +4,7 @@
 
 import * as nebula from '@nebula.js/stardust';
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { render } from '@testing-library/react';
 
 import useInteractions from '../use-interactions';
 
@@ -13,8 +12,6 @@ import mapModelMock from '../../mocks/map-model';
 import webmapMock from '../../mocks/webmap';
 
 jest.mock('../../models/selection-model');
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('use-interactions', () => {
   let select: Function;
@@ -44,7 +41,7 @@ describe('use-interactions', () => {
 
   describe('useEffect selections isActive', () => {
     it('should trigger select when selections isActive returns true', () => {
-      mount(<Component />);
+      render(<Component />);
       expect(nebula.useSelections).toHaveBeenCalled();
       expect(mapModelMock.map.addListener).toHaveBeenCalled();
       expect(select).toHaveBeenCalled();
@@ -55,7 +52,7 @@ describe('use-interactions', () => {
         isActive: () => false,
         select,
       });
-      mount(<Component />);
+      render(<Component />);
       expect(nebula.useSelections).toHaveBeenCalled();
       expect(mapModelMock.map.addListener).toHaveBeenCalled();
       expect(select).not.toHaveBeenCalled();
@@ -64,7 +61,7 @@ describe('use-interactions', () => {
 
   describe('useEffect constraints', () => {
     it('should call useConstraints', () => {
-      mount(<Component />);
+      render(<Component />);
       expect(nebula.useConstraints).toHaveBeenCalled();
     });
   });
