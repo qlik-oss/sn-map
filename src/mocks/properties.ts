@@ -30,6 +30,10 @@ const colorProperties = {
   color: { auto: false },
 };
 
+const sizeProperties = {
+  size: { shape: 'point' },
+};
+
 const tmsProperties = {
   url: 'wwww.foo.bar',
   auto: true,
@@ -101,6 +105,7 @@ const properties = {
       qHyperCubeDef,
       ...locationProperties,
       ...colorProperties,
+      ...sizeProperties,
     },
     geodata: {
       cId: 'layer-id',

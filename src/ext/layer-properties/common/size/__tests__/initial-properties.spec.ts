@@ -7,5 +7,13 @@ describe('size initial-properties', () => {
     expect(initialValues.size).toHaveProperty('radiusMin');
     expect(initialValues.size).toHaveProperty('radiusMax');
     expect(initialValues.size).toHaveProperty('sliderSingle');
+    expect(initialValues.size.slider.length).toEqual(2);
+    expect(initialValues.size).toHaveProperty('radiusValueMin');
+    expect(initialValues.size).toHaveProperty('radiusValueMax');
+    expect(initialValues.size).toHaveProperty('expression');
+    expect(initialValues.size).toHaveProperty('autoRadiusValueRange');
+    expect(initialValues.size).toHaveProperty('shape');
+    expect(initialValues.size).toHaveProperty('label');
+    expect(initialValues.size.formatting).toHaveProperty('qNumFormat');
   });
 });
