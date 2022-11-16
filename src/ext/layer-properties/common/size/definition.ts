@@ -1,5 +1,5 @@
 import LayerType from '../../../../utils/const/layer-type';
-import numberFormatProperties from '../../../utils/numberFormatProperties';
+import numberFormatProperties from '../../../utils/number-format-properties';
 import ExpressionFields from '../../../utils/expression-fields';
 import { setAttributeExpression } from '../../../utils/attribute-expression-utils';
 import { getValue } from 'qlik-chart-modules';
@@ -59,8 +59,8 @@ const getSizeLayout = (translator: TranslatorType) => ({
       defaultValue: '',
       show: function (prop: LayerProperties) {
         return !(
-          prop.size.expression?.key === undefined ||
-          prop.size.expression?.key === '' ||
+          prop.size.expression.key === undefined ||
+          prop.size.expression.key === '' ||
           prop.size.expression.type === 'libraryItem'
         );
       },
@@ -95,7 +95,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
         props.size.radiusMax = getSizeFromSliderValue(props.size.slider[1]);
       },
       show: function (props: PointLayerProperties) {
-        return props.size.expression?.key?.length > 0;
+        return props.size.expression.key?.length > 0;
       },
     };
   },
@@ -133,7 +133,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
         props.size.radiusMax = val + d;
       },
       show: function (props: PointLayerProperties) {
-        return !(props.size.expression?.key?.length > 0);
+        return !(props.size.expression.key?.length > 0);
       },
     };
   },
@@ -149,7 +149,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
         { value: false, translation: 'Common.Custom' },
       ],
       show: function (props: PointLayerProperties) {
-        return props.size.expression?.key?.length > 0;
+        return props.size.expression.key?.length > 0;
       },
     };
   },
@@ -167,7 +167,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression?.key?.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression.key?.length > 0;
       },
     };
   },
@@ -185,7 +185,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression?.key?.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression.key?.length > 0;
       },
     };
   },
