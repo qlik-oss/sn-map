@@ -1,7 +1,7 @@
 import getDefinition from '../definition';
 import env from '../../../../../mocks/environment';
-import * as attributeExpressions from '../../../../utils/attribute-expressions';
-import propertiesMock from '../../../../../mocks/properties';
+import * as attributeExpressions from '../../../../utils/attribute-expression-utils';
+import mockProperties from '../../../../../mocks/properties';
 
 describe('size definition', () => {
   let props: any;
@@ -9,7 +9,7 @@ describe('size definition', () => {
 
   beforeEach(() => {
     setAttributeExpressionSpy = jest.spyOn(attributeExpressions, 'setAttributeExpression');
-    props = propertiesMock.layer.point;
+    props = JSON.parse(JSON.stringify(mockProperties.layer.point));
   });
 
   afterEach(() => {

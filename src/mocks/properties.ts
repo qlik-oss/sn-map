@@ -12,6 +12,7 @@ const qDimension = {
 
 const qHyperCubeDef = {
   qDimensions: [qDimension],
+  qMeasures: [],
 };
 
 const locationProperties = {

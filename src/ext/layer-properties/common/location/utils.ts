@@ -1,6 +1,6 @@
 import { getValue } from 'qlik-chart-modules';
 import ExpressionFields from '../../../utils/expression-fields';
-import { setAttributeExpression } from '../../../utils/attribute-expressions';
+import { setAttributeExpression } from '../../../utils/attribute-expression-utils';
 
 module LocationUtils {
   export function updateLocationAttributeExpressions(props: LayerProperties) {

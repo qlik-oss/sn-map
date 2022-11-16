@@ -1,7 +1,7 @@
 import LayerType from '../../../../utils/const/layer-type';
 import numberFormatProperties from '../../../utils/numberFormatProperties';
 import ExpressionFields from '../../../utils/expression-fields';
-import { setAttributeExpression } from '../../../utils/attribute-expressions';
+import { setAttributeExpression } from '../../../utils/attribute-expression-utils';
 import { getValue } from 'qlik-chart-modules';
 
 // Should only be used for max/min width/radius of bubble layer and line layer.
