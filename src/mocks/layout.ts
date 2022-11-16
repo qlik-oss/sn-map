@@ -162,4 +162,28 @@ const layout = {
   },
 };
 
+export function createDumpAttrExpr(id: string, label: string = '', qFallbackTitle: string = ''): NxAttrExprInfo {
+  return {
+    id,
+    qMin: 0,
+    qMax: 1,
+    qContinuousAxes: false,
+    qIsCyclic: false,
+    qIsAutoFormat: false,
+    label,
+    qFallbackTitle,
+  };
+}
+
+export function createDumpAttrDim(id: string, qFallbackTitle: string = ''): NxAttrDimInfo {
+  return {
+    id,
+    qCardinal: 0,
+    qSize: undefined,
+    qFallbackTitle,
+    qLocked: false,
+    qError: null,
+  };
+}
+
 export default layout;
