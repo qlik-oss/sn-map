@@ -153,7 +153,6 @@ describe('MathUtils evaluate()', () => {
     const expectError = (exp: string, msg?: string | VarObj, v?: VarObj) => {
       if (typeof msg !== 'string') {
         v = msg;
-        msg = '';
       }
       expect(() => MathUtils.evaluate(exp, v)).toThrow(exp);
     };
@@ -163,13 +162,13 @@ describe('MathUtils evaluate()', () => {
 
     expectError('[+!+[]]+[+[]]', 'Should not allow obfuscated JS');
 
-    expectError("Math.constructor.constructor('console.log(1)')()");
+    expectError('Math.constructor.constructor("console.log(1)")()');
     expectError('Function("console.log(1)")()');
     expectError('setTimeout("console.log(1)")');
     expectError('setinterval("console.log(1)")');
 
     expectError('\u1234', 'Should not allow escaped unicode');
-    expectError("'", 'Should not allow single quotation marks');
+    expectError('"', 'Should not allow single quotation marks');
     expectError('"', 'Should not allow quotation marks');
     expectError('\\');
     expectError('%22');

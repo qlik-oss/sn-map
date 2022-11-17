@@ -26,7 +26,7 @@ describe('Number formatting', () => {
     });
 
     describe('when type is I', () => {
-      it("should return '#-##0' when thousand separator is '-'", () => {
+      it('should return "#-##0" when thousand separator is "-"', () => {
         expect(NumberFormatting._getPattern('I', 0, 0, '-', localeInfo)).toEqual('#-##0');
       });
     });
@@ -68,7 +68,7 @@ describe('Number formatting', () => {
       it('should return pattern specified in locale.qMoneyFmt', () => {
         expect(NumberFormatting._getPattern('M', 0, ',', ' ', { qMoneyFmt: '$# ##0.00' })).toEqual('$# ##0.00');
       });
-      it("should replace decimal separator in pattern with '-'", () => {
+      it('should replace decimal separator in pattern with "-"', () => {
         expect(
           NumberFormatting._getPattern('M', 0, '-', ',', {
             qMoneyFmt: '$# ##0.00',
@@ -76,7 +76,7 @@ describe('Number formatting', () => {
           })
         ).toEqual('$# ##0-00');
       });
-      it("should replace thousand separator in pattern with '~'", () => {
+      it('should replace thousand separator in pattern with "~"', () => {
         expect(
           NumberFormatting._getPattern('M', 0, ',', '~', {
             qMoneyFmt: '$# ##0.00',
@@ -85,7 +85,7 @@ describe('Number formatting', () => {
         ).toEqual('$#~##0.00');
       });
 
-      it("should replace decimal sep with 'x' and thousand sep with 'y'", () => {
+      it('should replace decimal sep with "x" and thousand sep with "y"', () => {
         expect(
           NumberFormatting._getPattern('M', 0, 'x', 'y', {
             qMoneyFmt: '$# ##0.00',
@@ -99,11 +99,11 @@ describe('Number formatting', () => {
 
   describe('#getNDecPattern', () => {
     describe('when type is F', () => {
-      it("should return '#,##0' when nDec = 0", () => {
+      it('should return "#,##0" when nDec = 0', () => {
         expect(NumberFormatting.getNDecPattern('F', 0, '.', ',')).toEqual('#,##0');
       });
 
-      it("should return '#,##0.' plus '0' nDec times", () => {
+      it('should return "#,##0." plus "0" nDec times', () => {
         expect(NumberFormatting.getNDecPattern('F', 1, '.', ',')).toEqual('#,##0.0');
         expect(NumberFormatting.getNDecPattern('F', 4, '.', ',')).toEqual('#,##0.0000');
         expect(NumberFormatting.getNDecPattern('F', 7, '.', ',')).toEqual('#,##0.0000000');
@@ -118,19 +118,19 @@ describe('Number formatting', () => {
       it('should return empty string when nDec = 0', () => {
         expect(NumberFormatting.getNDecPattern('whatever', 0, '.', ',')).toEqual('');
       });
-      it("should return '#' nDec times when nDec <= 3", () => {
+      it('should return "#" nDec times when nDec <= 3', () => {
         expect(NumberFormatting.getNDecPattern('x', 1, '.', ',')).toEqual('#');
         expect(NumberFormatting.getNDecPattern('x', 2, '.', ',')).toEqual('##');
         expect(NumberFormatting.getNDecPattern('x', 3, '.', ',')).toEqual('###');
       });
 
-      it("should return '#' nDec-3 times followed by '###' when nDec > 3", () => {
+      it('should return "#" nDec-3 times followed by "###" when nDec > 3', () => {
         expect(NumberFormatting.getNDecPattern('x', 4, '.', ',')).toEqual('#,###');
         expect(NumberFormatting.getNDecPattern('x', 5, '.', ',')).toEqual('##,###');
         expect(NumberFormatting.getNDecPattern('x', 8, '.', ',')).toEqual('#####,###');
       });
 
-      it("should use thousand sep from locale when it's not specified as parameter", () => {
+      it('should use thousand sep from locale when it"s not specified as parameter', () => {
         expect(NumberFormatting.getNDecPattern('x', 4, '.', undefined, { qThousandSep: '-' })).toEqual('#-###');
       });
     });
@@ -155,7 +155,7 @@ describe('Number formatting', () => {
         ).toEqual({ decimal: ',', thousand: '' });
       });
 
-      it("decimal sep should default to '.' when not in locale", () => {
+      it('decimal sep should default to "." when not in locale', () => {
         expect(NumberFormatting._getSeparators('qType', false, 'x', 'y', {})).toEqual({
           decimal: '.',
           thousand: '',
@@ -176,7 +176,7 @@ describe('Number formatting', () => {
     });
 
     describe('when ref is qThou and thousand sep is undefined, thousand sep', () => {
-      it("should default to '' when not in locale", () => {
+      it('should default to "" when not in locale', () => {
         expect(NumberFormatting._getSeparators('qThou', false, 'x', undefined, {})).toEqual({
           decimal: 'x',
           thousand: '',
@@ -202,7 +202,7 @@ describe('Number formatting', () => {
     });
 
     describe('when ref is qDec and decimal sep is undefined or empty string, decimal sep', () => {
-      it("should default to '.' when not in locale", () => {
+      it('should default to "." when not in locale', () => {
         expect(NumberFormatting._getSeparators('qDec', false, undefined, 'y', {})).toEqual({
           decimal: '.',
           thousand: 'y',

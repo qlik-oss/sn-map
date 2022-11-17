@@ -40,18 +40,19 @@ function getnDecPattern(type: any, nDec: any, decimalSep?: any, thousandSep?: an
 
 export default {
   getNumFmtPattern(type: any, numFormat: any, localeInfo: any) {
+    let nDec;
+    if (type === 'qType') {
+      nDec = 2;
+    } else {
+      if (numFormat.qType === 'R') {
+        nDec = numFormat.qnDec || 10; // if changed something other than qType, make sure nDec > 0 for "Number"
+      } else {
+        nDec = typeof numFormat.qnDec === 'number' ? Math.max(0, numFormat.qnDec) : 2; // nDec >= 0 for "Fixed to"
+      }
+    }
     const attr = {
       type: numFormat.qType || 'U',
-      nDec:
-        type === 'qType' // reset to default
-          ? numFormat.qType === 'F'
-            ? 2
-            : 2 // 2 decimals for "Fixed to" format, 10 significant numbers for "Number" format
-          : numFormat.qType === 'R'
-          ? numFormat.qnDec || 10 // if changed something other than qType, make sure nDec > 0 for "Number"
-          : typeof numFormat.qnDec === 'number'
-          ? Math.max(0, numFormat.qnDec)
-          : 2, // nDec >= 0 for "Fixed to"
+      nDec,
       thousandSep: numFormat.qThou,
       decimalSep: numFormat.qDec,
     };
