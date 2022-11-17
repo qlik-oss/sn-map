@@ -1,5 +1,5 @@
 import dataUtils from '../../common/utils/data-utils';
-import MathUtils from '../../../../utils/MathUtils';
+import MathUtils from '../../../../utils/math-utils';
 
 interface Style {
   color: string | undefined;
@@ -30,29 +30,56 @@ export class SymbolModel {
     };
   }
 
+  // Should only be used for max/min width/radius of bubble layer and line layer.
+  private getSizeFromSliderValue = (value: number) => {
+    if (value < 20) {
+      return Math.ceil(value / 2);
+    } else if (value < 40) {
+      return 10 + (value - 20);
+    } else if (value < 60) {
+      return 30 + (value - 40) * 2;
+    } else {
+      return 70 + (value - 60) * 4;
+    }
+  };
+
+  private calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
+    if (sizeProps.expression.key?.length > 0) {
+      // handle slider with two values
+      return {
+        radiusMin: this.getSizeFromSliderValue(sizeProps.slider[0]),
+        radiusMax: this.getSizeFromSliderValue(sizeProps.slider[1]),
+      };
+    } else {
+      // handle single slider
+      const val = this.getSizeFromSliderValue(sizeProps.sliderSingle);
+      const d = Math.ceil(val / 2);
+      return { radiusMin: val - d, radiusMax: val + d };
+    }
+  };
+
   private getSize(pointData: PointData, layoutService: LayoutService) {
-    const radiusMin = layoutService.getLayoutValue('size.radiusMin') as number;
-    const radiusMax = layoutService.getLayoutValue('size.radiusMax') as number;
+    const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
     const radiusValueMin = layoutService.getLayoutValue('size.radiusValueMin');
     const radiusValueMax = layoutService.getLayoutValue('size.radiusValueMax');
     const qHyperCube = layoutService.getLayoutValue('qHyperCube');
     const dimensionExpressionInfo = dataUtils.getDimensionExpressionInfo('size', qHyperCube);
-
     const attrExprMinMax = dataUtils.getMinMax(qHyperCube, dimensionExpressionInfo); // null if not attribute dependent size
-    const sizeMinMax =
+
+    const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
       autoRadiusValueRange === false
         ? { min: radiusValueMin, max: radiusValueMax }
         : attrExprMinMax || { min: 0, max: 0 };
-    const singleSize = Math.round((radiusMin + radiusMax) / 2);
 
+    const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);
     let sizeFromExpression;
     if (dimensionExpressionInfo?.dimensionIndex === 0) {
       sizeFromExpression = pointData.qAttrExps?.qValues[dimensionExpressionInfo.index]?.qNum;
     }
-    const size = (sizeFromExpression ?? singleSize) as number;
-    const result = this.calculateSymbolSize(size, sizeMinMax.min, sizeMinMax.max, radiusMin, radiusMax).size;
-    return result;
+    const size = (sizeFromExpression ?? sizeFromSingleSlider) as number;
+    const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
+    return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size; // calculate symbol size
   }
 
   private getColor(layoutService: LayoutService) {
@@ -72,11 +99,6 @@ export class SymbolModel {
       color: style.color,
       outline: 'black',
     });
-  }
-
-  private calculateSymbolSize(sizeValue: number, min: number, max: number, minSymbol: number, maxSymbol: number) {
-    const quantifyTo = Math.max(1, Math.min(max - min, 50)); // not necessary to do more than one symbol per pixel
-    return MathUtils.calculateSize(sizeValue, [minSymbol, maxSymbol], [min, max], quantifyTo);
   }
 
   getStyles() {

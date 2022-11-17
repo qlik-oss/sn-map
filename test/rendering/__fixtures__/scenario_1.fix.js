@@ -320,8 +320,6 @@ export default () => ({
               qColumnOrder: [],
             },
             size: {
-              radiusMin: 4,
-              radiusMax: 12,
               radiusValueMin: 0,
               radiusValueMax: 1,
               autoRadiusValueRange: true,

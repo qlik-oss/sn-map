@@ -1,5 +1,5 @@
 import { getValue, setValue } from 'qlik-chart-modules';
-import numberFormatting from '../../utils/NumberFormatting';
+import numberFormatting from '../../utils/number-formatting';
 import util from '../../utils/util';
 
 const getNumberFormattingProperties = (ref: string = '', show: boolean | ((data: LayerProperties) => boolean)) => {

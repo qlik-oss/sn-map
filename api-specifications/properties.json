@@ -459,12 +459,28 @@
       "description": "Set to define the size of the shapes.",
       "kind": "object",
       "entries": {
-        "radiusMin": {
-          "description": "Sets the minimum radius of symbol in pixels.",
+        "slider": {
+          "description": "An array consisting of two numbers that sets the minimun and maximun radius of symbol when size expression is set.",
+          "type": "array"
+        },
+        "sliderSingle": {
+          "description": "An array consisting of two numbers that sets the minimun and maximun radius of symbol when size expression is not set.",
+          "type": "array"
+        },
+        "expression": {
+          "description": "An expression that describes a measure used to calculate the size of the symbol.",
+          "type": "object"
+        },
+        "autoRadiusValueRange": {
+          "description": "A boolean that reveals two input fields (radiusValueMin and radiusValueMax) that are used to definine the min and max values of the symbol.",
+          "type": "boolean"
+        },
+        "radiusValueMin": {
+          "description": "A number that sets the min value of the symbol.",
           "type": "number"
         },
-        "radiusMax": {
-          "description": "Sets the maximum radius of symbol in pixels.",
+        "radiusValueMax": {
+          "description": "A number that sets the max value of the symbol.",
           "type": "number"
         }
       }

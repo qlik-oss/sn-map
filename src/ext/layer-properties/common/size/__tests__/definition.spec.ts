@@ -32,38 +32,6 @@ describe('size definition', () => {
     expect(env.translator.get).toHaveBeenCalledTimes(3);
   });
 
-  it('should change the radiusMin and radiusMax properly when sliderSingle is <20', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.sliderSingle = 19;
-    definition.items.sizeSingleSlider.change(props);
-    expect(props.size.radiusMin).toEqual(5);
-    expect(props.size.radiusMax).toEqual(15);
-  });
-
-  it('should change the radiusMin and radiusMax properly when sliderSingle is <40', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.sliderSingle = 21;
-    definition.items.sizeSingleSlider.change(props);
-    expect(props.size.radiusMin).toEqual(5);
-    expect(props.size.radiusMax).toEqual(17);
-  });
-
-  it('should change the radiusMin and radiusMax properly when sliderSingle is <60', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.sliderSingle = 41;
-    definition.items.sizeSingleSlider.change(props);
-    expect(props.size.radiusMin).toEqual(16);
-    expect(props.size.radiusMax).toEqual(48);
-  });
-
-  it('should change the radiusMin and radiusMax properly when sliderSingle is >=60', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.sliderSingle = 61;
-    definition.items.sizeSingleSlider.change(props);
-    expect(props.size.radiusMin).toEqual(37);
-    expect(props.size.radiusMax).toEqual(111);
-  });
-
   it('should set the Attribute Expression when changing the value of the size field', () => {
     const definition = getDefinition('PointLayer', env);
     props.size.expression = { key: 'sizeExpressionKey', type: 'expression' };

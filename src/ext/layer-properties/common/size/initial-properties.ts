@@ -11,8 +11,6 @@ export default function getSizeProperties(type: LayerTypeName) {
     default:
       initialValues = {
         size: {
-          radiusMin: 4,
-          radiusMax: 12,
           slider: [8, 24],
           sliderSingle: 16,
           radiusValueMin: 0,

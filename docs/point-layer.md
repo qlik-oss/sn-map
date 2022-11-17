@@ -55,8 +55,8 @@ nuked.render({
           ],
         },
         size: {
-          radiusMin: 4,
-          radiusMax: 12,
+          slider: [8, 22],
+          expression: { key: 'measureKey' }
         },
         color: {
           mode: 'primary',
