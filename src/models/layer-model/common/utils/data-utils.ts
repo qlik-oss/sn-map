@@ -49,7 +49,7 @@ module DataUtils {
     if (!attrInfo || isNaN(attrInfo.qMin) || isNaN(attrInfo.qMax)) {
       return;
     }
-    return [attrInfo.qMin, attrInfo.qMax];
+    return { min: attrInfo.qMin, max: attrInfo.qMax };
   }
 }
 

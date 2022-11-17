@@ -166,7 +166,7 @@ export function createDumpAttrExpr(id: string, label: string = '', qFallbackTitl
   return {
     id,
     qMin: 0,
-    qMax: 1,
+    qMax: 10,
     qContinuousAxes: false,
     qIsCyclic: false,
     qIsAutoFormat: false,
