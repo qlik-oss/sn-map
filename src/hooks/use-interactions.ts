@@ -1,9 +1,11 @@
 import { useSelections, useEffect, useState, useConstraints } from '@nebula.js/stardust';
 import { SelectionModel } from '../models/selection-model';
+import useSelectionToolbar from './use-selection-toolbar';
 
 const useInteractions = (mapModel: MapModelInterFace) => {
   const selections = useSelections();
   const constraints = useConstraints();
+  const selectionToolbar = useSelectionToolbar();
   const [selectedPath, setSelectedPath] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectionModel, setSelectionModel] = useState();
@@ -16,10 +18,15 @@ const useInteractions = (mapModel: MapModelInterFace) => {
   }, [mapModel]);
 
   useEffect(() => {
+    if (selectionModel) {
+      selectionModel.setSelectionToolbar(selectionToolbar);
+    }
+  }, [selectionModel, selectionToolbar]);
+
+  useEffect(() => {
     if (!constraints || !selectionModel) {
       return;
     }
-
     selectionModel.setAllowSelections(!constraints.select && !constraints.active);
   }, [constraints, selectionModel]);
 
@@ -29,7 +36,7 @@ const useInteractions = (mapModel: MapModelInterFace) => {
     }
 
     const onClick = (e: any) => {
-      if (e.target && selectionModel.allowSelections) {
+      if (selectionModel.allowSelections) {
         const clickSelection = selectionModel.handleClick(e.target);
         setSelectedPath(clickSelection.path);
         setSelectedValues(clickSelection.values);

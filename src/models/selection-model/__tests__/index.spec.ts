@@ -20,6 +20,7 @@ describe('SelectionModel', () => {
     selections = {
       begin: jest.fn(),
       isActive: jest.fn(),
+      cancel: jest.fn(),
     };
     mapModelMock.map = new webmapMock.idevio.map.WebMap();
     selectionsModel = new SelectionModel(mapModelMock, selections);
