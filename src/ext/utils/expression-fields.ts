@@ -97,19 +97,17 @@ module ExpressionFields {
   export function setLibraryMeasureWorkaround(props: LayerProperties, expr: ExpressionProp) {
     const idx = expr.activeMeasureIndex;
     if (idx !== undefined && props.qHyperCubeDef.qMeasures.length > idx) {
-      try {
-        const measure = props.qHyperCubeDef.qMeasures[idx];
-        if (measure.qLibraryId) {
-          expr.type = 'libraryItem';
-          expr.label = measure.qLibraryId;
-          expr.key = measure.qLibraryId;
-        } else {
-          const qDef = measure.qDef || ({} as any);
-          expr.type = 'expression';
-          expr.key = qDef.qDef;
-          expr.label = qDef.qLabel || qDef.qDef || '';
-        }
-      } catch {}
+      const measure = getValue(props, 'qHyperCubeDef.qMeasures.${idx}', {});
+      if (measure.qLibraryId) {
+        expr.type = 'libraryItem';
+        expr.label = measure.qLibraryId;
+        expr.key = measure.qLibraryId;
+      } else {
+        const qDef = measure.qDef || {};
+        expr.type = 'expression';
+        expr.key = qDef.qDef;
+        expr.label = qDef.qLabel || qDef.qDef || '';
+      }
     }
   }
 }
