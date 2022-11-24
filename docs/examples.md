@@ -40,11 +40,6 @@ nuked.render({
       },
       size: {
         sliderSingle: 10,
-        slider: [8, 22],
-        expression: { key: 'measureKey' },
-          autoRadiusValueRange: true,
-          radiusValueMin: 0,
-          radiusValueMax: 100
       },
       color: {
         mode: 'primary',

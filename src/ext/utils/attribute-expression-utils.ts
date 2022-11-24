@@ -11,10 +11,6 @@ export function setAttributeExpression(
   const attrExprId = id !== '' ? id : sourcePath;
   const value = getValue(props, sourcePath);
   const hqDef = props.qHyperCubeDef;
-  const libDef = getValue(hqDef, `qDimensions.${dimIndex}.qLibraryId`);
-  const fieldDef = getValue(hqDef, `qDimensions.${dimIndex}.qDef.qFieldDefs.0`);
-  ExpressionFields.removeExpression(attrExprId, hqDef);
-  if (value.key !== libDef && !ExpressionFields.expressionAndFieldEquals(value.key, fieldDef)) {
-    ExpressionFields.addExpression(attrExprId, value, hqDef, isMeasure);
-  }
+  ExpressionFields.removeExpression(attrExprId, hqDef, dimIndex);
+  ExpressionFields.addExpression(attrExprId, value, hqDef, isMeasure, dimIndex);
 }
