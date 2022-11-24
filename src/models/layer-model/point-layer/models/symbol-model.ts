@@ -30,7 +30,7 @@ export class SymbolModel {
     };
   }
 
-  // Should only be used for max/min width/radius of bubble layer and line layer.
+  // Should only be used for max/min width/radius of point layer and line layer.
   private getSizeFromSliderValue = (value: number) => {
     if (value < 20) {
       return Math.ceil(value / 2);
