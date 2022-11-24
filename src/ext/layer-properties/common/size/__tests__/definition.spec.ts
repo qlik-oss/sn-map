@@ -1,15 +1,15 @@
 import getDefinition from '../definition';
 import env from '../../../../../mocks/environment';
-import * as attributeExpressions from '../../../../utils/attribute-expression-utils';
 import mockProperties from '../../../../../mocks/properties';
+import ExpressionFields from '../../../../utils/expression-fields';
 
 describe('size definition', () => {
   let props: any;
-  let setAttributeExpressionSpy: any;
+  let addExpressionSpy: any;
   const definition = getDefinition('PointLayer', env);
 
   beforeEach(() => {
-    setAttributeExpressionSpy = jest.spyOn(attributeExpressions, 'setAttributeExpression');
+    addExpressionSpy = jest.spyOn(ExpressionFields, 'addExpression');
     props = JSON.parse(JSON.stringify(mockProperties.layer.point));
   });
 
@@ -63,7 +63,7 @@ describe('size definition', () => {
 
     it('should set the Attribute Expression when changing the value of the size field', () => {
       definition.items.sizeExpression.change(props);
-      expect(setAttributeExpressionSpy).toHaveBeenCalled();
+      expect(addExpressionSpy).toHaveBeenCalled();
     });
 
     it('should show sizeFormatting, sizeSliderRange and autoRadiusValueRange options', () => {

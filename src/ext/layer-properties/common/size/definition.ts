@@ -1,8 +1,15 @@
 import LayerType from '../../../../utils/const/layer-type';
 import numberFormatProperties from '../../../utils/number-format-properties';
 import ExpressionFields from '../../../utils/expression-fields';
-import { setAttributeExpression } from '../../../utils/attribute-expression-utils';
 import { getValue } from 'qlik-chart-modules';
+
+export const updateSizeExpression = (props: LayerProperties) => {
+  const qHyperCubeDef = getValue(props, 'qHyperCubeDef');
+  const expr = getValue(props, 'size.expression');
+  ExpressionFields.setLibraryMeasureWorkaround(props, expr);
+  ExpressionFields.removeExpression('size', qHyperCubeDef);
+  ExpressionFields.addExpression('size', expr, qHyperCubeDef, true);
+};
 
 const getSizeLayout = (translator: TranslatorType) => ({
   sizeExpression: function (type: string) {
@@ -22,10 +29,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       defaultValue: {},
       libraryItemType: 'measure',
       change: function (props: PointLayerProperties) {
-        // Do not remove, component throws if not available
-        const expr = getValue(props, 'size.expression');
-        ExpressionFields.setLibraryMeasureWorkaround(props, expr);
-        setAttributeExpression(props, 'size.expression', 'size', true, 0);
+        updateSizeExpression(props);
       },
     };
   },
