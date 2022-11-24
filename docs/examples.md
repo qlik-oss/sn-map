@@ -39,7 +39,7 @@ nuked.render({
         ],
       },
       size: {
-        sliderSingle: 10,
+        sliderSingleValue: 10,
       },
       color: {
         mode: 'primary',

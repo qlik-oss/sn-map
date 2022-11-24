@@ -5,7 +5,7 @@ import { setAttributeExpression } from '../../../utils/attribute-expression-util
 import { getValue } from 'qlik-chart-modules';
 
 const getSizeLayout = (translator: TranslatorType) => ({
-  sizeField: function (type: string) {
+  sizeExpression: function (type: string) {
     let translation;
     switch (type) {
       default:
@@ -21,7 +21,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       schemaIgnore: true,
       defaultValue: {},
       libraryItemType: 'measure',
-      change: function (props: LayerProperties) {
+      change: function (props: PointLayerProperties) {
         // Do not remove, component throws if not available
         const expr = getValue(props, 'size.expression');
         ExpressionFields.setLibraryMeasureWorkaround(props, expr);
@@ -36,7 +36,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
       (data: LayerProperties) => data?.size?.expression?.type === 'libraryItem'
     );
   },
-  sizeFieldLabel: function () {
+  sizeExpressionLabel: function () {
     return {
       ref: 'size.label',
       translation: 'Common.Label',
@@ -44,18 +44,18 @@ const getSizeLayout = (translator: TranslatorType) => ({
       expression: 'optional',
       expressionType: 'StringExpression',
       defaultValue: '',
-      show: function (prop: LayerProperties) {
+      show: function (props: PointLayerProperties) {
         return !(
-          prop.size.expression.key === undefined ||
-          prop.size.expression.key === '' ||
-          prop.size.expression.type === 'libraryItem'
+          props.size.expression?.key === undefined ||
+          props.size.expression?.key === '' ||
+          props.size.expression?.type === 'libraryItem'
         );
       },
     };
   },
-  sizeSlider: function (type: string, min: number, max: number, defaultValue: number[]) {
+  sizeSliderRange: function (type: string, min: number, max: number, defaultValue: number[]) {
     return {
-      ref: 'size.slider',
+      ref: 'size.sliderRangeValues',
       label: function (props: LayerProperties) {
         let shape = '';
         let translation = '';
@@ -78,13 +78,13 @@ const getSizeLayout = (translator: TranslatorType) => ({
       step: 1,
       defaultValue: defaultValue,
       show: function (props: PointLayerProperties) {
-        return props.size.expression.key?.length > 0;
+        return props.size.expression && props.size.expression.key?.length > 0;
       },
     };
   },
-  sizeSingleSlider: function (type: LayerTypeName, min: number, max: number, defaultValue: number) {
+  sizeSliderSingle: function (type: LayerTypeName, min: number, max: number, defaultValue: number) {
     return {
-      ref: 'size.sliderSingle',
+      ref: 'size.sliderSingleValue',
       label: (props: LayerProperties) => {
         let shape = '';
         let translation = '';
@@ -108,11 +108,11 @@ const getSizeLayout = (translator: TranslatorType) => ({
       step: 1,
       defaultValue,
       show: function (props: PointLayerProperties) {
-        return !(props.size.expression.key?.length > 0);
+        return !(props.size.expression && props.size.expression?.key?.length > 0);
       },
     };
   },
-  sizeRange: function () {
+  autoRadiusValueRange: function () {
     return {
       ref: 'size.autoRadiusValueRange',
       translation: 'properties.axis.range',
@@ -124,11 +124,11 @@ const getSizeLayout = (translator: TranslatorType) => ({
         { value: false, translation: 'Common.Custom' },
       ],
       show: function (props: PointLayerProperties) {
-        return props.size.expression.key?.length > 0;
+        return props.size.expression && props.size.expression?.key?.length > 0;
       },
     };
   },
-  minSizeValue: function (type: string) {
+  customMinRangeValue: function (type: string) {
     let translation = '';
     switch (type) {
       default:
@@ -136,17 +136,17 @@ const getSizeLayout = (translator: TranslatorType) => ({
         break;
     }
     return {
-      ref: 'size.radiusValueMin',
+      ref: 'size.customMinRangeValue',
       translation: translation,
       expression: 'optional',
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression.key?.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression && props.size.expression?.key?.length > 0;
       },
     };
   },
-  maxSizeValue: function (type: string) {
+  customMaxRangeValue: function (type: string) {
     let translation = '';
     switch (type) {
       default:
@@ -154,13 +154,13 @@ const getSizeLayout = (translator: TranslatorType) => ({
         break;
     }
     return {
-      ref: 'size.radiusValueMax',
+      ref: 'size.customMaxRangeValue',
       translation: translation,
       expression: 'optional',
       type: 'number',
       defaultValue: 0,
       show: function (props: PointLayerProperties) {
-        return !props.size.autoRadiusValueRange && props.size.expression.key?.length > 0;
+        return !props.size.autoRadiusValueRange && props.size.expression && props.size.expression?.key?.length > 0;
       },
     };
   },
@@ -176,14 +176,14 @@ export default (type: LayerTypeName, { translator }: EnvironmentType) => {
     default:
       translation = 'geo.properties.sizeShape';
       items = {
-        sizeField: sizeLayout.sizeField(LayerType.POINT),
+        sizeExpression: sizeLayout.sizeExpression(LayerType.POINT),
         sizeFormatting: sizeLayout.sizeFormatting(),
-        sizeFieldLabel: sizeLayout.sizeFieldLabel(),
-        sizeSlider: sizeLayout.sizeSlider(LayerType.POINT, 1, 100, [4, 12]),
-        sizeSingleSlider: sizeLayout.sizeSingleSlider(LayerType.POINT, 1, 50, 8),
-        sizeRange: sizeLayout.sizeRange(),
-        minSizeValue: sizeLayout.minSizeValue(LayerType.POINT),
-        maxSizeValue: sizeLayout.maxSizeValue(LayerType.POINT),
+        sizeExpressionLabel: sizeLayout.sizeExpressionLabel(),
+        sizeSliderRange: sizeLayout.sizeSliderRange(LayerType.POINT, 1, 100, [4, 12]),
+        sizeSliderSingle: sizeLayout.sizeSliderSingle(LayerType.POINT, 1, 50, 8),
+        autoRadiusValueRange: sizeLayout.autoRadiusValueRange(),
+        customMinRangeValue: sizeLayout.customMinRangeValue(LayerType.POINT),
+        customMaxRangeValue: sizeLayout.customMaxRangeValue(LayerType.POINT),
       };
   }
   return {

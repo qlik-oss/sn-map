@@ -44,15 +44,15 @@ export class SymbolModel {
   };
 
   private calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
-    if (sizeProps.expression.key?.length > 0) {
+    if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
       // handle slider with two values
       return {
-        radiusMin: this.getSizeFromSliderValue(sizeProps.slider[0]),
-        radiusMax: this.getSizeFromSliderValue(sizeProps.slider[1]),
+        radiusMin: this.getSizeFromSliderValue(sizeProps.sliderRangeValues[0]),
+        radiusMax: this.getSizeFromSliderValue(sizeProps.sliderRangeValues[1]),
       };
     } else {
       // handle single slider
-      const val = this.getSizeFromSliderValue(sizeProps.sliderSingle);
+      const val = this.getSizeFromSliderValue(sizeProps.sliderSingleValue);
       const d = Math.ceil(val / 2);
       return { radiusMin: val - d, radiusMax: val + d };
     }
@@ -61,15 +61,15 @@ export class SymbolModel {
   private getSize(pointData: PointData, layoutService: LayoutService) {
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
-    const radiusValueMin = layoutService.getLayoutValue('size.radiusValueMin');
-    const radiusValueMax = layoutService.getLayoutValue('size.radiusValueMax');
+    const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
+    const customMaxRangeValue = layoutService.getLayoutValue('size.customMaxRangeValue');
     const qHyperCube = layoutService.getLayoutValue('qHyperCube');
     const dimensionExpressionInfo = dataUtils.getDimensionExpressionInfo('size', qHyperCube);
     const attrExprMinMax = dataUtils.getMinMax(qHyperCube, dimensionExpressionInfo); // null if not attribute dependent size
 
     const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
       autoRadiusValueRange === false
-        ? { min: radiusValueMin, max: radiusValueMax }
+        ? { min: customMinRangeValue, max: customMaxRangeValue }
         : attrExprMinMax || { min: 0, max: 0 };
 
     const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);

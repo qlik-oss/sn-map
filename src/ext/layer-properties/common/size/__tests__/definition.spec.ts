@@ -6,6 +6,7 @@ import mockProperties from '../../../../../mocks/properties';
 describe('size definition', () => {
   let props: any;
   let setAttributeExpressionSpy: any;
+  const definition = getDefinition('PointLayer', env);
 
   beforeEach(() => {
     setAttributeExpressionSpy = jest.spyOn(attributeExpressions, 'setAttributeExpression');
@@ -17,79 +18,93 @@ describe('size definition', () => {
   });
 
   it('should return valid size definition for PointLayer type', () => {
-    const definition = getDefinition('PointLayer', env);
-    expect(definition.items).toHaveProperty('sizeField');
+    expect(definition.items).toHaveProperty('sizeExpression');
     expect(definition.items).toHaveProperty('sizeFormatting');
-    expect(definition.items).toHaveProperty('sizeFieldLabel');
-    expect(definition.items).toHaveProperty('sizeSlider');
-    expect(definition.items).toHaveProperty('sizeSingleSlider');
-    expect(definition.items).toHaveProperty('sizeRange');
-    expect(definition.items).toHaveProperty('minSizeValue');
-    expect(definition.items).toHaveProperty('maxSizeValue');
-    expect(definition.items.sizeSingleSlider.component).toEqual('slider');
-    definition.items.sizeSingleSlider.label(props);
-    definition.items.sizeSlider.label(props);
+    expect(definition.items).toHaveProperty('sizeExpressionLabel');
+    expect(definition.items).toHaveProperty('sizeSliderRange');
+    expect(definition.items).toHaveProperty('sizeSliderSingle');
+    expect(definition.items).toHaveProperty('autoRadiusValueRange');
+    expect(definition.items).toHaveProperty('customMinRangeValue');
+    expect(definition.items).toHaveProperty('customMaxRangeValue');
+    expect(definition.items.sizeSliderSingle.component).toEqual('slider');
+    definition.items.sizeSliderSingle.label(props);
+    definition.items.sizeSliderRange.label(props);
     expect(env.translator.get).toHaveBeenCalledTimes(3);
   });
 
-  it('should set the Attribute Expression when changing the value of the size field', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = { key: 'sizeExpressionKey', type: 'expression' };
-    definition.items.sizeField.change(props);
-    expect(setAttributeExpressionSpy).toHaveBeenCalled();
+  describe('when size expression does not exist', () => {
+    it('should show sizeSliderSingle option', () => {
+      expect(definition.items.sizeSliderSingle.show(props)).toEqual(true);
+    });
+
+    it('should not show sizeFormatting, sizeExpressionLabel, sizeSliderRange, autoRadiusValueRange and customMinRangeValue options', () => {
+      props.size.expression = {};
+      if (typeof definition.items.sizeFormatting.show === 'function') {
+        expect(definition.items.sizeFormatting.show(props)).toEqual(false);
+      }
+      expect(definition.items.sizeExpressionLabel.show(props)).toEqual(false);
+      expect(definition.items.sizeSliderRange.show(props)).toEqual(false);
+      expect(definition.items.autoRadiusValueRange.show(props)).toEqual(false);
+      props.size.autoRadiusValueRange = true;
+      expect(definition.items.customMinRangeValue.show(props)).toEqual(false);
+      props.size.autoRadiusValueRange = false;
+      expect(definition.items.customMinRangeValue.show(props)).toEqual(false);
+    });
   });
 
-  it('should show or hide sizeFieldLabel option according to the properties', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = {};
-    expect(definition.items.sizeFieldLabel.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.sizeFieldLabel.show(props)).toEqual(true);
-    props.size.expression = { key: 'sizeExpressionKey', type: 'libraryItem' };
-    expect(definition.items.sizeFieldLabel.show(props)).toEqual(false);
-  });
+  describe('when size expression exists', () => {
+    beforeEach(() => {
+      props.size.expression = { key: 'sizeExpressionKey', type: '' };
+    });
 
-  it('should show or hide sizeSlider according to the properties', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = {};
-    expect(definition.items.sizeSlider.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.sizeSlider.show(props)).toEqual(true);
-  });
+    it('should not show sizeSliderSingle option', () => {
+      expect(definition.items.sizeSliderSingle.show(props)).toEqual(false);
+    });
 
-  it('should show or hide sizeRange according to the properties', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = {};
-    expect(definition.items.sizeRange.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.sizeRange.show(props)).toEqual(true);
-  });
+    it('should set the Attribute Expression when changing the value of the size field', () => {
+      definition.items.sizeExpression.change(props);
+      expect(setAttributeExpressionSpy).toHaveBeenCalled();
+    });
 
-  it('should show or hide minSizeValue according to the properties', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = {};
-    props.size.autoRadiusValueRange = true;
-    expect(definition.items.minSizeValue.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.minSizeValue.show(props)).toEqual(false);
-    props.size.expression = {};
-    props.size.autoRadiusValueRange = false;
-    expect(definition.items.minSizeValue.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.minSizeValue.show(props)).toEqual(true);
-  });
+    it('should show sizeFormatting, sizeSliderRange and autoRadiusValueRange options', () => {
+      if (typeof definition.items.sizeFormatting.show === 'function') {
+        expect(definition.items.sizeFormatting.show(props)).toEqual(true);
+      }
+      expect(definition.items.sizeSliderRange.show(props)).toEqual(true);
+      expect(definition.items.autoRadiusValueRange.show(props)).toEqual(true);
+      props.size.expression = { key: 'sizeExpressionKey', type: 'libraryItem' };
+      expect(definition.items.sizeSliderRange.show(props)).toEqual(true);
+      expect(definition.items.autoRadiusValueRange.show(props)).toEqual(true);
+    });
 
-  it('should show or hide maxSizeValue according to the properties', () => {
-    const definition = getDefinition('PointLayer', env);
-    props.size.expression = {};
-    props.size.autoRadiusValueRange = true;
-    expect(definition.items.maxSizeValue.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.maxSizeValue.show(props)).toEqual(false);
-    props.size.expression = {};
-    props.size.autoRadiusValueRange = false;
-    expect(definition.items.maxSizeValue.show(props)).toEqual(false);
-    props.size.expression = { key: 'sizeExpressionKey', type: '' };
-    expect(definition.items.maxSizeValue.show(props)).toEqual(true);
+    it('should show sizeExpressionLabel option when size is not a libraryItem', () => {
+      expect(definition.items.sizeExpressionLabel.show(props)).toEqual(true);
+    });
+
+    it('should not show sizeExpressionLabel option when size is a libraryItem', () => {
+      props.size.expression = { key: 'sizeExpressionKey', type: 'libraryItem' };
+      expect(definition.items.sizeExpressionLabel.show(props)).toEqual(false);
+    });
+
+    it('should not show useMasterFormat option when size is not a libraryItem', () => {
+      expect(definition.items.sizeFormatting.items.useMasterFormat.show(props)).toEqual(false);
+    });
+
+    it('should show useMasterFormat option when size is a libraryItem', () => {
+      props.size.expression = { key: 'sizeExpressionKey', type: 'libraryItem' };
+      expect(definition.items.sizeFormatting.items.useMasterFormat.show(props)).toEqual(true);
+    });
+
+    it('should show customMinRangeValue and customMaxRangeValue when autoRadiusValueRange is true', () => {
+      props.size.autoRadiusValueRange = true;
+      expect(definition.items.customMinRangeValue.show(props)).toEqual(false);
+      expect(definition.items.customMaxRangeValue.show(props)).toEqual(false);
+    });
+
+    it('should not show customMinRangeValue and customMaxRangeValue when autoRadiusValueRange is false', () => {
+      props.size.autoRadiusValueRange = false;
+      expect(definition.items.customMinRangeValue.show(props)).toEqual(true);
+      expect(definition.items.customMaxRangeValue.show(props)).toEqual(true);
+    });
   });
 });

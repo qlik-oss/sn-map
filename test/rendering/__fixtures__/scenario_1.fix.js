@@ -320,8 +320,8 @@ export default () => ({
               qColumnOrder: [],
             },
             size: {
-              radiusValueMin: 0,
-              radiusValueMax: 1,
+              customMinRangeValue: 0,
+              customMaxRangeValue: 1,
               autoRadiusValueRange: true,
               expression: {
                 key: '',
@@ -329,8 +329,8 @@ export default () => ({
                 type: '',
               },
               label: '',
-              slider: [8, 24],
-              sliderSingle: 16,
+              sliderRangeValues: [8, 24],
+              sliderSingleValue: 16,
               shape: 'points',
               formatting: {
                 qNumFormat: {

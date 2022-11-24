@@ -169,12 +169,12 @@ export default objectDefinition;
 /**
  * Set to define the size of the shapes.
  * @typedef {object} size
- * @property {array} slider Sets the minimum and maximun radius of symbol when size expression is set.
- * @property {number} sliderSingle Sets the minimun and maximun radius of symbol when size expression is not set.
+ * @property {array} sliderRangeValues Sets the minimum and maximun radius of symbol when size expression is set.
+ * @property {number} sliderSingleValue Sets the minimun and maximun radius of symbol when size expression is not set.
  * @property {object} expression Sets the measure used to calculate the size of symbol.
- * @property {boolean} autoRadiusValueRange Reveals radiusValueMin and radiusValueMax that are used to define the min and max values of the symbol.
- * @property {number} radiusValueMin Defines the min value of the symbol.
- * @property {number} radiusValueMax Defines the max value of the symbol.
+ * @property {boolean} autoRadiusValueRange Reveals customMinRangeValue and customMaxRangeValue that are used to define the min and max values of the symbol.
+ * @property {number} customMinRangeValue Defines the min value of the symbol.
+ * @property {number} customMaxRangeValue Defines the max value of the symbol.
  */
 
 /**

@@ -11,10 +11,10 @@ export default function getSizeProperties(type: LayerTypeName) {
     default:
       initialValues = {
         size: {
-          slider: [8, 24],
-          sliderSingle: 16,
-          radiusValueMin: 0,
-          radiusValueMax: 1,
+          sliderRangeValues: [8, 24],
+          sliderSingleValue: 16,
+          customMinRangeValue: 0,
+          customMaxRangeValue: 1,
           expression: exprProp(),
           autoRadiusValueRange: true,
           shape: 'points',
