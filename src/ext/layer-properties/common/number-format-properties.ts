@@ -1,6 +1,6 @@
 import { getValue, setValue } from 'qlik-chart-modules';
-import numberFormatting from '../../utils/number-formatting';
-import util from '../../utils/util';
+import numberFormatting from '../../../utils/number-formatting';
+import util from '../../../utils/util';
 
 const getNumberFormattingProperties = (ref: string = '', show: boolean | ((data: LayerProperties) => boolean)) => {
   const baseRef = ref.length > 0 ? `${ref}.` : ''; // append "." to ref if set.

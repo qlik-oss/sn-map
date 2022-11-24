@@ -1,5 +1,5 @@
-import dataUtils from '../../common/utils/data-utils';
 import MathUtils from '../../../../utils/math-utils';
+import Meta from '../../common/services/layout-service/meta';
 
 interface Style {
   color: string | undefined;
@@ -63,9 +63,9 @@ export class SymbolModel {
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
     const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
     const customMaxRangeValue = layoutService.getLayoutValue('size.customMaxRangeValue');
-    const qHyperCube = layoutService.getLayoutValue('qHyperCube');
-    const dimensionExpressionInfo = dataUtils.getDimensionExpressionInfo('size', qHyperCube);
-    const attrExprMinMax = dataUtils.getMinMax(qHyperCube, dimensionExpressionInfo); // null if not attribute dependent size
+    const layout = layoutService.getLayout();
+    const [dimensionExpressionInfo] = Meta.getExpressionMeta('size', layout);
+    const attrExprMinMax = Meta.getMinMax(layout, dimensionExpressionInfo); // null if not attribute dependent size
 
     const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
       autoRadiusValueRange === false
@@ -74,7 +74,7 @@ export class SymbolModel {
 
     const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);
     let sizeFromExpression;
-    if (dimensionExpressionInfo?.dimensionIndex === 0) {
+    if (dimensionExpressionInfo?.dimIndex === 0) {
       sizeFromExpression = pointData.qAttrExps?.qValues[dimensionExpressionInfo.index]?.qNum;
     }
     const size = (sizeFromExpression ?? sizeFromSingleSlider) as number;

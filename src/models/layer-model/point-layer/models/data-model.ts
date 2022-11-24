@@ -1,5 +1,5 @@
 import { DataModel } from '../../common/data-model';
-import DataUtils from '../../common/utils/data-utils';
+import DataUtils from '../../common/data-model/utils/data-utils';
 
 export class PointLayerDataModel extends DataModel {
   data: PointData[];

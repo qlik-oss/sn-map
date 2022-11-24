@@ -69,6 +69,22 @@ module Meta {
 
     return expressionMeta;
   }
+
+  /**
+   * Range of values for specified dimension expression id. Returns null if not defined or values are  not numeric.
+   */
+  export function getMinMax(layout: LayerLayout, dimensionExpressionInfo?: ExpressionMeta) {
+    if (!dimensionExpressionInfo) {
+      return;
+    }
+    const dimInfo = layout.qHyperCube.qDimensionInfo[dimensionExpressionInfo.dimIndex];
+    const index = dimensionExpressionInfo.index;
+    const attrInfo = dimInfo.qAttrExprInfo[index];
+    if (!attrInfo || isNaN(attrInfo.qMin) || isNaN(attrInfo.qMax)) {
+      return;
+    }
+    return { min: attrInfo.qMin, max: attrInfo.qMax };
+  }
 }
 
 export default Meta;

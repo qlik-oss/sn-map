@@ -1,5 +1,5 @@
 import LayerType from '../../../../utils/const/layer-type';
-import numberFormatProperties from '../../../utils/number-format-properties';
+import numberFormatProperties from '../number-format-properties';
 import ExpressionFields from '../../../utils/expression-fields';
 import { getValue } from 'qlik-chart-modules';
 

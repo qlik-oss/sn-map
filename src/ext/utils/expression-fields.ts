@@ -97,7 +97,7 @@ module ExpressionFields {
   export function setLibraryMeasureWorkaround(props: LayerProperties, expr: ExpressionProp) {
     const idx = expr.activeMeasureIndex;
     if (idx !== undefined && props.qHyperCubeDef.qMeasures.length > idx) {
-      const measure = getValue(props, 'qHyperCubeDef.qMeasures.${idx}', {});
+      const measure = getValue(props, `qHyperCubeDef.qMeasures.${idx}`, {});
       if (measure.qLibraryId) {
         expr.type = 'libraryItem';
         expr.label = measure.qLibraryId;

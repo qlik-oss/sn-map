@@ -1,5 +1,5 @@
 import { PointLayerDataModel } from '../data-model';
-import DataUtils from '../../../common/utils/data-utils';
+import DataUtils from '../../../common/data-model/utils/data-utils';
 import layoutMock from '../../../../../mocks/layout';
 import LayoutService from '../../services/layout-service';
 

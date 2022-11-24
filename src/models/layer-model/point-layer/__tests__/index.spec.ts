@@ -12,7 +12,7 @@ jest.mock('../models/data-model');
 jest.mock('../models/dataset-model');
 jest.mock('../models/symbol-model');
 jest.mock('../../common/layer-model');
-jest.mock('../../common/utils/data-utils');
+jest.mock('../../common/data-model/utils/data-utils');
 
 describe('Point model', () => {
   let pointLayerModel: PointLayerModel;

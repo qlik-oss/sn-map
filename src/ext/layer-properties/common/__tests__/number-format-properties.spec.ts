@@ -1,5 +1,5 @@
 import NumberFormatProperties from '../number-format-properties';
-import mockProperties from '../../../mocks/properties';
+import mockProperties from '../../../../mocks/properties';
 
 describe('number-format-properties utils', () => {
   let isLink: (arg: any) => boolean;
