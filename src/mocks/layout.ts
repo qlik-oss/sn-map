@@ -8,8 +8,8 @@ const color = {
 };
 
 const size: SizeProperties = {
-  sliderRangeValues: [8, 22],
-  sliderSingleValue: 16,
+  rangeValues: [8, 22],
+  value: 16,
   autoRadiusValueRange: true,
   expression: { key: 'expression-size', type: 'expression-type' },
 };

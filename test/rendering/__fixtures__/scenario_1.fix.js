@@ -329,8 +329,8 @@ export default () => ({
                 type: '',
               },
               label: '',
-              sliderRangeValues: [8, 24],
-              sliderSingleValue: 16,
+              rangeValues: [8, 24],
+              value: 16,
               shape: 'points',
               formatting: {
                 qNumFormat: {

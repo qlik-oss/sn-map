@@ -11,8 +11,8 @@ export default function getSizeProperties(type: LayerTypeName) {
     default:
       initialValues = {
         size: {
-          sliderRangeValues: [8, 24],
-          sliderSingleValue: 16,
+          rangeValues: [8, 24],
+          value: 16,
           customMinRangeValue: 0,
           customMaxRangeValue: 1,
           expression: exprProp(),

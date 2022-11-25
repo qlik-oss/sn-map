@@ -72,7 +72,7 @@ describe('Symbol model', () => {
 
   describe('calculateRadiusFromSliderProperties', () => {
     it('should return correct radius when size is an expression', () => {
-      layout.size.sliderRangeValues = [8, 22];
+      layout.size.rangeValues = [8, 22];
       layoutService = LayoutService.create(layout);
       const { radiusMin, radiusMax } = symbolModel.calculateRadiusFromSliderProperties(
         layoutService.getLayoutValue('size')
@@ -82,13 +82,13 @@ describe('Symbol model', () => {
     });
     it('should return correct radius when size is not an expression', () => {
       layout.size.expression = undefined;
-      layout.size.sliderSingleValue = 10;
+      layout.size.value = 10;
       layoutService = LayoutService.create(layout);
       let radius = symbolModel.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
       expect(radius.radiusMin).toEqual(2);
       expect(radius.radiusMax).toEqual(8);
 
-      layout.size.sliderSingleValue = 65;
+      layout.size.value = 65;
       layoutService = LayoutService.create(layout);
       radius = symbolModel.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
       expect(radius.radiusMin).toEqual(45);
@@ -98,7 +98,7 @@ describe('Symbol model', () => {
 
   describe('getSize', () => {
     it('should return correct symbol size when size is an expression', () => {
-      layout.size.sliderRangeValues = [8, 22];
+      layout.size.rangeValues = [8, 22];
       const attrExprInfo = {
         id: 'size',
         qMin: 0,
@@ -120,7 +120,7 @@ describe('Symbol model', () => {
 
     it('should return correct symbol size when size is not an expression', () => {
       layout.size.expression = undefined;
-      layout.size.sliderSingleValue = 10;
+      layout.size.value = 10;
       layoutService = LayoutService.create(layout);
       const symbolSize = symbolModel.getSize({ id: 0 }, layoutService);
       expect(symbolSize).toEqual(5);

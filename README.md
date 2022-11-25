@@ -104,7 +104,7 @@ nuked.render({
           ],
         },
         size: {
-          sliderSingleValue: 10,
+          value: 10,
         },
         color: {
           mode: 'primary',

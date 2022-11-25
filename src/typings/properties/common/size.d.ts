@@ -1,8 +1,8 @@
 declare interface SizeProperties {
   /** Value from slider. Used when no expression is set. */
-  sliderSingleValue: number;
+  value: number;
   /** Values from range slider. Used when expression is set. */
-  sliderRangeValues: number[];
+  rangeValues: number[];
   /** Expression to use for scaling symbols. */
   expression?: ExpressionProp;
   /** If false, it reveals the customMinRangeValue and customMaxRangeValue fields used to set limits to the size */

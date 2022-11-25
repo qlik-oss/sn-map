@@ -459,7 +459,7 @@
       "description": "Set to define the size of the shapes.",
       "kind": "object",
       "entries": {
-        "sliderRangeValues": {
+        "rangeValues": {
           "description": "Sets the minimum and maximun radius of the symbol when size expression is set.",
           "optional": true,
           "kind": "array",
@@ -467,8 +467,8 @@
             "type": "any"
           }
         },
-        "sliderSingleValue": {
-          "description": "Sets the radius of the symbol when size expression is not set. sliderSingleValue is not mandatory as the fields that described the size with an expression exists",
+        "value": {
+          "description": "Sets the radius of the symbol when size expression is not set. The value of the size is not mandatory as the fields that described the size with an expression exists",
           "optional": true,
           "type": "number"
         },

@@ -4,8 +4,8 @@ describe('size initial-properties', () => {
   it('should return valid size values for PointLayer type', () => {
     const initialValues = getSizeProperties('PointLayer');
     expect(initialValues).toHaveProperty('size');
-    expect(initialValues.size).toHaveProperty('sliderSingleValue');
-    expect(initialValues.size.sliderRangeValues.length).toEqual(2);
+    expect(initialValues.size).toHaveProperty('value');
+    expect(initialValues.size.rangeValues.length).toEqual(2);
     expect(initialValues.size).toHaveProperty('customMinRangeValue');
     expect(initialValues.size).toHaveProperty('customMaxRangeValue');
     expect(initialValues.size).toHaveProperty('expression');

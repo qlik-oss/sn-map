@@ -47,12 +47,12 @@ export class SymbolModel {
     if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
       // handle slider with two values
       return {
-        radiusMin: this.getSizeFromSliderValue(sizeProps.sliderRangeValues[0]),
-        radiusMax: this.getSizeFromSliderValue(sizeProps.sliderRangeValues[1]),
+        radiusMin: this.getSizeFromSliderValue(sizeProps.rangeValues[0]),
+        radiusMax: this.getSizeFromSliderValue(sizeProps.rangeValues[1]),
       };
     } else {
       // handle single slider
-      const val = this.getSizeFromSliderValue(sizeProps.sliderSingleValue);
+      const val = this.getSizeFromSliderValue(sizeProps.value);
       const d = Math.ceil(val / 2);
       return { radiusMin: val - d, radiusMax: val + d };
     }

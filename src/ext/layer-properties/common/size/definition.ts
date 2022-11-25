@@ -59,7 +59,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
   },
   sizeSliderRange: function (type: string, min: number, max: number, defaultValue: number[]) {
     return {
-      ref: 'size.sliderRangeValues',
+      ref: 'size.rangeValues',
       label: function (props: LayerProperties) {
         let shape = '';
         let translation = '';
@@ -88,7 +88,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
   },
   sizeSliderSingle: function (type: LayerTypeName, min: number, max: number, defaultValue: number) {
     return {
-      ref: 'size.sliderSingleValue',
+      ref: 'size.value',
       label: (props: LayerProperties) => {
         let shape = '';
         let translation = '';
