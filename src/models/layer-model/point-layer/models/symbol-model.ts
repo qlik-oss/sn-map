@@ -21,7 +21,7 @@ export class SymbolModel {
     });
   }
 
-  private collectStyle(pointData: PointData, layoutService: LayoutService) {
+  collectStyle(pointData: PointData, layoutService: LayoutService) {
     const size = this.getSize(pointData, layoutService) as number;
     const color = this.getColor(layoutService) as string;
     return {
@@ -31,7 +31,7 @@ export class SymbolModel {
   }
 
   // Should only be used for max/min width/radius of point layer and line layer.
-  private getSizeFromSliderValue = (value: number) => {
+  getSizeFromSliderValue = (value: number) => {
     if (value < 20) {
       return Math.ceil(value / 2);
     } else if (value < 40) {
@@ -43,7 +43,7 @@ export class SymbolModel {
     }
   };
 
-  private calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
+  calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
     if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
       // handle slider with two values
       return {
@@ -58,7 +58,7 @@ export class SymbolModel {
     }
   };
 
-  private getSize(pointData: PointData, layoutService: LayoutService) {
+  getSize(pointData: PointData, layoutService: LayoutService) {
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
     const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
