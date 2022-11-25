@@ -64,8 +64,8 @@ export class SymbolModel {
     const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
     const customMaxRangeValue = layoutService.getLayoutValue('size.customMaxRangeValue');
     const layout = layoutService.getLayout();
-    const [dimensionExpressionInfo] = Meta.getExpressionMeta('size', layout);
-    const attrExprMinMax = Meta.getMinMax(layout, dimensionExpressionInfo); // null if not attribute dependent size
+    const { expressionMeta, value } = pointData.size ?? {};
+    const attrExprMinMax = Meta.getMinMax(layout, expressionMeta); // null if not attribute dependent size
 
     const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
       autoRadiusValueRange === false
@@ -74,8 +74,8 @@ export class SymbolModel {
 
     const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);
     let sizeFromExpression;
-    if (dimensionExpressionInfo?.dimIndex === 0) {
-      sizeFromExpression = pointData.qAttrExps?.qValues[dimensionExpressionInfo.index]?.qNum;
+    if (expressionMeta?.dimIndex === 0) {
+      sizeFromExpression = value;
     }
     const size = (sizeFromExpression ?? sizeFromSingleSlider) as number;
     const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel

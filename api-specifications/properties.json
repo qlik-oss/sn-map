@@ -460,27 +460,36 @@
       "kind": "object",
       "entries": {
         "sliderRangeValues": {
-          "description": "An array consisting of two numbers that sets the minimun and maximun radius of symbol when size expression is set.",
-          "type": "array"
+          "description": "Sets the minimum and maximun radius of the symbol when size expression is set.",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
         },
         "sliderSingleValue": {
-          "description": "An array consisting of two numbers that sets the minimun and maximun radius of symbol when size expression is not set.",
-          "type": "array"
+          "description": "Sets the radius of the symbol when size expression is not set. sliderSingleValue is not mandatory as the fields that described the size with an expression exists",
+          "optional": true,
+          "type": "number"
         },
         "expression": {
-          "description": "An expression that describes a measure used to calculate the size of the symbol.",
-          "type": "object"
+          "description": "Sets the measure used to calculate the size of the symbol.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
         },
         "autoRadiusValueRange": {
-          "description": "A boolean that reveals two input fields (customMinRangeValue and customMaxRangeValue) that are used to definine the min and max values of the symbol.",
+          "description": "Reveals radiusValueMin and radiusValueMax that are used to define the min and max values of the symbol.",
+          "optional": true,
           "type": "boolean"
         },
         "customMinRangeValue": {
-          "description": "A number that sets the min value of the symbol.",
+          "description": "Defines the min value of the symbol.",
+          "optional": true,
           "type": "number"
         },
         "customMaxRangeValue": {
-          "description": "A number that sets the max value of the symbol.",
+          "description": "Defines the max value of the symbol.",
+          "optional": true,
           "type": "number"
         }
       }

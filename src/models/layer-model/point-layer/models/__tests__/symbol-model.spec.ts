@@ -111,7 +111,10 @@ describe('Symbol model', () => {
       };
       layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
       layoutService = LayoutService.create(layout);
-      const symbolSize = symbolModel.getSize({ id: 0 }, layoutService);
+      const symbolSize = symbolModel.getSize(
+        { id: 0, size: { value: 8, expressionMeta: { index: 0, dimIndex: 0, id: 'size', isDimension: false } } },
+        layoutService
+      );
       expect(symbolSize).toEqual(10);
     });
 

@@ -20,6 +20,11 @@ declare interface LocationData {
   locationAdmin2?: string;
 }
 
+declare interface SizeData {
+  expressionMeta?: ExpressionMeta;
+  value?: number;
+}
+
 declare interface PointData extends Data {
-  qAttrExps?: NxAttributeExpressionValues;
+  size?: SizeData;
 }

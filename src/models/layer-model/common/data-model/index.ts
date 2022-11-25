@@ -19,9 +19,9 @@ export class DataModel {
     return { id: cell.qElemNumber };
   }
 
-  getLocationData(cell: NxCell, meta: LocationMeta) {
+  getLocationData(cell: NxCell, metaLocation: LocationMeta) {
     let data = {} as LocationData;
-    meta.expressions.forEach((expressionMeta: ExpressionMeta) => {
+    metaLocation.expressions.forEach((expressionMeta: ExpressionMeta) => {
       const attribute = DataUtils.getAttributeData(cell, expressionMeta);
       data = { ...data, ...attribute };
     });
@@ -30,7 +30,7 @@ export class DataModel {
       data.locationOrLatitude = cell.qText;
     }
 
-    const locationKind = LocationUtils.getLocationKind(data.locationOrLatitude, meta.isLatLong);
+    const locationKind = LocationUtils.getLocationKind(data.locationOrLatitude, metaLocation.isLatLong);
 
     switch (locationKind) {
       case 'LATLONGS':
@@ -43,10 +43,18 @@ export class DataModel {
       case 'STRINGCOORDS':
         return { coords: LocationUtils.parseGeometryString(data.locationOrLatitude) };
       case 'NAMES':
-        const geoname = LocationUtils.addLocationSuffix(data, meta);
+        const geoname = LocationUtils.addLocationSuffix(data, metaLocation);
         return { geoname };
       case 'UNKOWN':
         return { location: null };
     }
+  }
+
+  getSizeData(cell: NxCell, meta: PointMeta) {
+    if (meta.metaSize) {
+      const { expressionMeta } = meta.metaSize;
+      return { size: { value: cell.qAttrExps?.qValues[expressionMeta?.index]?.qNum, expressionMeta } };
+    }
+    return {};
   }
 }
