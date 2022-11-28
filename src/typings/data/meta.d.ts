@@ -13,7 +13,6 @@ declare interface ExpressionMeta {
 
 declare interface Meta {
   location: LocationMeta;
-  metaSize: { expressionMeta?: ExpressionMeta };
 }
 
 declare interface LocationMeta {

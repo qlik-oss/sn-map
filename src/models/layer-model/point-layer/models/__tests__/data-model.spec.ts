@@ -60,7 +60,6 @@ describe('PointLayerDataModel', () => {
           isLatLong: false,
           locationType: '',
         },
-        metaSize: {},
       };
     });
 
@@ -70,20 +69,20 @@ describe('PointLayerDataModel', () => {
 
     it('should not flatten data before extracting', () => {
       DataUtils.flattenDataPages = jest.fn().mockReturnValue([]);
-      dataModel.extractPointData(dataPage, meta);
+      dataModel.extractPointData(dataPage, meta, layout);
       expect(DataUtils.flattenDataPages).not.toHaveBeenCalled();
     });
 
     it('should flatten data before extracting', () => {
       DataUtils.flattenDataPages = jest.fn().mockReturnValue({ qMatrix: [] });
-      dataModel.extractPointData(layout.qHyperCube.qDataPages, meta);
+      dataModel.extractPointData(layout.qHyperCube.qDataPages, meta, layout);
       expect(DataUtils.flattenDataPages).toHaveBeenCalled();
     });
 
     it('should extract data', () => {
       dataModel.getElemData = jest.fn().mockReturnValue({ id: 'data' });
 
-      const result = dataModel.extractPointData(dataPage, meta);
+      const result = dataModel.extractPointData(dataPage, meta, layout);
       expect(result.length).toBe(2);
       expect(result).toEqual([
         { id: 'data', location: null },
@@ -94,7 +93,7 @@ describe('PointLayerDataModel', () => {
     it('should set null values when cell is null', () => {
       dataModel.getElemData = jest.fn();
       dataPage.qMatrix = [[null], [null]] as any;
-      const result = dataModel.extractPointData(dataPage, meta);
+      const result = dataModel.extractPointData(dataPage, meta, layout);
       const expectedResult = [{ id: null }, { id: null }];
       expect(result.length).toBe(2);
       expect(result).toEqual(expectedResult);

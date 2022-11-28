@@ -12,9 +12,6 @@ module LayoutService {
       metaAdditionsFn: ({ layout }: MetaAttributes) => {
         return {
           location: Meta.getLocationMeta(layout),
-          metaSize: {
-            expressionMeta: Meta.getExpressionMeta('size', layout)?.[0],
-          },
         };
       },
     });

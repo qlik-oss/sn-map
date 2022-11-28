@@ -1,5 +1,6 @@
 import LocationUtils from './utils/location-utils';
 import DataUtils from './utils/data-utils';
+import Meta from '../../common/services/layout-service/meta';
 
 export class DataModel {
   data: Data[];
@@ -50,8 +51,8 @@ export class DataModel {
     }
   }
 
-  getSizeData(cell: NxCell, meta: PointMeta) {
-    const expressionMeta = meta.metaSize?.expressionMeta;
+  getSizeData(cell: NxCell, layout: LayerLayout) {
+    const expressionMeta = Meta.getExpressionMeta('size', layout)?.[0];
     if (expressionMeta) {
       return { size: { value: cell.qAttrExps?.qValues[expressionMeta?.index]?.qNum, expressionMeta } };
     }
