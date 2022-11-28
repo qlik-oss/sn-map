@@ -54,6 +54,9 @@ module Utils {
     const s = base62(Math.round(Math.random() * (1e13 - 1e11) + 1e11));
     return s.replace(/\W/g, '');
   }
+  export function escapeRegExp(str: string) {
+    return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+  }
 }
 
 export default Utils;

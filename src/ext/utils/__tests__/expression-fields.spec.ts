@@ -8,6 +8,7 @@ describe('Expression fields', () => {
   beforeEach(() => {
     hyperCube = {
       qDimensions: JSON.parse(JSON.stringify(mockProperties.layer.point.qHyperCubeDef.qDimensions)),
+      qMeasures: [],
     };
     expression = {
       key: 'foobar',
@@ -184,6 +185,42 @@ describe('Expression fields', () => {
       layerProperties.qHyperCubeDef.qDimensions[0].qLibraryId = '';
       expression.activeDimensionIndex = undefined;
       expressionFields.setLibraryDimensionWorkaround(layerProperties, expression);
+      expect(expression.key).toEqual('foobar');
+    });
+  });
+
+  describe('setLibraryMeasureWorkaround', () => {
+    let layerProperties: LayerProperties;
+    const qDef = { cId: 'cIdValue', qDef: 'qDefValue', qLabel: 'qDefLabel' };
+    beforeEach(() => {
+      layerProperties = JSON.parse(JSON.stringify(mockProperties.layer.point));
+      layerProperties.qHyperCubeDef.qMeasures.push({ qLibraryId: '', qDef });
+    });
+
+    it('should set library id on expression when having activeMeasureIndex', () => {
+      layerProperties.qHyperCubeDef.qMeasures[0].qLibraryId = 'libraryId';
+      expression.activeMeasureIndex = 0;
+      expressionFields.setLibraryMeasureWorkaround(layerProperties, expression);
+      expect(expression.key).toEqual(layerProperties.qHyperCubeDef.qMeasures[0].qLibraryId);
+    });
+
+    it('should change expression when having activeMeasureIndex', () => {
+      expression.activeMeasureIndex = 0;
+      expressionFields.setLibraryMeasureWorkaround(layerProperties, expression);
+      expect(expression.key).toEqual(qDef.qDef);
+      expect(expression.label).toEqual(qDef.qLabel);
+    });
+
+    it('should not change expression when activeMeasureIndex is invalid index of the measures', () => {
+      layerProperties.qHyperCubeDef.qMeasures = [];
+      expression.activeMeasureIndex = 0;
+      expressionFields.setLibraryMeasureWorkaround(layerProperties, expression);
+      expect(expression.key).toEqual('foobar');
+    });
+
+    it('should not change expression when invalid activeMeasureIndex', () => {
+      expression.activeMeasureIndex = undefined;
+      expressionFields.setLibraryMeasureWorkaround(layerProperties, expression);
       expect(expression.key).toEqual('foobar');
     });
   });

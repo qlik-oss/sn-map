@@ -12,6 +12,7 @@ const qDimension = {
 
 const qHyperCubeDef = {
   qDimensions: [qDimension],
+  qMeasures: [],
 };
 
 const locationProperties = {
@@ -28,6 +29,10 @@ const locationProperties = {
 
 const colorProperties = {
   color: { auto: false },
+};
+
+const sizeProperties = {
+  size: { shape: 'point' },
 };
 
 const tmsProperties = {
@@ -101,6 +106,7 @@ const properties = {
       qHyperCubeDef,
       ...locationProperties,
       ...colorProperties,
+      ...sizeProperties,
     },
     geodata: {
       cId: 'layer-id',

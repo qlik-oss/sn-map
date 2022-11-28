@@ -14,6 +14,7 @@ declare interface LayerProperties extends LayerPropertiesBase {
 declare interface LayerLayout extends LayerPropertiesBase {
   /** Engine HyperCube */
   qHyperCube: NxHyperCube;
+  [key: string]: any;
 }
 
 declare interface UnknownLayerProperties extends LayerProperties {}

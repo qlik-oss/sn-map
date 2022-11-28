@@ -8,9 +8,10 @@ const color = {
 };
 
 const size: SizeProperties = {
-  radiusMin: 4,
-  radiusMax: 12,
-  sliderSingle: 16,
+  rangeValues: [8, 22],
+  value: 16,
+  autoRadiusValueRange: true,
+  expression: { key: 'expression-size', type: 'expression-type' },
 };
 
 const location = {
@@ -158,5 +159,29 @@ const layout = {
     } as GeodataLayerProperties,
   },
 };
+
+export function createDumpAttrExpr(id: string, label: string = '', qFallbackTitle: string = ''): NxAttrExprInfo {
+  return {
+    id,
+    qMin: 0,
+    qMax: 10,
+    qContinuousAxes: false,
+    qIsCyclic: false,
+    qIsAutoFormat: false,
+    label,
+    qFallbackTitle,
+  };
+}
+
+export function createDumpAttrDim(id: string, qFallbackTitle: string = ''): NxAttrDimInfo {
+  return {
+    id,
+    qCardinal: 0,
+    qSize: undefined,
+    qFallbackTitle,
+    qLocked: false,
+    qError: null,
+  };
+}
 
 export default layout;

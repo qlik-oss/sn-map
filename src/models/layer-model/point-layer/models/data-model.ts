@@ -1,5 +1,5 @@
 import { DataModel } from '../../common/data-model';
-import DataUtils from '../../common/utils/data-utils';
+import DataUtils from '../../common/data-model/utils/data-utils';
 
 export class PointLayerDataModel extends DataModel {
   data: PointData[];
@@ -21,13 +21,13 @@ export class PointLayerDataModel extends DataModel {
       if (!dataPage.qMatrix) {
         continue;
       }
-      const extractedData = this.extractPointData(dataPage, layoutService.meta);
+      const extractedData = this.extractPointData(dataPage, layoutService.meta, layoutService.getLayout());
       pointData = pointData.concat(extractedData as PointData[]);
     }
     return pointData;
   }
 
-  extractPointData(dataPage: NxDataPage | NxDataPage[], meta: PointMeta) {
+  extractPointData(dataPage: NxDataPage | NxDataPage[], meta: PointMeta, layout: LayerLayout) {
     if (Array.isArray(dataPage)) {
       dataPage = DataUtils.flattenDataPages(dataPage);
     }
@@ -39,10 +39,11 @@ export class PointLayerDataModel extends DataModel {
 
       const elemData = this.getElemData(cell);
       const locationData = this.getLocationData(cell, meta.location);
-
+      const sizeData = this.getSizeData(cell, layout); //qAttrExps
       return {
         ...locationData,
         ...elemData,
+        ...sizeData,
       };
     });
   }

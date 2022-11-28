@@ -1,5 +1,6 @@
 import Meta from '../meta';
 import layoutMock from '../../../../../../mocks/layout';
+import mockLayout, { createDumpAttrExpr, createDumpAttrDim } from '../../../../../../mocks/layout';
 
 describe('Layout service meta', () => {
   let layout: PointLayerLayout;
@@ -104,6 +105,45 @@ describe('Layout service meta', () => {
       layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo.push({ id: 'dummy' } as any);
       const meta = Meta.getExpressionMeta('foobar', layout);
       expect(meta.length).toBe(0);
+    });
+  });
+
+  describe('getMinMax', () => {
+    describe('getMinMax', () => {
+      let layout: LayerLayout;
+      const attrExpsId1 = 'attrExpsId_1';
+      const attrExpsId2 = 'attrExpsId_2';
+
+      beforeEach(() => {
+        layout = JSON.parse(JSON.stringify(mockLayout.layer.base));
+      });
+
+      it('should not return a minMax when the attribute is a measure', () => {
+        const attrExps1 = createDumpAttrExpr(attrExpsId1);
+        const attrExps2 = createDumpAttrExpr(attrExpsId2);
+        layout.qHyperCube.qDimensionInfo.push({
+          qFallbackTitle: '',
+          qAttrExprInfo: [attrExps1, attrExps2],
+          qAttrDimInfo: [],
+        });
+        const [dimExpsInfo] = Meta.getExpressionMeta(attrExpsId2, layout);
+        const minMax = Meta.getMinMax(layout, dimExpsInfo);
+        expect(minMax?.min).toEqual(0);
+        expect(minMax?.max).toEqual(10);
+      });
+
+      it('should not return a minMax when the attribute is not a measure', () => {
+        const attrExps1 = createDumpAttrDim(attrExpsId1);
+        const attrExps2 = createDumpAttrDim(attrExpsId2);
+        layout.qHyperCube.qDimensionInfo.push({
+          qFallbackTitle: '',
+          qAttrExprInfo: [],
+          qAttrDimInfo: [attrExps1, attrExps2],
+        });
+        const [dimExpsInfo] = Meta.getExpressionMeta(attrExpsId2, layout);
+        const minMax = Meta.getMinMax(layout, dimExpsInfo);
+        expect(minMax).toBeUndefined();
+      });
     });
   });
 });

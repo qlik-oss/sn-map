@@ -1,22 +1,94 @@
 import LayerType from '../../../../utils/const/layer-type';
+import numberFormatProperties from '../number-format-properties';
+import ExpressionFields from '../../../utils/expression-fields';
+import { getValue } from 'qlik-chart-modules';
 
-// Should only be used for max/min width/radius of bubble layer and line layer.
-const getSizeFromSliderValue = (value: number) => {
-  if (value < 20) {
-    return Math.ceil(value / 2);
-  } else if (value < 40) {
-    return 10 + (value - 20);
-  } else if (value < 60) {
-    return 30 + (value - 40) * 2;
-  } else {
-    return 70 + (value - 60) * 4;
-  }
+export const updateSizeExpression = (props: LayerProperties) => {
+  const qHyperCubeDef = getValue(props, 'qHyperCubeDef');
+  const expr = getValue(props, 'size.expression');
+  ExpressionFields.setLibraryMeasureWorkaround(props, expr);
+  ExpressionFields.removeExpression('size', qHyperCubeDef);
+  ExpressionFields.addExpression('size', expr, qHyperCubeDef, true);
 };
 
 const getSizeLayout = (translator: TranslatorType) => ({
-  sizeSingleSlider: function (type: LayerTypeName, min: number, max: number, defaultValue: number) {
+  sizeExpression: function (type: string) {
+    let translation;
+    switch (type) {
+      default:
+        translation = 'geo.properties.size';
+        break;
+    }
     return {
-      ref: 'size.sliderSingle',
+      numFormatRef: 'size.formatting',
+      ref: 'size.expression',
+      label: translator.get(translation),
+      type: 'object',
+      component: 'color-by-dropdown',
+      schemaIgnore: true,
+      defaultValue: {},
+      libraryItemType: 'measure',
+      change: function (props: PointLayerProperties) {
+        updateSizeExpression(props);
+      },
+    };
+  },
+  sizeFormatting: function () {
+    return numberFormatProperties.getNumberFormattingPropertiesWithMasterLink(
+      'size.formatting',
+      (data: LayerProperties) => data?.size?.expression?.key?.length > 0,
+      (data: LayerProperties) => data?.size?.expression?.type === 'libraryItem'
+    );
+  },
+  sizeExpressionLabel: function () {
+    return {
+      ref: 'size.label',
+      translation: 'Common.Label',
+      type: 'string',
+      expression: 'optional',
+      expressionType: 'StringExpression',
+      defaultValue: '',
+      show: function (props: PointLayerProperties) {
+        return !(
+          props.size.expression?.key === undefined ||
+          props.size.expression?.key === '' ||
+          props.size.expression?.type === 'libraryItem'
+        );
+      },
+    };
+  },
+  sizeSliderRange: function (type: string, min: number, max: number, defaultValue: number[]) {
+    return {
+      ref: 'size.rangeValues',
+      label: function (props: LayerProperties) {
+        let shape = '';
+        let translation = '';
+        switch (props.size.shape) {
+          default:
+            shape = 'Bubble';
+            break;
+        }
+        switch (type) {
+          case LayerType.POINT:
+          default:
+            translation = `geo.properties.sizeRange${shape}`;
+        }
+        return translator.get(translation);
+      },
+      type: 'array',
+      component: 'slider',
+      min: min,
+      max: max,
+      step: 1,
+      defaultValue: defaultValue,
+      show: function (props: PointLayerProperties) {
+        return props.size.expression && props.size.expression.key?.length > 0;
+      },
+    };
+  },
+  sizeSliderSingle: function (type: LayerTypeName, min: number, max: number, defaultValue: number) {
+    return {
+      ref: 'size.value',
       label: (props: LayerProperties) => {
         let shape = '';
         let translation = '';
@@ -26,13 +98,11 @@ const getSizeLayout = (translator: TranslatorType) => ({
             shape = 'Bubble';
             break;
         }
-
         switch (type) {
           case LayerType.POINT:
           default:
             translation = `geo.properties.sizeSingle${shape}`;
         }
-
         return translator.get(translation);
       },
       type: 'number',
@@ -41,11 +111,60 @@ const getSizeLayout = (translator: TranslatorType) => ({
       max, // lower max size when single slider
       step: 1,
       defaultValue,
-      change: function (props: LayerProperties) {
-        const val = getSizeFromSliderValue(props.size.sliderSingle);
-        const d = Math.ceil(val / 2);
-        props.size.radiusMin = val - d;
-        props.size.radiusMax = val + d;
+      show: function (props: PointLayerProperties) {
+        return !(props.size.expression && props.size.expression?.key?.length > 0);
+      },
+    };
+  },
+  autoRadiusValueRange: function () {
+    return {
+      ref: 'size.autoRadiusValueRange',
+      translation: 'properties.axis.range',
+      type: 'boolean',
+      component: 'switch',
+      defaultValue: true,
+      options: [
+        { value: true, translation: 'Common.Auto' },
+        { value: false, translation: 'Common.Custom' },
+      ],
+      show: function (props: PointLayerProperties) {
+        return props.size.expression && props.size.expression?.key?.length > 0;
+      },
+    };
+  },
+  customMinRangeValue: function (type: string) {
+    let translation = '';
+    switch (type) {
+      default:
+        translation = 'geo.properties.radius.min';
+        break;
+    }
+    return {
+      ref: 'size.customMinRangeValue',
+      translation: translation,
+      expression: 'optional',
+      type: 'number',
+      defaultValue: 0,
+      show: function (props: PointLayerProperties) {
+        return !props.size.autoRadiusValueRange && props.size.expression && props.size.expression?.key?.length > 0;
+      },
+    };
+  },
+  customMaxRangeValue: function (type: string) {
+    let translation = '';
+    switch (type) {
+      default:
+        translation = 'geo.properties.radius.max';
+        break;
+    }
+    return {
+      ref: 'size.customMaxRangeValue',
+      translation: translation,
+      expression: 'optional',
+      type: 'number',
+      defaultValue: 0,
+      show: function (props: PointLayerProperties) {
+        return !props.size.autoRadiusValueRange && props.size.expression && props.size.expression?.key?.length > 0;
       },
     };
   },
@@ -61,7 +180,14 @@ export default (type: LayerTypeName, { translator }: EnvironmentType) => {
     default:
       translation = 'geo.properties.sizeShape';
       items = {
-        sizeSingleSlider: sizeLayout.sizeSingleSlider(LayerType.POINT, 1, 50, 8),
+        sizeExpression: sizeLayout.sizeExpression(LayerType.POINT),
+        sizeFormatting: sizeLayout.sizeFormatting(),
+        sizeExpressionLabel: sizeLayout.sizeExpressionLabel(),
+        sizeSliderRange: sizeLayout.sizeSliderRange(LayerType.POINT, 1, 100, [4, 12]),
+        sizeSliderSingle: sizeLayout.sizeSliderSingle(LayerType.POINT, 1, 50, 8),
+        autoRadiusValueRange: sizeLayout.autoRadiusValueRange(),
+        customMinRangeValue: sizeLayout.customMinRangeValue(LayerType.POINT),
+        customMaxRangeValue: sizeLayout.customMaxRangeValue(LayerType.POINT),
       };
   }
   return {

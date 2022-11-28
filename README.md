@@ -104,8 +104,7 @@ nuked.render({
           ],
         },
         size: {
-          radiusMin: 4,
-          radiusMax: 12,
+          value: 10,
         },
         color: {
           mode: 'primary',

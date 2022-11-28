@@ -59,4 +59,17 @@ describe('ext util', () => {
       });
     });
   });
+
+  describe('escapeRegExp', () => {
+    it('should return string without special characters intact', () => {
+      expect(utils.escapeRegExp('teststring')).toEqual('teststring');
+      expect(utils.escapeRegExp('test_string')).toEqual('test_string');
+      expect(utils.escapeRegExp('test"string')).toEqual('test"string');
+    });
+    it('should add escape symbol before special characters', () => {
+      expect(utils.escapeRegExp('asdsdas-')).toEqual('asdsdas\\-');
+      expect(utils.escapeRegExp('asdsdas\\')).toEqual('asdsdas\\\\');
+      expect(utils.escapeRegExp('asdsdas-\'"')).toEqual('asdsdas\\-\'"');
+    });
+  });
 });

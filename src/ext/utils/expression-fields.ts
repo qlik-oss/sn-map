@@ -1,5 +1,5 @@
 import { setValue, getValue } from 'qlik-chart-modules';
-import Utils from './util';
+import Utils from '../../utils/util';
 
 module ExpressionFields {
   /**
@@ -90,6 +90,23 @@ module ExpressionFields {
         expr.activeDimensionIndex = undefined;
       } else {
         expr.key = Utils.bracketStringIfNeeded(expr.key);
+      }
+    }
+  }
+
+  export function setLibraryMeasureWorkaround(props: LayerProperties, expr: ExpressionProp) {
+    const idx = expr.activeMeasureIndex;
+    if (idx !== undefined && props.qHyperCubeDef.qMeasures.length > idx) {
+      const measure = getValue(props, `qHyperCubeDef.qMeasures.${idx}`, {});
+      if (measure.qLibraryId) {
+        expr.type = 'libraryItem';
+        expr.label = measure.qLibraryId;
+        expr.key = measure.qLibraryId;
+      } else {
+        const qDef = measure.qDef || {};
+        expr.type = 'expression';
+        expr.key = qDef.qDef;
+        expr.label = qDef.qLabel || qDef.qDef || '';
       }
     }
   }

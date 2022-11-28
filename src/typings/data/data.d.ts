@@ -20,4 +20,11 @@ declare interface LocationData {
   locationAdmin2?: string;
 }
 
-declare interface PointData extends Data {}
+declare interface SizeData {
+  expressionMeta?: ExpressionMeta;
+  value?: number;
+}
+
+declare interface PointData extends Data {
+  size?: SizeData;
+}
