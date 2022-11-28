@@ -60,6 +60,7 @@ describe('PointLayerDataModel', () => {
           isLatLong: false,
           locationType: '',
         },
+        metaSize: {},
       };
     });
 

@@ -51,8 +51,8 @@ export class DataModel {
   }
 
   getSizeData(cell: NxCell, meta: PointMeta) {
-    if (meta.metaSize) {
-      const { expressionMeta } = meta.metaSize;
+    const expressionMeta = meta.metaSize?.expressionMeta;
+    if (expressionMeta) {
       return { size: { value: cell.qAttrExps?.qValues[expressionMeta?.index]?.qNum, expressionMeta } };
     }
     return {};
