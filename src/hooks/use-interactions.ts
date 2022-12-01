@@ -9,12 +9,16 @@ const useInteractions = (mapModel: MapModelInterFace) => {
   const [selectedPath, setSelectedPath] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectionModel, setSelectionModel] = useState();
+  const processSelectionCallback = (path: string, selectedValues: number[]) => {
+    setSelectedPath(path);
+    setSelectedValues(selectedValues);
+  };
 
   useEffect(() => {
     if (!mapModel) {
       return;
     }
-    setSelectionModel(new SelectionModel(mapModel, selections));
+    setSelectionModel(new SelectionModel(mapModel, selections, processSelectionCallback));
   }, [mapModel]);
 
   useEffect(() => {
@@ -43,9 +47,27 @@ const useInteractions = (mapModel: MapModelInterFace) => {
       }
     };
 
+    const onMove = (e: any) => {
+      if (
+        selectionModel.allowSelections &&
+        selectionModel.pressEvent &&
+        selectionModel.selectionToolbar.activeTool &&
+        e.button === 0
+      ) {
+        e.stop();
+        selectionModel.handleMove(e);
+      }
+    };
+
     mapModel.map.addListener('click', onClick);
+    mapModel.map.addListener('move', onMove);
+    mapModel.map.addListener('press', (e: any) => selectionModel.handleClickPressed(e));
+    mapModel.map.addListener('release', () => selectionModel.handleRelease());
     return () => {
       mapModel.map.removeListener('click');
+      mapModel.map.removeListener('move');
+      mapModel.map.removeListener('press');
+      mapModel.map.removeListener('release');
     };
   }, [selectionModel]);
 
@@ -70,10 +92,13 @@ const useInteractions = (mapModel: MapModelInterFace) => {
           params: [],
         });
       }
-    } else if (selectedValues.length) {
-      setSelectedPath('');
-      setSelectedValues([]);
-      selectionModel.resetSelections();
+    } else {
+      if (selectedValues.length) {
+        setSelectedPath('');
+        setSelectedValues([]);
+        selectionModel.resetSelections();
+      }
+      selectionToolbar.reset?.();
     }
   }, [selections.isActive(), selectedValues]);
 };

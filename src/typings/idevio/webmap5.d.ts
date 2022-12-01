@@ -1,3 +1,6 @@
+/** Coordinate represented as an array with latitude and longitude. */
+type Coordinate = [number, number];
+
 /** A geographic rectangle */
 type Rectangle = {
   /** Min corner coordinate */
@@ -110,6 +113,9 @@ declare namespace idevio {
        * NOTE: Remember to restore it to false when not needed to resume normal drawing.
        */
       setInteracting(interacting: boolean): void;
+
+      geoToDisplay(point: Coordinate): ScreenCoordinate;
+      displayToGeo(point: ScreenCoordinate): Coordinate;
 
       getGeoBounds(): Rectangle;
       viewGeoBounds(bounds: Rectangle, noAnimation?: boolean): void;
@@ -357,6 +363,27 @@ declare namespace idevio {
 
       getCoordinates(): Coordinate;
       setCoordinates(coordinate: Coordinate): void;
+    }
+    interface LineStringFeatureOptions extends FeatureOptions {
+      coordinates: any; // Coordinates or arc
+    }
+    class LineStringFeature extends Feature {
+      constructor(dataset: Dataset, options: LineStringFeatureOptions);
+      getCoordinates(): Coordinate[];
+      setCoordinates(coordinate: Coordinate[]): void;
+    }
+    interface PolygonFeatureOptions extends FeatureOptions {
+      /**
+       * A sequence of sequences of points that defines the rings that make up the geometry of the polygon.
+       * Can also be supplied as only a sequence of points if the polygon only consists of one ring.
+       * Note however that getCoordinates will always return an array of the polygon's all rings.
+       */
+      coordinates: Coordinate[] | Coordinate[][];
+    }
+    class PolygonFeature extends Feature {
+      constructor(dataset: Dataset, options: PolygonFeatureOptions);
+      getCoordinates(): Coordinate[][];
+      setCoordinates(coordinate: Coordinate[][]): void;
     }
 
     interface RemoteServiceLocationDatasetOptions extends LocationDatasetOptions {

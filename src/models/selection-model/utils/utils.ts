@@ -24,6 +24,15 @@ module Utils {
       return features.filter((v) => v !== feature);
     }
   }
+
+  export function isExcluded(feature: idevio.map.Feature) {
+    const isExcludedAttr = feature.getAttribute('excluded');
+    if (isExcludedAttr === undefined || isExcludedAttr === false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 
 export default Utils;

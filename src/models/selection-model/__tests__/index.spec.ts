@@ -7,7 +7,7 @@ import layerModelMock from '../../../mocks/layer-model';
 import webmapMock from '../../../mocks/webmap';
 
 import { SelectionModel } from '../index';
-import Utils from '../utils';
+import Utils from '../utils/utils';
 
 jest.mock('../utils');
 

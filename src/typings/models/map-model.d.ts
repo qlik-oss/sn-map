@@ -6,6 +6,7 @@ declare interface MapModelInterFace {
   baseMapModel: BaseMapModelInterface;
   attributionModel: AttributionModel;
   layers: LayersHandler;
+  webMapElement: HTMLElement;
 
   update(layout: MapLayout): void;
   present(): Promise;

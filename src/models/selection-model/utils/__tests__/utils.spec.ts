@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import webmapMock from '../../../mocks/webmap';
-import layerModelMock from '../../../mocks/layer-model';
+import webmapMock from '../../../../mocks/webmap';
+import layerModelMock from '../../../../mocks/layer-model';
 
 import Utils from '../utils';
 
