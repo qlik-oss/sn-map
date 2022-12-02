@@ -50,6 +50,8 @@ class WebMap {
   viewGeoBounds = jest.fn();
   getViewBounds = jest.fn();
   setViewBounds = jest.fn();
+  geoToDisplay = jest.fn();
+  displayToGeo = jest.fn();
 
   setStyle = jest.fn();
 

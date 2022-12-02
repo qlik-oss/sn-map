@@ -17,8 +17,8 @@ describe('use-selection-toolbar', () => {
     useSelectionToolbar();
     return <div />;
   };
-  let useEffectSpy;
-  let useActionSpy;
+  let useEffectSpy: any;
+  let useActionSpy: any;
 
   beforeEach(() => {
     constraints = { active: false, select: false };
