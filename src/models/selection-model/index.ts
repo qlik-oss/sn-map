@@ -64,11 +64,11 @@ export class SelectionModel {
         }
       }
 
+      // ToDo: When we introduce the dropdown to switch between layers during a selection,
+      // we need to keep track of all the selected values before filtering for the current layer
       const selectedLayerFeatures: idevio.map.Feature[] = features.filter((feature) => {
         return feature.getDataset() === this.selectedLayerModel?.datasetModel.dataset;
       });
-      // ToDo: When we introduce the dropdown to switch between layers during a selection,
-      // we need to keep track of all the selected values before filtering for the current layer
       selectedLayerFeatures
         .filter((feature) => {
           return this.selectedFeatures.indexOf(feature) === -1;
