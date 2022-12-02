@@ -95,7 +95,6 @@ class Circle extends SelectionTool {
       this.rectangle.min[0] = cx - this.radius;
       this.rectangle.min[1] = cy - this.radius;
       const features = gatherFeaturesFromShape(this.mapModel, [cx, cy], this.radius, this.rectangle);
-      console.log('features===', features);
       this.selectionCallback(features ?? []);
     }
   }

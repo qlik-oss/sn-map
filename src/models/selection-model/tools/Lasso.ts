@@ -15,9 +15,7 @@ const gatherFeaturesFromShape = (mapModel: MapModelInterFace, lassoPolygon: Coor
     rectangle.max[0],
     rectangle.max[1]
   );
-  console.log('featuresInReact===', featuresInRectangle);
   const features = featuresInRectangle.filter((feature) => {
-    console.log('SelectUtils.isPolygon(feature)===', SelectUtils.isPolygon(feature));
     if (SelectUtils.isPolygon(feature)) {
       const coordinates = feature.getCoordinates() as Coordinate[][];
       const polygons: Coordinate[][] = [];
@@ -150,7 +148,6 @@ class Lasso extends SelectionTool {
       this.pointsDrawn.push([tx, ty]);
       this.updateRectangle(newX, newY);
 
-      console.log('this.canvas.width===', this.canvas.width);
       ctx.clearRect(0, 0, this.canvas.width || 0, this.canvas.width || 0);
       ctx.beginPath();
       ctx.strokeStyle = 'black';

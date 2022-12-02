@@ -31,7 +31,6 @@ export class SelectionModel {
     this.lasso = new Lasso(mapModel, (features) => this.processSelection(features));
     this.circle = new Circle(mapModel, (features) => this.processSelection(features));
     this.processSelectionCallback = processSelectionCallback;
-    console.log('this selectionModel===', this);
   }
 
   /**
@@ -47,7 +46,6 @@ export class SelectionModel {
   }
 
   processSelection(features: idevio.map.Feature[]) {
-    console.log('features===', features);
     if (features.length > 0) {
       if (!this.selectedLayerModel) {
         let layerFound = false;
@@ -57,7 +55,6 @@ export class SelectionModel {
           // if(layer) { layerFound = !layer.isSelectionsDisabled(); }
           if (layer) {
             layerFound = true;
-            console.log('layer found===', layer);
             this.setSelectedLayer(layer);
             break;
           }
@@ -68,9 +65,6 @@ export class SelectionModel {
       }
 
       const selectedLayerFeatures: idevio.map.Feature[] = features.filter((feature) => {
-        console.log('feature.getDataset()==', feature.getDataset());
-        console.log(' this.selectedLayerModel==', this.selectedLayerModel);
-        console.log(' this.selectedLayerModel?.datasetModel.dataset==', this.selectedLayerModel?.datasetModel.dataset);
         return feature.getDataset() === this.selectedLayerModel?.datasetModel.dataset;
       });
       // ToDo: When we introduce the dropdown to switch between layers during a selection,
@@ -83,8 +77,6 @@ export class SelectionModel {
           this.selectedValues = Utils.updateSelectedValues(feature, this.selectedValues);
           this.selectedFeatures = Utils.updateSelectedFeatures(feature, this.selectedFeatures);
         });
-      console.log('this.path===', this.path);
-      console.log('this.selectedValues===', this.selectedValues);
       this.processSelectionCallback(this.path, this.selectedValues);
 
       // Todo: figure out why the selectionsApi is needed;
