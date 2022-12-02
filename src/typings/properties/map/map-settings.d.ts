@@ -11,6 +11,8 @@ declare interface MapSettings {
   showScaleBar?: boolean;
   /** Use feet, yard, mile instead of meter, kilometer. */
   useImperialUnits?: boolean;
+  /** Default selection tool used while shift key is pressed. */
+  selectionType?: boolean;
   /** Trigger autoZoom when layers are modified */
   autoZoomOnSelection?: boolean;
   /** For communicating info in Property Panel at layer creation. */

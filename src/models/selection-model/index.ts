@@ -12,7 +12,7 @@ export class SelectionModel {
   path: string;
   selectedLayerModel?: PointLayerModelInterface;
   allowSelections: boolean;
-  selectionToolbar: SelectionToolbar;
+  selectionToolbar?: SelectionToolbar;
   pressEvent: any;
   lasso: Lasso;
   circle: Circle;
@@ -26,7 +26,6 @@ export class SelectionModel {
     this.path = '';
     this.selectedLayerModel = undefined;
     this.allowSelections = true;
-    this.selectionToolbar = {};
     this.pressEvent = undefined;
     this.lasso = new Lasso(mapModel, (features) => this.processSelection(features));
     this.circle = new Circle(mapModel, (features) => this.processSelection(features));
@@ -37,9 +36,9 @@ export class SelectionModel {
    * Returns the active selection tool or null if none is active.
    */
   getActiveSelectionTool(): Lasso | Circle | null {
-    if (this.selectionToolbar.activeTool === SelectionToolTypes.LASSO) {
+    if (this.selectionToolbar?.getActiveSelectionType() === SelectionToolTypes.LASSO) {
       return this.lasso;
-    } else if (this.selectionToolbar.activeTool === SelectionToolTypes.CIRCLE) {
+    } else if (this.selectionToolbar?.getActiveSelectionType() === SelectionToolTypes.CIRCLE) {
       return this.circle;
     }
     return null;

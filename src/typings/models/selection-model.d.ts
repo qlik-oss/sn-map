@@ -1,4 +1,4 @@
 declare interface SelectionToolbar {
-  activeTool?: string;
+  getActiveSelectionType(): string | undefined;
   reset?(): void;
 }

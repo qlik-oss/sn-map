@@ -6,11 +6,26 @@ import { SelectionToolTypes } from '../models/selection-model/utils/const/select
 const useSelectionToolbar = (): SelectionToolbar => {
   const constraints = useConstraints();
   const [enabled, setEnabled] = useState(false);
-  const [activeTool, setActiveTool] = useState(undefined);
+  const [activeClickedSelectionType, setActiveClickedSelectionType] = useState(undefined);
+  const [shiftKeyPressed, setShiftKeyPressed] = useState(undefined);
   const layout = useLayout();
   const translator = useTranslator();
   const isInSelections = !!layout.qSelectionInfo.qInSelections;
   const isSingleSelection = !!layout.qHyperCube?.qDimensionInfo?.[0]?.qIsOneAndOnlyOne;
+  const defaultSelectionType = layout.mapSettings.selectionType;
+  const activeSelectionType = shiftKeyPressed ? defaultSelectionType : activeClickedSelectionType;
+
+  const onKeyDown = ({ key }: KeyboardEvent) => {
+    if (key === 'Shift') {
+      setShiftKeyPressed(true);
+    }
+  };
+
+  const onKeyUp = ({ key }: KeyboardEvent) => {
+    if (key === 'Shift') {
+      setShiftKeyPressed(false);
+    }
+  };
 
   useEffect(() => {
     if (!constraints) {
@@ -19,9 +34,15 @@ const useSelectionToolbar = (): SelectionToolbar => {
     setEnabled(!constraints.select && !constraints.active);
   }, [constraints]);
 
-  const action = (actionName: string) => {
-    const activeAction = activeTool !== actionName ? actionName : undefined;
-    setActiveTool(activeAction);
+  const toggleClickedTool = (clickedTool: string) => {
+    console.log('activeClickedSelectionType==', activeClickedSelectionType);
+    console.log('clickedTool==', clickedTool);
+    console.log(
+      'activeClickedSelectionType !== clickedTool ? clickedTool : undefined==',
+      activeClickedSelectionType !== clickedTool ? clickedTool : undefined
+    );
+
+    setActiveClickedSelectionType(activeClickedSelectionType !== clickedTool ? clickedTool : undefined);
   };
 
   // add the lasso button to the toolbar
@@ -29,14 +50,16 @@ const useSelectionToolbar = (): SelectionToolbar => {
     () => ({
       key: SelectionToolTypes.LASSO,
       label: translator.get(
-        activeTool === SelectionToolTypes.LASSO ? 'Tooltip.ToggleOffLassoSelection' : 'Tooltip.ToggleOnLassoSelection'
+        activeSelectionType === SelectionToolTypes.LASSO
+          ? 'Tooltip.ToggleOffLassoSelection'
+          : 'Tooltip.ToggleOnLassoSelection'
       ),
       icon: lassoIcon,
       hidden: !enabled || !isInSelections || isSingleSelection,
-      active: activeTool === SelectionToolTypes.LASSO,
-      action: () => action(SelectionToolTypes.LASSO),
+      active: activeSelectionType === SelectionToolTypes.LASSO,
+      action: () => toggleClickedTool(SelectionToolTypes.LASSO),
     }),
-    [isInSelections, isSingleSelection, activeTool, enabled]
+    [isInSelections, isSingleSelection, activeSelectionType, activeClickedSelectionType, enabled]
   );
 
   // add the circle button to the toolbar
@@ -44,22 +67,33 @@ const useSelectionToolbar = (): SelectionToolbar => {
     () => ({
       key: SelectionToolTypes.CIRCLE,
       label: translator.get(
-        activeTool === SelectionToolTypes.CIRCLE
+        activeSelectionType === SelectionToolTypes.CIRCLE
           ? 'Tooltip.ToggleOffCircleSelection'
           : 'Tooltip.ToggleOnCircleSelection'
       ),
       icon: radialSelectIcon,
       hidden: !enabled || !isInSelections || isSingleSelection,
-      active: activeTool === SelectionToolTypes.CIRCLE,
-      action: () => action(SelectionToolTypes.CIRCLE),
+      active: activeSelectionType === SelectionToolTypes.CIRCLE,
+      action: () => toggleClickedTool(SelectionToolTypes.CIRCLE),
     }),
-    [isInSelections, isSingleSelection, activeTool, enabled]
+    [isInSelections, isSingleSelection, activeSelectionType, activeClickedSelectionType, enabled]
   );
 
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+    };
+  }, []);
+
   return {
-    activeTool,
+    getActiveSelectionType: () => activeSelectionType,
     reset: () => {
-      setActiveTool();
+      setActiveClickedSelectionType(undefined);
+      setShiftKeyPressed(false);
     },
   };
 };

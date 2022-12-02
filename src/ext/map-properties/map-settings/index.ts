@@ -54,7 +54,7 @@ export default function mapSettings({ translator }: EnvironmentType) {
           { value: true, translation: 'geo.properties.imperial' },
         ],
       },
-      selectionMethod: {
+      selectionType: {
         ref: 'mapSettings.selectionType',
         translation: 'geo.properties.selectiontype',
         type: 'string',

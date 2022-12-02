@@ -49,7 +49,7 @@ const useInteractions = (mapModel: MapModelInterFace) => {
       if (
         selectionModel.allowSelections &&
         selectionModel.pressEvent &&
-        selectionModel.selectionToolbar.activeTool &&
+        selectionModel.selectionToolbar.getActiveSelectionType() &&
         e.button === 0
       ) {
         e.stop();
