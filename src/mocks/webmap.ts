@@ -195,6 +195,8 @@ const webmap = {
       LocationDataset,
       Feature,
       PointFeature: jest.fn(),
+      LineStringFeature: jest.fn(),
+      PolygonFeature: jest.fn(),
       Icon: jest.fn(),
       IconFactory,
       Tool: jest.fn(),
