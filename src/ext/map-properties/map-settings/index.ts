@@ -54,6 +54,18 @@ export default function mapSettings({ translator }: EnvironmentType) {
           { value: true, translation: 'geo.properties.imperial' },
         ],
       },
+      selectionMethod: {
+        ref: 'mapSettings.selectionType',
+        translation: 'geo.properties.selectiontype',
+        type: 'string',
+        component: 'dropdown',
+        defaultValue: 'lasso',
+        options: [
+          { value: 'lasso', translation: 'geo.properties.lassoselection' },
+          { value: 'circle', translation: 'geo.properties.circleselection' },
+          { value: 'none', translation: 'Common.None' },
+        ],
+      },
       zoomToSelection: {
         ref: 'mapSettings.autoZoomOnSelection',
         translation: 'geo.properties.autoZoom',
