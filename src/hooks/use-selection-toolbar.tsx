@@ -35,13 +35,6 @@ const useSelectionToolbar = (): SelectionToolbar => {
   }, [constraints]);
 
   const toggleClickedTool = (clickedTool: string) => {
-    console.log('activeClickedSelectionType==', activeClickedSelectionType);
-    console.log('clickedTool==', clickedTool);
-    console.log(
-      'activeClickedSelectionType !== clickedTool ? clickedTool : undefined==',
-      activeClickedSelectionType !== clickedTool ? clickedTool : undefined
-    );
-
     setActiveClickedSelectionType(activeClickedSelectionType !== clickedTool ? clickedTool : undefined);
   };
 
