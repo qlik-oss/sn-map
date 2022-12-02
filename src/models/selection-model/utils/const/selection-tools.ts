@@ -3,4 +3,8 @@ enum SelectionToolTypes {
   CIRCLE = 'circle',
 }
 
-export default SelectionToolTypes;
+enum SelectionToolIDs {
+  CANVAS = 'CANVAS_ID',
+}
+
+export { SelectionToolTypes, SelectionToolIDs };

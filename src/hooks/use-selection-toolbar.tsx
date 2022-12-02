@@ -1,7 +1,7 @@
 import { useEffect, useState, useAction, useConstraints, useLayout, useTranslator } from '@nebula.js/stardust';
 import lassoIcon from '../static/icons/lasso-icon';
 import radialSelectIcon from '../static/icons/radial-select-icon';
-import SelectionToolTypes from '../models/selection-model/utils/const/selection-tools';
+import { SelectionToolTypes } from '../models/selection-model/utils/const/selection-tools';
 
 const useSelectionToolbar = (): SelectionToolbar => {
   const constraints = useConstraints();

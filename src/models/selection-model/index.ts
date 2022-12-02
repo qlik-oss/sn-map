@@ -1,7 +1,7 @@
 import Utils from './utils/utils';
 import Lasso from './tools/Lasso';
 import Circle from './tools/Circle';
-import SelectionToolTypes from './utils/const/selection-tools';
+import { SelectionToolTypes } from './utils/const/selection-tools';
 import SelectUtils from './utils/select-utils';
 
 export class SelectionModel {
@@ -144,11 +144,7 @@ export class SelectionModel {
       this.selections.cancel();
       this.selections.begin(pathList);
     }
-
-    return {
-      path: this.path,
-      values: this.selectedValues,
-    };
+    this.processSelectionCallback(this.path, this.selectedValues);
   }
 
   handleMove(event: any) {

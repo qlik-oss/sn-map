@@ -41,9 +41,7 @@ const useInteractions = (mapModel: MapModelInterFace) => {
 
     const onClick = (e: any) => {
       if (selectionModel.allowSelections) {
-        const clickSelection = selectionModel.handleClick(e.target);
-        setSelectedPath(clickSelection.path);
-        setSelectedValues(clickSelection.values);
+        selectionModel.handleClick(e.target);
       }
     };
 

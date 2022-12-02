@@ -1,8 +1,10 @@
+import { SelectionToolIDs } from '../utils/const/selection-tools';
+
 /**
  * A lasso drawing tool.
  */
 abstract class SelectionTool {
-  private static readonly CANVAS_ID: string = 'CANVAS_ID';
+  private static readonly CANVAS_ID: string = SelectionToolIDs.CANVAS;
 
   protected canvas!: HTMLCanvasElement; // Is created when tool is activated.
 
