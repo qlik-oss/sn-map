@@ -11,7 +11,7 @@ describe('use-selection-toolbar', () => {
   let setEnabled: any;
   let active: boolean;
   let setActive: any;
-  let layout: LayerLayout;
+  let layout: MapLayout;
   let fn;
   let conditionArray;
   const Component = () => {
