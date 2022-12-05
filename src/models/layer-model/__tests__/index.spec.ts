@@ -198,6 +198,41 @@ describe('Layer models', () => {
     });
   });
 
+  describe('hasFeatures', () => {
+    let layer: any;
+    beforeEach(() => {
+      layer = {
+        id: 'foo',
+        datasetModel: {
+          layout: {
+            exclFromAutozoom: false,
+          },
+          hasFeatures: () => true,
+        },
+      };
+    });
+    it('should return true if there are layers with features that are not excluded from auto zoom', () => {
+      layerHandler.models = [layer];
+      expect(layerHandler.hasFeatures(false)).toEqual(true);
+      expect(layerHandler.hasFeatures(true)).toEqual(true);
+    });
+    it('should return true if all the layers are excluded from auto zoom and ignoreExcludedFromAutoZoom parameter is false', () => {
+      layer.datasetModel.layout.exclFromAutozoom = true;
+      layerHandler.models = [layer];
+      expect(layerHandler.hasFeatures(false)).toEqual(true);
+    });
+    it('should return false if there are no layers with features', () => {
+      expect(layerHandler.hasFeatures(false)).toEqual(false);
+      layer.datasetModel.hasFeatures = () => false;
+      layerHandler.models = [layer];
+    });
+    it('should return false if all the layers are excluded from auto zoom and ignoreExcludedFromAutoZoom parameter is true', () => {
+      layer.datasetModel.layout.exclFromAutozoom = true;
+      layerHandler.models = [layer];
+      expect(layerHandler.hasFeatures(true)).toEqual(false);
+    });
+  });
+
   describe('done', () => {
     it('should collect all layer promises', async () => {
       const layer1 = {
