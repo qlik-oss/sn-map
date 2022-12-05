@@ -2,6 +2,7 @@ import baseMapProperty from './base-map-property';
 import { BaseMapPropertiesModel } from '../../models/base-map-properties-model';
 import LanguageUtils from '../../utils/language';
 import MapUtils from '../../../utils/map';
+import { SelectionToolTypes } from '../../../models/selection-model/utils/const/selection-tools';
 
 export default function mapSettings({ translator }: EnvironmentType) {
   const baseMapPropertiesModel: BaseMapPropertiesModelInterface = new BaseMapPropertiesModel(translator);
@@ -61,9 +62,9 @@ export default function mapSettings({ translator }: EnvironmentType) {
         component: 'dropdown',
         defaultValue: 'lasso',
         options: [
-          { value: 'lasso', translation: 'geo.properties.lassoselection' },
-          { value: 'circle', translation: 'geo.properties.circleselection' },
-          { value: 'none', translation: 'Common.None' },
+          { value: SelectionToolTypes.LASSO, translation: 'geo.properties.lassoselection' },
+          { value: SelectionToolTypes.CIRCLE, translation: 'geo.properties.circleselection' },
+          { value: SelectionToolTypes.NONE, translation: 'Common.None' },
         ],
       },
       zoomToSelection: {

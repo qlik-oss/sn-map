@@ -1,6 +1,7 @@
 enum SelectionToolTypes {
   LASSO = 'lasso',
   CIRCLE = 'circle',
+  NONE = 'none',
 }
 
 enum SelectionToolIDs {

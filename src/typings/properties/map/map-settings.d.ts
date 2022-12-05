@@ -12,7 +12,7 @@ declare interface MapSettings {
   /** Use feet, yard, mile instead of meter, kilometer. */
   useImperialUnits?: boolean;
   /** Default selection tool used while shift key is pressed. */
-  selectionType?: boolean;
+  selectionType?: string;
   /** Trigger autoZoom when layers are modified */
   autoZoomOnSelection?: boolean;
   /** For communicating info in Property Panel at layer creation. */
