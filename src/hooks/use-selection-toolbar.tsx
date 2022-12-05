@@ -11,7 +11,6 @@ const useSelectionToolbar = (): SelectionToolbar => {
   const layout = useLayout();
   const translator = useTranslator();
   const isInSelections = !!layout.qSelectionInfo.qInSelections;
-  const isSingleSelection = !!layout.qHyperCube?.qDimensionInfo?.[0]?.qIsOneAndOnlyOne;
   const defaultSelectionType = layout.mapSettings.selectionType;
   const activeSelectionType = shiftKeyPressed ? defaultSelectionType : activeClickedSelectionType;
 
@@ -48,11 +47,11 @@ const useSelectionToolbar = (): SelectionToolbar => {
           : 'Tooltip.ToggleOnLassoSelection'
       ),
       icon: lassoIcon,
-      hidden: !enabled || !isInSelections || isSingleSelection,
+      hidden: !enabled || !isInSelections,
       active: activeSelectionType === SelectionToolTypes.LASSO,
       action: () => toggleClickedTool(SelectionToolTypes.LASSO),
     }),
-    [isInSelections, isSingleSelection, activeSelectionType, activeClickedSelectionType, enabled]
+    [isInSelections, activeSelectionType, activeClickedSelectionType, enabled]
   );
 
   // add the circle button to the toolbar
@@ -65,11 +64,11 @@ const useSelectionToolbar = (): SelectionToolbar => {
           : 'Tooltip.ToggleOnCircleSelection'
       ),
       icon: radialSelectIcon,
-      hidden: !enabled || !isInSelections || isSingleSelection,
+      hidden: !enabled || !isInSelections,
       active: activeSelectionType === SelectionToolTypes.CIRCLE,
       action: () => toggleClickedTool(SelectionToolTypes.CIRCLE),
     }),
-    [isInSelections, isSingleSelection, activeSelectionType, activeClickedSelectionType, enabled]
+    [isInSelections, activeSelectionType, activeClickedSelectionType, enabled]
   );
 
   useEffect(() => {

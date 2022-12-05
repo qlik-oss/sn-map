@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import * as stardust from '@nebula.js/stardust';
 import useSelectionToolbar from '../use-selection-toolbar';
+import mockLayout from '../../mocks/layout';
 
 describe('use-selection-toolbar', () => {
   let constraints;
@@ -22,10 +23,8 @@ describe('use-selection-toolbar', () => {
 
   beforeEach(() => {
     constraints = { active: false, select: false };
-    layout = {
-      qSelectionInfo: { qInSelections: false },
-      qHyperCube: { qDimensionInfo: [{ qIsOneAndOnlyOne: false }] },
-    };
+    layout = JSON.parse(JSON.stringify(mockLayout.map));
+    layout.qSelectionInfo = { qInSelections: false };
     active = false;
     enabled = false;
     setEnabled = jest.fn();
@@ -72,10 +71,7 @@ describe('use-selection-toolbar', () => {
       it('should return correct object', () => {
         enabled = true;
         jest.spyOn(stardust, 'useState').mockImplementationOnce(() => [enabled, setEnabled]);
-        layout = {
-          qSelectionInfo: { qInSelections: true },
-          qHyperCube: { qDimensionInfo: [{ qIsOneAndOnlyOne: false }] },
-        };
+        layout.qSelectionInfo = { qInSelections: true };
         jest.spyOn(stardust, 'useLayout').mockReturnValue(layout);
         render(<Component />);
         expect(useActionSpy).toHaveBeenCalled();
