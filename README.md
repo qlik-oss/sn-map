@@ -35,7 +35,6 @@ const nuked = embed(app, {
 });
 
 // Rendering a map on the fly
-// To render a map you have the options to use your own map server or add a geodata layer.
 nuked.render({
   type: 'map',
   element,
@@ -49,6 +48,8 @@ nuked.render({
 ```
 
 ## Options
+
+These are optional settings to configure which map server you want to use. If not provided it will either try to use Qlik's cloud servers if connected to Sense (e.g. sn-map is used as an extension) or load a local script of Webmap5 to render layers.
 
 - configuration
   - serverUrl - host url for map server.
