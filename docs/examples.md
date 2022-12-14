@@ -79,5 +79,4 @@ nuked.render({
 
 ### More examples
 
-Point layer examples can be found [here](./point-layer.md)
-Geodata layer examples can be found [here](./geodata-layer.md)
+Point layer examples can be found [here](./point-layer.md) and geodata layer examples can be found [here](./geodata-layer.md)
