@@ -1,13 +1,14 @@
-import Tool from '../common/tool';
+import Tool from '../map-model/models/tools/common/tool';
 
-class Tooltip extends Tool {
+export class TooltipModel extends Tool {
   map: idevio.map.WebMap;
-
   constructor(map: idevio.map.WebMap) {
     super(map);
     this.map = map;
     this.connectTo(map);
   }
+
+  createTooltip() {}
 
   click(event: idevio.map.PositionEvent) {
     console.log('click', event);
@@ -25,9 +26,7 @@ class Tooltip extends Tool {
     console.log('close', event);
   }
 
-  update(event: idevio.map.PositionEvent) {
-    console.log('upate', event);
-  }
+  update(event: idevio.map.PositionEvent) {}
 
   _connecting(): void {
     this._addListener('move', this.open);
@@ -40,5 +39,3 @@ class Tooltip extends Tool {
     this.close;
   }
 }
-
-export default Tooltip;

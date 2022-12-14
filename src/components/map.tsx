@@ -1,10 +1,13 @@
 import React, { useRef, useCallback } from 'react';
 
+import TooltipRoot from './tooltip/tooltip-portal';
+
 type mapProps = {
   setWebMapRef: Function;
+  models: any;
 };
 
-export default function Map({ setWebMapRef }: mapProps) {
+export default function Map({ setWebMapRef, models }: mapProps) {
   const mapStyle = {
     height: '100%',
     width: '100%',
@@ -33,6 +36,7 @@ export default function Map({ setWebMapRef }: mapProps) {
         </div>
       </div>
       <div className="sidebar"></div>
+      <TooltipRoot model={models} />
     </div>
   );
 }

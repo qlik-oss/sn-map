@@ -1,4 +1,4 @@
-import { useRender, useCore, useModels, useInteractions } from './hooks';
+import { useRender, useCore, useModels, useInteractions, useTooltip } from './hooks';
 import { useState } from '@nebula.js/stardust';
 import createQae from './qae';
 import ext from './ext/ext';
@@ -16,7 +16,8 @@ export default function supernova(env: EnvironmentType) {
       const core = useCore();
       const mapModel = useModels({ core, webMapRef });
       useInteractions(mapModel);
-      useRender({ core, setWebMapRef });
+      const models = useTooltip(mapModel);
+      useRender({ core, setWebMapRef, models });
     },
   };
 }

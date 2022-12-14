@@ -63,11 +63,11 @@ const objectDefinition = () => {
        */
       mapLanguage: 'auto',
       /**
-       * Set to true if you want to auto zoom when making selections.
+       * Set to false if you want to disable auto zoom when making selections.
        * @type {boolean=}
        * @default
        */
-      autoZoomOnSelection: false,
+      autoZoomOnSelection: true,
     },
     /**
      * Show title for the visualization.

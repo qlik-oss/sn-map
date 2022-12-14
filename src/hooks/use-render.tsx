@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { useEffect } from '@nebula.js/stardust';
+import { useEffect, useState } from '@nebula.js/stardust';
 import Map from '../components/map';
 
 type UseRenderProps = {
@@ -12,26 +12,23 @@ type UseRenderProps = {
     };
   };
   setWebMapRef: Function;
+  models: any;
 };
 
-type ReactRoot = {
-  render: Function;
-};
-
-const UseRender = ({ core, setWebMapRef }: UseRenderProps) => {
-  let root: ReactRoot;
+const UseRender = ({ core, setWebMapRef, models }: UseRenderProps) => {
+  const [root, setRoot] = useState();
 
   useEffect(() => {
     if (core?.element) {
-      root = createRoot(core.element!);
+      setRoot(createRoot(core.element!));
     }
   }, [core?.element]);
 
   useEffect(() => {
     if (root) {
-      root.render(<Map setWebMapRef={setWebMapRef} />);
+      root.render(<Map setWebMapRef={setWebMapRef} models={models} />);
     }
-  }, [core?.webmap]);
+  }, [core?.webmap, models]);
 };
 
 export default UseRender;
