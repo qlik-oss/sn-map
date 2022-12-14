@@ -1,8 +1,5 @@
 ## Examples
 
-[Point layer examples](./point-layer.md)
-[Geodata layer examples](./geodata-layer.md)
-
 ### Map with a tms geodata layer and point layer
 
 ![map point layer](../assets/sn-map-example1.png)
@@ -79,3 +76,8 @@ nuked.render({
   },
 });
 ```
+
+### More examples
+
+Point layer examples can be found [here](./point-layer.md)
+Geodata layer examples can be found [here](./geodata-layer.md)
