@@ -1,4 +1,4 @@
-# sn-map
+# sn-map (experimental)
 
 ## A map for nebula.js.
 
@@ -11,7 +11,7 @@ Maps enable you to view your data geographically. Maps have many ways to present
 
 ## Requirements
 
-Requires `@nebula.js/stardust` version `2.3.0` or later.
+Requires `@nebula.js/stardust` version `3.0.4` or later.
 
 ## Installing
 
@@ -35,8 +35,6 @@ const nuked = embed(app, {
 });
 
 // Rendering a map on the fly
-// Best way is to make a sn-map extension in the client and copy the properties
-// You will need add the serverUrl and serverKey to the options
 nuked.render({
   type: 'map',
   element,
@@ -50,6 +48,8 @@ nuked.render({
 ```
 
 ## Options
+
+These are optional settings to configure which map server you want to use. If not provided it will either try to use Qlik's cloud servers if connected to Sense (e.g. sn-map is used as an extension) or load a local script of Webmap5 to render layers.
 
 - configuration
   - serverUrl - host url for map server.
@@ -65,7 +65,7 @@ nuked.render({
   element,
   options: {
     configuration: {
-      serverUrl: ... ,
+      serverUrl: 'https://maps.qlikcloud.com' ,
       serverKey: ... ,
     },
   },
@@ -138,28 +138,23 @@ nuked.render({
     gaLayers: [
       {
         type: 'GeodataLayer',
-        dataType: 'tms',
+        dataType: 'wms',
         wms: {
           url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/WmsServer',
-          version: '1.1.0',
           hasWmsLoaded: true,
-          selectedCrs: 'EPSG:3857',
           selectedFormat: 'PNG',
           capabilities: {
             layers: [
               {
                 name: '1',
-                title: 'Image',
                 selected: true,
               },
               {
                 name: '2',
-                title: 'Image Footprints with Time Attributes',
                 selected: true,
               },
               {
                 name: '3',
-                title: 'Boundary',
                 selected: true,
               },
             ],
@@ -171,6 +166,7 @@ nuked.render({
     ],
     mapSettings: {
       showScaleBar: true,
+      projection: 'default',
     },
   },
 });

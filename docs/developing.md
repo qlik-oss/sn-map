@@ -27,7 +27,7 @@ Run Rendering Tests
 
 ## Other
 
-Use `yarn lint` to check linin.
+Use `yarn lint` to check lintin.
 
 Use `yarn format` to automatically format your code.
 

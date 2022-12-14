@@ -1,4 +1,4 @@
-## More Examples
+## Examples
 
 ### Map with a tms geodata layer and point layer
 
@@ -76,3 +76,7 @@ nuked.render({
   },
 });
 ```
+
+### More examples
+
+Point layer examples can be found [here](./point-layer.md) and geodata layer examples can be found [here](./geodata-layer.md)
