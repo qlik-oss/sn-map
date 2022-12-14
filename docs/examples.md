@@ -1,4 +1,7 @@
-## More Examples
+## Examples
+
+[Point layer examples](./point-layer.md)
+[Geodata layer examples](./geodata-layer.md)
 
 ### Map with a tms geodata layer and point layer
 

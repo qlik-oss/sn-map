@@ -22,28 +22,23 @@ nuked.render({
     gaLayers: [
       {
         type: 'GeodataLayer',
-        dataType: 'tms',
+        dataType: 'wms',
         wms: {
           url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/WmsServer',
-          version: '1.1.0',
           hasWmsLoaded: true,
-          selectedCrs: 'EPSG:3857',
           selectedFormat: 'PNG',
           capabilities: {
             layers: [
               {
                 name: '1',
-                title: 'Image',
                 selected: true,
               },
               {
                 name: '2',
-                title: 'Image Footprints with Time Attributes',
                 selected: true,
               },
               {
                 name: '3',
-                title: 'Boundary',
                 selected: true,
               },
             ],
@@ -55,6 +50,7 @@ nuked.render({
     ],
     mapSettings: {
       showScaleBar: true,
+      projection: 'EPSG:3857',
     },
   },
 });
