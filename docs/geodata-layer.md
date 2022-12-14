@@ -26,6 +26,7 @@ nuked.render({
         wms: {
           url: 'https://nowcoast.noaa.gov/arcgis/services/nowcoast/analysis_meteohydro_sfc_qpe_time/MapServer/WmsServer',
           hasWmsLoaded: true,
+          selectedCrs: 'EPSG:3857',
           selectedFormat: 'PNG',
           capabilities: {
             layers: [
@@ -50,7 +51,7 @@ nuked.render({
     ],
     mapSettings: {
       showScaleBar: true,
-      projection: 'EPSG:3857',
+      projection: 'default',
     },
   },
 });
