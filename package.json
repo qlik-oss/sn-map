@@ -58,7 +58,7 @@
     "@nebula.js/cli-sense": "3.0.4",
     "@nebula.js/cli-serve": "3.0.4",
     "@playwright/test": "1.28.1",
-    "@rollup/plugin-typescript": "^8.5.0",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.15",
