@@ -1,3 +1,4 @@
+import { getValue } from 'qlik-chart-modules';
 import { DatasetModel } from '../../common/dataset-model';
 import Utils from '../../../../utils/general';
 
@@ -19,24 +20,27 @@ export class PointLayerDatasetModel extends DatasetModel {
     this.remove();
     const info = this.getDatasetInfo(data);
 
+    console.log('columns', info?.columns);
+
     if (info !== null) {
-      this.createDataset(crs, info);
       if (info.isGeoname) {
+        this.createLocationDataset(info.columns);
         this.addLocationData(data);
       } else {
+        this.createMemoryDataset(crs);
         this.addFeatureData(data);
       }
+      this.layer.setDataset(this.dataset);
     }
   }
 
-  createDataset(crs: string, { isGeoname, columns }: DatasetInfo) {
-    if (isGeoname) {
-      this.loading = Utils.createPromise();
-      const options = this.getDatasetOptions(columns) as idevio.map.RemoteServiceLocationDatasetOptions;
-      this.dataset = idevio.map.LocationDataset.create('i:///pointgeom/default', 'SERVICE', options);
-    } else {
-      this.dataset = new idevio.map.MemoryDataset({ name: this.id, crs });
-    }
-    this.layer.setDataset(this.dataset);
+  createLocationDataset(columns: string[]) {
+    this.loading = Utils.createPromise();
+    const options = this.getDatasetOptions(columns) as idevio.map.RemoteServiceLocationDatasetOptions;
+    this.dataset = idevio.map.LocationDataset.create('i:///pointgeom/default', 'SERVICE', options);
+  }
+
+  createMemoryDataset(crs: string) {
+    this.dataset = new idevio.map.MemoryDataset({ name: this.id, crs });
   }
 }

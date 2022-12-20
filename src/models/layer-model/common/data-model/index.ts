@@ -20,35 +20,53 @@ export class DataModel {
     return { id: cell.qElemNumber };
   }
 
-  getLocationData(cell: NxCell, metaLocation: LocationMeta) {
-    let data = {} as LocationData;
-    metaLocation.expressions.forEach((expressionMeta: ExpressionMeta) => {
+  getExpressionData(cell: NxCell, meta: ExpressionMeta[]) {
+    let attributeData = {};
+    meta.forEach((expressionMeta: ExpressionMeta) => {
       const attribute = DataUtils.getAttributeData(cell, expressionMeta);
-      data = { ...data, ...attribute };
+      attributeData = { ...attributeData, ...attribute };
     });
 
-    if (data.locationOrLatitude === undefined) {
-      data.locationOrLatitude = cell.qText;
+    return attributeData;
+  }
+
+  replaceLocationData(attributeData: any, dimValue: string | undefined, locationType: string) {
+    if (attributeData.locationOrLatitude === undefined) {
+      attributeData.locationOrLatitude = dimValue;
     }
 
-    const locationKind = LocationUtils.getLocationKind(data.locationOrLatitude, metaLocation.isLatLong);
+    const locationKind = LocationUtils.getLocationKind(attributeData.locationOrLatitude, attributeData.longitude);
 
+    // Add new consumable location data
     switch (locationKind) {
       case 'LATLONGS':
         const latitude =
-          data.locationOrLatitude !== undefined
-            ? parseFloat(data.locationOrLatitude.replace(/,/, '.'))
-            : data.locationOrLatitude;
-        const longitude = data.longitude !== undefined ? parseFloat(data.longitude.replace(/,/, '.')) : data.longitude;
-        return { coords: [latitude, longitude] };
+          attributeData.locationOrLatitude !== undefined
+            ? parseFloat(attributeData.locationOrLatitude.replace(/,/, '.'))
+            : attributeData.locationOrLatitude;
+        const longitude =
+          attributeData.longitude !== undefined
+            ? parseFloat(attributeData.longitude.replace(/,/, '.'))
+            : attributeData.longitude;
+        attributeData.coords = [latitude, longitude];
+        break;
       case 'STRINGCOORDS':
-        return { coords: LocationUtils.parseGeometryString(data.locationOrLatitude) };
+        attributeData.coords = LocationUtils.parseGeometryString(attributeData.locationOrLatitude);
+        break;
       case 'NAMES':
-        const geoname = LocationUtils.addLocationSuffix(data, metaLocation);
-        return { geoname };
-      case 'UNKOWN':
-        return { location: null };
+        attributeData.geoname = LocationUtils.addLocationSuffix(attributeData, locationType);
+        break;
+      default:
+        attributeData.location = null;
+        break;
     }
+
+    // Remove old location expressions
+    delete attributeData.locationOrLatitude;
+    delete attributeData.locationCountry;
+    delete attributeData.locationAdmin1;
+    delete attributeData.locationAdmin2;
+    delete attributeData.longitude;
   }
 
   getSizeData(cell: NxCell, layout: LayerLayout) {

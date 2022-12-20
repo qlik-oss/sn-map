@@ -1,3 +1,5 @@
+import { getValue } from 'qlik-chart-modules';
+
 export abstract class DatasetModel {
   abstract id: string;
   abstract dataset: idevio.map.MemoryDataset | idevio.map.LocationDataset;
@@ -43,6 +45,7 @@ export abstract class DatasetModel {
         console.log('Failed lookup; ', row.geoname);
       }
     }
+    console.log('collectedData', collectedData);
     (this.dataset as idevio.map.LocationDataset).addData(collectedData);
   }
 

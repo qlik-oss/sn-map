@@ -15,9 +15,8 @@ module LocationUtils {
     return 'UNKOWN';
   }
 
-  export function addLocationSuffix(data: LocationData, meta: LocationMeta) {
+  export function addLocationSuffix(data: LocationData, locationType: string) {
     let location = data.locationOrLatitude;
-    if (meta.isAuto) return location;
 
     const hasLocationCountry = getValue(data, 'locationCountry', '').trim().length > 0;
     const hasLocationAdmin1 = getValue(data, 'locationAdmin1', '').trim().length > 0;
@@ -33,16 +32,16 @@ module LocationUtils {
       }
     }
 
-    if (meta.locationType) {
-      location = `${location}:${meta.locationType}`;
+    if (locationType) {
+      location = `${location}:${locationType}`;
     }
     return location;
   }
 
-  export function parseGeometryString(stringgeom: string | undefined) {
-    if (!stringgeom) return null;
+  export function parseGeometryString(stringGeom: string | undefined) {
+    if (!stringGeom) return null;
 
-    const parsedArray = JSON.parse(stringgeom);
+    const parsedArray = JSON.parse(stringGeom);
     const depth = LocationUtils.switchCoordinatesAndCountDepth(parsedArray);
 
     if (depth > 2) {

@@ -1,6 +1,31 @@
 import { getValue } from 'qlik-chart-modules';
 
 module DataUtils {
+  export function getAttributeMeta(dimensionInfo: any) {
+    let expressionMeta: ExpressionMeta[] = [];
+    dimensionInfo.forEach((dimension: NxDimensionInfo, dimIndex: number) => {
+      dimension.qAttrExprInfo.forEach((attrExpr: NxAttrExprInfo, index: number) => {
+        expressionMeta.push({
+          id: attrExpr.id,
+          index,
+          dimIndex,
+          isDimension: false,
+        });
+      });
+
+      dimension.qAttrDimInfo.forEach((dimExpr: NxAttrDimInfo, index: number) => {
+        expressionMeta.push({
+          id: dimExpr.id,
+          index,
+          dimIndex,
+          isDimension: true,
+        });
+      });
+    });
+
+    return expressionMeta;
+  }
+
   export function getAttributeData(cell: NxCell, meta: ExpressionMeta) {
     const attrValues = meta.isDimension ? cell.qAttrDims : cell.qAttrExps;
     if (!attrValues) {

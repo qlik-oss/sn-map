@@ -30,34 +30,6 @@ export class SymbolModel {
     };
   }
 
-  // Should only be used for max/min width/radius of point layer and line layer.
-  getSizeFromSliderValue = (value: number) => {
-    if (value < 20) {
-      return Math.ceil(value / 2);
-    } else if (value < 40) {
-      return 10 + (value - 20);
-    } else if (value < 60) {
-      return 30 + (value - 40) * 2;
-    } else {
-      return 70 + (value - 60) * 4;
-    }
-  };
-
-  calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
-    if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
-      // handle slider with two values
-      return {
-        radiusMin: this.getSizeFromSliderValue(sizeProps.rangeValues[0]),
-        radiusMax: this.getSizeFromSliderValue(sizeProps.rangeValues[1]),
-      };
-    } else {
-      // handle single slider
-      const val = this.getSizeFromSliderValue(sizeProps.value);
-      const d = Math.ceil(val / 2);
-      return { radiusMin: val - d, radiusMax: val + d };
-    }
-  };
-
   getSize(pointData: PointData, layoutService: LayoutService) {
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
     const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
@@ -81,6 +53,34 @@ export class SymbolModel {
     const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
     return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size; // calculate symbol size
   }
+
+  calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
+    if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
+      // handle slider with two values
+      return {
+        radiusMin: this.getSizeFromSliderValue(sizeProps.rangeValues[0]),
+        radiusMax: this.getSizeFromSliderValue(sizeProps.rangeValues[1]),
+      };
+    } else {
+      // handle single slider
+      const val = this.getSizeFromSliderValue(sizeProps.value);
+      const d = Math.ceil(val / 2);
+      return { radiusMin: val - d, radiusMax: val + d };
+    }
+  };
+
+  // Should only be used for max/min width/radius of point layer and line layer.
+  getSizeFromSliderValue = (value: number) => {
+    if (value < 20) {
+      return Math.ceil(value / 2);
+    } else if (value < 40) {
+      return 10 + (value - 20);
+    } else if (value < 60) {
+      return 30 + (value - 40) * 2;
+    } else {
+      return 70 + (value - 60) * 4;
+    }
+  };
 
   private getColor(layoutService: LayoutService) {
     const colorMode = layoutService.getLayoutValue('color.mode');

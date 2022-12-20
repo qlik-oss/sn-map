@@ -3,48 +3,53 @@ import DataUtils from '../../common/data-model/utils/data-utils';
 
 export class PointLayerDataModel extends DataModel {
   data: PointData[];
+  meta: ExpressionMeta[];
   constructor() {
     super();
     this.data = [];
+    this.meta = [];
   }
 
   update(layoutService: LayoutService) {
-    const pointData = this.getPointData(layoutService);
+    const dimensionInfo = layoutService.getLayoutValue('qHyperCube.qDimensionInfo');
+
+    this.meta = DataUtils.getAttributeMeta(dimensionInfo);
+    const pointData = this.extractPointData(layoutService);
     this.setData(pointData);
   }
 
-  getPointData(layoutService: LayoutService) {
+  extractPointData(layoutService: LayoutService) {
     const dataPages = layoutService.getDataPages();
+    const layoutType = layoutService.getLayoutValue('layoutType');
     let pointData: PointData[] = [];
     for (const page in dataPages) {
-      const dataPage = dataPages[page];
+      let dataPage = dataPages[page];
       if (!dataPage.qMatrix) {
         continue;
       }
-      const extractedData = this.extractPointData(dataPage, layoutService.meta, layoutService.getLayout());
+
+      if (Array.isArray(dataPage)) {
+        dataPage = DataUtils.flattenDataPages(dataPage);
+      }
+
+      const extractedData = dataPage.qMatrix.map((row: NxCell[]) => {
+        const cell = row[0];
+        if (cell === null) {
+          return { id: null };
+        }
+
+        const elemData = this.getElemData(cell);
+        const expressionData = this.getExpressionData(cell, this.meta);
+        this.replaceLocationData(expressionData, cell.qText, layoutType);
+
+        return {
+          ...elemData,
+          ...expressionData,
+        };
+      });
+
       pointData = pointData.concat(extractedData as PointData[]);
     }
     return pointData;
-  }
-
-  extractPointData(dataPage: NxDataPage | NxDataPage[], meta: PointMeta, layout: LayerLayout) {
-    if (Array.isArray(dataPage)) {
-      dataPage = DataUtils.flattenDataPages(dataPage);
-    }
-    return dataPage.qMatrix.map((row) => {
-      const cell = row[0];
-      if (cell === null) {
-        return { id: null };
-      }
-
-      const elemData = this.getElemData(cell);
-      const locationData = this.getLocationData(cell, meta.location);
-      const sizeData = this.getSizeData(cell, layout); //qAttrExps
-      return {
-        ...locationData,
-        ...elemData,
-        ...sizeData,
-      };
-    });
   }
 }
