@@ -24,7 +24,7 @@ describe('Symbol model', () => {
   describe('addSymbol', () => {
     it('should not add symbols', () => {
       data = [];
-      symbolModel.addSymbol(data, layoutService);
+      symbolModel.addSymbolToData(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(0);
       expect('8_red' in symbolModel.symbols).toBeFalsy();
@@ -32,7 +32,7 @@ describe('Symbol model', () => {
 
     it('should add symbols', () => {
       data = [{ id: 0 }];
-      symbolModel.addSymbol(data, layoutService);
+      symbolModel.addSymbolToData(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
       expect('8_red' in symbolModel.symbols).toBeTruthy();
@@ -40,7 +40,7 @@ describe('Symbol model', () => {
 
     it('should only cache one symbol', () => {
       data = [{ id: 0 }, { id: 0 }];
-      symbolModel.addSymbol(data, layoutService);
+      symbolModel.addSymbolToData(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
       expect('8_red' in symbolModel.symbols).toBeTruthy();

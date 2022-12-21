@@ -1,7 +1,7 @@
 import { getValue } from 'qlik-chart-modules';
 
 module DataUtils {
-  export function getExpressionData(cell: NxCell, meta: any) {
+  export function getExpressionData(cell: NxCell, meta: Meta) {
     let data = {};
     for (const key in meta) {
       const expressionMeta = meta[key];

@@ -2,6 +2,9 @@ declare interface LayoutService {
   getDataPages(): NxDataPage[];
   getLayoutValue(path: string): any;
   getLayout(): LayerLayout;
+  meta: {
+    attributes: Meta;
+  };
 }
 declare interface ExpressionMeta {
   id: string;

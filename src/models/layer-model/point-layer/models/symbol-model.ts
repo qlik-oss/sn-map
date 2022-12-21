@@ -8,9 +8,9 @@ interface Style {
 export class SymbolModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
-  addSymbol(data: PointData[], meta: PointMeta, layoutService: LayoutService) {
+  addSymbolToData(data: PointData[], layoutService: LayoutService) {
     return data.map((pointData: PointData) => {
-      const style = this.collectStyle(pointData, meta, layoutService);
+      const style = this.collectStyle(pointData, layoutService);
       const key = this.makeKey(style);
 
       if (!this.symbols[key]) {
@@ -20,8 +20,8 @@ export class SymbolModel {
     });
   }
 
-  collectStyle(pointData: PointData, meta: PointMeta, layoutService: LayoutService) {
-    const size = this.getSize(pointData, meta, layoutService) as number;
+  collectStyle(pointData: PointData, layoutService: LayoutService) {
+    const size = this.getSize(pointData, layoutService) as number;
     const color = this.getColor(layoutService) as string;
     return {
       size,
@@ -29,8 +29,9 @@ export class SymbolModel {
     };
   }
 
-  getSize(pointData: PointData, meta: PointMeta, layoutService: LayoutService) {
+  getSize(pointData: PointData, layoutService: LayoutService) {
     const sizeProps = layoutService.getLayoutValue('size');
+    const meta = layoutService.meta.attributes;
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
     const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
     const attrExprMinMax = meta.size ? { min: meta.size.minValue, max: meta.size.maxValue } : null;
