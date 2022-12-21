@@ -3,11 +3,11 @@ import DataUtils from '../../common/data-model/utils/data-utils';
 
 export class PointLayerDataModel extends DataModel {
   data: PointData[];
-  meta: ExpressionMeta[];
+  meta: any;
   constructor() {
     super();
     this.data = [];
-    this.meta = [];
+    this.meta = {};
   }
 
   update(layoutService: LayoutService) {

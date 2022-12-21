@@ -20,12 +20,13 @@ export class DataModel {
     return { id: cell.qElemNumber };
   }
 
-  getExpressionData(cell: NxCell, meta: ExpressionMeta[]) {
+  getExpressionData(cell: NxCell, meta: any) {
     let attributeData = {};
-    meta.forEach((expressionMeta: ExpressionMeta) => {
+    for (const key in meta) {
+      const expressionMeta = meta[key];
       const attribute = DataUtils.getAttributeData(cell, expressionMeta);
       attributeData = { ...attributeData, ...attribute };
-    });
+    }
 
     return attributeData;
   }
@@ -37,7 +38,7 @@ export class DataModel {
 
     const locationKind = LocationUtils.getLocationKind(attributeData.locationOrLatitude, attributeData.longitude);
 
-    // Add new consumable location data
+    // Tailor location data to be consumed
     switch (locationKind) {
       case 'LATLONGS':
         const latitude =

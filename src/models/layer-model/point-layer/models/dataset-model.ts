@@ -20,12 +20,10 @@ export class PointLayerDatasetModel extends DatasetModel {
     this.remove();
     const info = this.getDatasetInfo(data);
 
-    console.log('columns', info?.columns);
-
     if (info !== null) {
       if (info.isGeoname) {
         this.createLocationDataset(info.columns);
-        this.addLocationData(data);
+        this.addLocationData(data, info.columns);
       } else {
         this.createMemoryDataset(crs);
         this.addFeatureData(data);

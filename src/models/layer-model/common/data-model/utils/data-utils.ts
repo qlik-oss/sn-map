@@ -2,24 +2,28 @@ import { getValue } from 'qlik-chart-modules';
 
 module DataUtils {
   export function getAttributeMeta(dimensionInfo: any) {
-    let expressionMeta: ExpressionMeta[] = [];
+    let expressionMeta = {};
     dimensionInfo.forEach((dimension: NxDimensionInfo, dimIndex: number) => {
       dimension.qAttrExprInfo.forEach((attrExpr: NxAttrExprInfo, index: number) => {
-        expressionMeta.push({
+        expressionMeta[attrExpr.id] = {
           id: attrExpr.id,
           index,
           dimIndex,
           isDimension: false,
-        });
+          minValue: attrExpr.qMin,
+          maxValue: attrExpr.qMax,
+          title: attrExpr.qFallbackTitle,
+        };
       });
 
       dimension.qAttrDimInfo.forEach((dimExpr: NxAttrDimInfo, index: number) => {
-        expressionMeta.push({
+        expressionMeta[dimExpr.id] = {
           id: dimExpr.id,
           index,
           dimIndex,
           isDimension: true,
-        });
+          title: dimExpr.qFallbackTitle,
+        };
       });
     });
 
@@ -50,10 +54,10 @@ module DataUtils {
   }
 
   export function extractAttributeExpression(value: NxSimpleValue) {
-    if (value.qText) {
-      return value.qText as string;
-    } else if (value.qNum !== undefined && value.qNum !== 'NaN') {
+    if (value.qNum !== undefined && value.qNum !== 'NaN') {
       return value.qNum as number;
+    } else if (value.qText) {
+      return value.qText as string;
     }
     return null;
   }

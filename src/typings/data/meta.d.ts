@@ -9,6 +9,9 @@ declare interface ExpressionMeta {
   index: number;
   dimIndex: number;
   isDimension: boolean;
+  title: string;
+  minValue?: number;
+  maxValue?: number;
 }
 
 declare interface Meta {

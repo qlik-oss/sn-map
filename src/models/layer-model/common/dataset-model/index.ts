@@ -1,5 +1,3 @@
-import { getValue } from 'qlik-chart-modules';
-
 export abstract class DatasetModel {
   abstract id: string;
   abstract dataset: idevio.map.MemoryDataset | idevio.map.LocationDataset;
@@ -32,7 +30,7 @@ export abstract class DatasetModel {
     }
   }
 
-  addLocationData(data: PointData[]) {
+  addLocationData(data: PointData[], dataOrder: string[]) {
     const collectedData = [];
     for (const index in data) {
       const row = data[index];
@@ -40,12 +38,16 @@ export abstract class DatasetModel {
         continue;
       }
       try {
-        collectedData.push([...Object.values(row)]);
+        const featureData = [];
+        dataOrder.forEach((key) => {
+          featureData.push(row[key]);
+        });
+        // geoname needs to be first
+        collectedData.push(featureData);
       } catch {
         console.log('Failed lookup; ', row.geoname);
       }
     }
-    console.log('collectedData', collectedData);
     (this.dataset as idevio.map.LocationDataset).addData(collectedData);
   }
 
@@ -73,7 +75,7 @@ export abstract class DatasetModel {
   getDatasetInfo(data: Data[]) {
     for (const index in data) {
       const row = data[index];
-      const columns = Object.keys(row);
+      const columns = this.sortColumns(Object.keys(row));
       if (row.hasOwnProperty('coords')) {
         return {
           columns,
@@ -88,6 +90,10 @@ export abstract class DatasetModel {
       }
     }
     return null;
+  }
+
+  sortColumns(columns: string[]) {
+    return [...columns.filter((key) => key === 'geoname'), ...columns.filter((key) => key !== 'geoname')];
   }
 
   getDatasetOptions(columnNames: string[]) {
