@@ -2,7 +2,6 @@ declare interface LayoutService {
   getDataPages(): NxDataPage[];
   getLayoutValue(path: string): any;
   getLayout(): LayerLayout;
-  meta: PointMeta;
 }
 declare interface ExpressionMeta {
   id: string;
@@ -15,14 +14,11 @@ declare interface ExpressionMeta {
 }
 
 declare interface Meta {
-  location: LocationMeta;
+  geoname?: ExpressionMeta;
+  coords?: ExpressionMeta;
+  [key: string]: ExpressionMeta;
 }
 
-declare interface LocationMeta {
-  expressions: ExpressionMeta[];
-  isAuto: boolean;
-  isLatLong: boolean;
-  locationType: string;
+declare interface PointMeta extends Meta {
+  size: ExpressionMeta;
 }
-
-declare interface PointMeta extends Meta {}

@@ -1,11 +1,13 @@
 import LocationUtils from './utils/location-utils';
 import DataUtils from './utils/data-utils';
-import Meta from '../../common/services/layout-service/meta';
+import MetaUtils from './utils/meta-utils';
 
 export class DataModel {
   data: Data[];
+  meta: Meta;
   constructor() {
     this.data = [];
+    this.meta = {};
   }
 
   getData() {
@@ -16,65 +18,84 @@ export class DataModel {
     this.data = data;
   }
 
-  getElemData(cell: NxCell) {
-    return { id: cell.qElemNumber };
+  getMeta() {
+    return this.meta;
   }
 
-  getExpressionData(cell: NxCell, meta: any) {
-    let attributeData = {};
-    for (const key in meta) {
-      const expressionMeta = meta[key];
-      const attribute = DataUtils.getAttributeData(cell, expressionMeta);
-      attributeData = { ...attributeData, ...attribute };
-    }
-
-    return attributeData;
+  setMeta(meta: any) {
+    this.meta = meta;
   }
 
-  replaceLocationData(attributeData: any, dimValue: string | undefined, locationType: string) {
-    if (attributeData.locationOrLatitude === undefined) {
-      attributeData.locationOrLatitude = dimValue;
-    }
-
-    const locationKind = LocationUtils.getLocationKind(attributeData.locationOrLatitude, attributeData.longitude);
-
-    // Tailor location data to be consumed
-    switch (locationKind) {
-      case 'LATLONGS':
-        const latitude =
-          attributeData.locationOrLatitude !== undefined
-            ? parseFloat(attributeData.locationOrLatitude.replace(/,/, '.'))
-            : attributeData.locationOrLatitude;
-        const longitude =
-          attributeData.longitude !== undefined
-            ? parseFloat(attributeData.longitude.replace(/,/, '.'))
-            : attributeData.longitude;
-        attributeData.coords = [latitude, longitude];
-        break;
-      case 'STRINGCOORDS':
-        attributeData.coords = LocationUtils.parseGeometryString(attributeData.locationOrLatitude);
-        break;
-      case 'NAMES':
-        attributeData.geoname = LocationUtils.addLocationSuffix(attributeData, locationType);
-        break;
-      default:
-        attributeData.location = null;
-        break;
-    }
-
-    // Remove old location expressions
-    delete attributeData.locationOrLatitude;
-    delete attributeData.locationCountry;
-    delete attributeData.locationAdmin1;
-    delete attributeData.locationAdmin2;
-    delete attributeData.longitude;
+  update(layoutService: LayoutService) {
+    const dimensionInfo = layoutService.getLayoutValue('qHyperCube.qDimensionInfo');
+    const meta = this.extractMeta(dimensionInfo);
+    this.setMeta(meta);
+    const data = this.extractData(layoutService, meta);
+    this.setData(data);
   }
 
-  getSizeData(cell: NxCell, layout: LayerLayout) {
-    const expressionMeta = Meta.getExpressionMeta('size', layout)?.[0];
-    if (expressionMeta) {
-      return { size: { value: cell.qAttrExps?.qValues[expressionMeta?.index]?.qNum, expressionMeta } };
+  extractData(layoutService: LayoutService, meta: Meta) {
+    const dataPages = layoutService.getDataPages();
+    const layoutType = layoutService.getLayoutValue('layoutType');
+    let data: Data[] = [];
+    for (const page in dataPages) {
+      let dataPage = dataPages[page];
+      if (!dataPage.qMatrix) {
+        continue;
+      }
+
+      if (Array.isArray(dataPage)) {
+        dataPage = DataUtils.flattenDataPages(dataPage);
+      }
+
+      const extractedData = dataPage.qMatrix.map((row: NxCell[]) => {
+        const cell = row[0];
+        if (cell === null) {
+          return { id: null };
+        }
+
+        const elemData = { id: cell.qElemNumber };
+        const expressionData = DataUtils.getExpressionData(cell, meta);
+        LocationUtils.replaceLocationData(expressionData, cell.qText, layoutType);
+
+        return {
+          ...elemData,
+          ...expressionData,
+        };
+      }) as Data[];
+
+      data = data.concat(extractedData);
     }
-    return {};
+    return data;
+  }
+
+  extractMeta(dimensionInfo: any) {
+    let meta: Meta = {};
+    dimensionInfo.forEach((dimension: NxDimensionInfo, dimIndex: number) => {
+      dimension.qAttrExprInfo.forEach((attrExpr: NxAttrExprInfo, index: number) => {
+        const minMax = MetaUtils.getMinMax(attrExpr);
+        meta[attrExpr.id] = {
+          id: attrExpr.id,
+          index,
+          dimIndex,
+          isDimension: false,
+          minValue: minMax?.min,
+          maxValue: minMax?.max,
+          title: attrExpr.qFallbackTitle,
+        };
+      });
+
+      dimension.qAttrDimInfo.forEach((dimExpr: NxAttrDimInfo, index: number) => {
+        meta[dimExpr.id] = {
+          id: dimExpr.id,
+          index,
+          dimIndex,
+          isDimension: true,
+          title: dimExpr.qFallbackTitle,
+        };
+      });
+    });
+
+    return meta;
   }
 }

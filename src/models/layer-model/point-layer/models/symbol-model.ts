@@ -8,7 +8,7 @@ interface Style {
 export class SymbolModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
-  addSymbol(data: PointData[], meta: any, layoutService: LayoutService) {
+  addSymbol(data: PointData[], meta: PointMeta, layoutService: LayoutService) {
     return data.map((pointData: PointData) => {
       const style = this.collectStyle(pointData, meta, layoutService);
       const key = this.makeKey(style);
@@ -20,7 +20,7 @@ export class SymbolModel {
     });
   }
 
-  collectStyle(pointData: PointData, meta: any, layoutService: LayoutService) {
+  collectStyle(pointData: PointData, meta: PointMeta, layoutService: LayoutService) {
     const size = this.getSize(pointData, meta, layoutService) as number;
     const color = this.getColor(layoutService) as string;
     return {
@@ -29,12 +29,11 @@ export class SymbolModel {
     };
   }
 
-  getSize(pointData: PointData, meta: any, layoutService: LayoutService) {
-    const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
-    const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
-    const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
-    const customMaxRangeValue = layoutService.getLayoutValue('size.customMaxRangeValue');
-    const attrExprMinMax = { min: meta.size.minValue, max: meta.size.maxValue }; // null if not attribute dependent size
+  getSize(pointData: PointData, meta: PointMeta, layoutService: LayoutService) {
+    const sizeProps = layoutService.getLayoutValue('size');
+    const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
+    const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
+    const attrExprMinMax = meta.size ? { min: meta.size.minValue, max: meta.size.maxValue } : null;
 
     const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
       autoRadiusValueRange === false

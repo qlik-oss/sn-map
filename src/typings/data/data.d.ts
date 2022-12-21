@@ -2,6 +2,8 @@ declare interface Data {
   id: number | null;
   dimValue?: string;
   locationOrLatitude: string | undefined;
+  geoname?: string;
+  coords?: string | number;
   longitude?: string;
   locationCountry?: string;
   locationAdmin1?: string;
@@ -14,19 +16,6 @@ declare interface DatasetInfo {
   isGeoname: boolean;
 }
 
-declare interface LocationData {
-  locationOrLatitude: string | undefined;
-  longitude?: string;
-  locationCountry?: string;
-  locationAdmin1?: string;
-  locationAdmin2?: string;
-}
-
-declare interface SizeData {
-  expressionMeta?: ExpressionMeta;
-  value?: number;
-}
-
 declare interface PointData extends Data {
-  size?: SizeData;
+  size?: number;
 }
