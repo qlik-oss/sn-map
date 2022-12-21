@@ -27,10 +27,10 @@ export class PointLayerModel extends LayerModel implements PointLayerModelInterf
     });
 
     this.dataModel.update(layoutService);
-    const data = this.dataModel.getData();
-    const meta = this.dataModel.getMeta();
+    const data = this.dataModel.getData() as PointData[];
+    const meta = this.dataModel.getMeta() as PointMeta;
 
-    const collectedData = this.symbolModel.addSymbol(data, meta, layoutService);
+    const collectedData = this.symbolModel.addSymbol(data, meta, layoutService) as PointData[];
     const crs = getValue(this.mapModel, 'baseMapModel.crs');
     this.datasetModel.update(crs, collectedData);
 

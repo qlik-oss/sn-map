@@ -17,7 +17,7 @@ export class DatasetModel {
     this.featureTable = {};
   }
 
-  update(crs: string, data: any) {
+  update(crs: string, data: PointData[]) {
     this.remove();
     const info = Utils.getDatasetInfo(data);
 
@@ -53,15 +53,15 @@ export class DatasetModel {
     const collectedData = [];
     for (const index in data) {
       const row = data[index];
-      if (row.id === null || row.geoname === null || row.location === null) {
+      if (row.id === null || row.geoname === null) {
         continue;
       }
       try {
-        const featureData = [];
+        const locationData: PointData[] = [];
         dataOrder.forEach((key) => {
-          featureData.push(row[key]);
+          locationData.push(row[key] as any);
         });
-        collectedData.push(featureData);
+        collectedData.push(locationData);
       } catch {
         console.log('Failed lookup; ', row.geoname);
       }
@@ -73,7 +73,7 @@ export class DatasetModel {
     this.featureTable = {};
     for (const index in data) {
       const row = data[index];
-      if (row.id === null || row.coords === null || row.location === null) {
+      if (row.id === null || row.coords === null) {
         continue;
       }
       try {

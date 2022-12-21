@@ -40,9 +40,7 @@ export class SymbolModel {
         ? { min: customMinRangeValue, max: customMaxRangeValue }
         : attrExprMinMax || { min: 0, max: 0 };
 
-    const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);
-    const sizeFromExpression = pointData.size;
-    const size = (sizeFromExpression ?? sizeFromSingleSlider) as number;
+    const size = (pointData.size ?? Math.round((radiusMin + radiusMax) / 2)) as number;
     const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
     return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size; // calculate symbol size
   }

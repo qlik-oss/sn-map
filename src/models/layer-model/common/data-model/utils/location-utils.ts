@@ -6,20 +6,13 @@ module LocationUtils {
       attributeData.locationOrLatitude = dimValue;
     }
 
-    const locationKind = getLocationKind(attributeData.locationOrLatitude, attributeData.longitude);
+    const hasLatLong = attributeData.hasOwnProperty('longitude');
+    const locationKind = getLocationKind(attributeData.locationOrLatitude, hasLatLong);
 
     // Tailor location data to be consumed
     switch (locationKind) {
       case 'LATLONGS':
-        const latitude =
-          attributeData.locationOrLatitude !== undefined
-            ? parseFloat(attributeData.locationOrLatitude.replace(/,/, '.'))
-            : attributeData.locationOrLatitude;
-        const longitude =
-          attributeData.longitude !== undefined
-            ? parseFloat(attributeData.longitude.replace(/,/, '.'))
-            : attributeData.longitude;
-        attributeData.coords = [latitude, longitude];
+        attributeData.coords = getLatLong(attributeData.locationOrLatitude, attributeData.longitude);
         break;
       case 'STRINGCOORDS':
         attributeData.coords = parseGeometryString(attributeData.locationOrLatitude);
@@ -28,7 +21,7 @@ module LocationUtils {
         attributeData.geoname = addLocationSuffix(attributeData, locationType);
         break;
       default:
-        attributeData.location = null;
+        attributeData.id = null;
         break;
     }
 
@@ -52,6 +45,12 @@ module LocationUtils {
       }
     }
     return 'UNKOWN';
+  }
+
+  export function getLatLong(latitude: string | number | undefined, longitude: string | number | undefined) {
+    latitude = typeof latitude === 'string' ? parseFloat(latitude.replace(/,/, '.')) : latitude;
+    longitude = typeof longitude === 'string' ? parseFloat(longitude.replace(/,/, '.')) : longitude;
+    return [latitude, longitude];
   }
 
   export function parseGeometryString(stringGeom: string | undefined) {
@@ -90,7 +89,7 @@ module LocationUtils {
     v[1] = tmp;
   }
 
-  export function addLocationSuffix(data: LocationData, locationType: string) {
+  export function addLocationSuffix(data: Data, locationType: string) {
     let location = data.locationOrLatitude;
 
     const hasLocationCountry = getValue(data, 'locationCountry', '').trim().length > 0;

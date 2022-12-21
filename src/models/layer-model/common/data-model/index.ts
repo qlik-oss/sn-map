@@ -55,7 +55,7 @@ export class DataModel {
         }
 
         const elemData = { id: cell.qElemNumber };
-        const expressionData = DataUtils.getExpressionData(cell, meta);
+        const expressionData = DataUtils.getExpressionData(cell, meta) as Data;
         LocationUtils.replaceLocationData(expressionData, cell.qText, layoutType);
 
         return {

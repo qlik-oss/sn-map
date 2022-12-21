@@ -3,12 +3,13 @@ declare interface Data {
   dimValue?: string;
   locationOrLatitude: string | undefined;
   geoname?: string;
-  coords?: string | number;
+  coords?: string[] | [number | string | undefined, number | string | undefined];
   longitude?: string;
   locationCountry?: string;
   locationAdmin1?: string;
   locationAdmin2?: string;
   key?: string;
+  [key: string]: string | number;
 }
 
 declare interface DatasetInfo {
