@@ -7,6 +7,7 @@ declare interface LayoutService {
   };
 }
 declare interface ExpressionMeta {
+  id: string;
   index: number;
   dimIndex: number;
   isDimension: boolean;

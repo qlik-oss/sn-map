@@ -5,6 +5,7 @@ module MetaUtils {
       dimension.qAttrExprInfo.forEach((attrExpr: NxAttrExprInfo, index: number) => {
         const minMax = getMinMax(attrExpr);
         meta[attrExpr.id] = {
+          id: attrExpr.id,
           index,
           dimIndex,
           isDimension: false,
@@ -16,6 +17,7 @@ module MetaUtils {
 
       dimension.qAttrDimInfo.forEach((dimExpr: NxAttrDimInfo, index: number) => {
         meta[dimExpr.id] = {
+          id: dimExpr.id,
           index,
           dimIndex,
           isDimension: true,

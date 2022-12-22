@@ -30,20 +30,24 @@ export class SymbolModel {
   }
 
   getSize(pointData: PointData, layoutService: LayoutService) {
+    let sizeMinMax: { min: number; max: number };
+    let size: number | undefined;
     const sizeProps = layoutService.getLayoutValue('size');
-    const meta = layoutService.meta.attributes;
+    const sizeIsExpression = pointData.hasOwnProperty('size');
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
-    const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
-    const attrExprMinMax = meta.size ? { min: meta.size.minValue, max: meta.size.maxValue } : null;
-
-    const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
-      autoRadiusValueRange === false
-        ? { min: customMinRangeValue, max: customMaxRangeValue }
-        : attrExprMinMax || { min: 0, max: 0 };
-
-    const size = (pointData.size ?? Math.round((radiusMin + radiusMax) / 2)) as number;
+    if (sizeIsExpression) {
+      const sizeMeta = layoutService.meta.attributes.size;
+      const attrExprMinMax = { min: sizeMeta.minValue, max: sizeMeta.maxValue };
+      const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
+      sizeMinMax =
+        autoRadiusValueRange === false ? { min: customMinRangeValue, max: customMaxRangeValue } : attrExprMinMax;
+      size = pointData.size;
+    } else {
+      sizeMinMax = { min: 0, max: 0 };
+      size = Math.round((radiusMin + radiusMax) / 2);
+    }
     const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
-    return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size; // calculate symbol size
+    return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size;
   }
 
   calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
@@ -74,18 +78,18 @@ export class SymbolModel {
     }
   };
 
-  private getColor(layoutService: LayoutService) {
+  getColor(layoutService: LayoutService) {
     const colorMode = layoutService.getLayoutValue('color.mode');
     if (colorMode === 'primary') {
       return layoutService.getLayoutValue('color.paletteColor.color');
     }
   }
 
-  private makeKey(style: Style) {
+  makeKey(style: Style) {
     return `${style.size}_${style.color}`;
   }
 
-  private makeSymbol(style: Style) {
+  makeSymbol(style: Style) {
     return idevio.map.IconFactory.circle({
       radius: style.size,
       color: style.color,

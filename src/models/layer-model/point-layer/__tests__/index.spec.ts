@@ -8,11 +8,10 @@ import mapModelMock from '../../../../mocks/map-model';
 
 import { PointLayerModel } from '../';
 
-jest.mock('../models/data-model');
-jest.mock('../models/dataset-model');
+jest.mock('../../common/data-model');
+jest.mock('../../common/dataset-model');
 jest.mock('../models/symbol-model');
 jest.mock('../../common/layer-model');
-jest.mock('../../common/data-model/utils/data-utils');
 
 describe('Point model', () => {
   let pointLayerModel: PointLayerModel;
@@ -33,7 +32,7 @@ describe('Point model', () => {
 
     expect(pointLayerModel.dataModel.update).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.dataModel.getData).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.symbolModel.addSymbol).toHaveBeenCalledTimes(1);
+    expect(pointLayerModel.symbolModel.addSymbolToData).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.datasetModel.update).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.setStyles).toHaveBeenCalledTimes(1);
   });
