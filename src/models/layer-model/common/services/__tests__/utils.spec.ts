@@ -1,7 +1,7 @@
-import Utils from '../utils';
+import MetaUtils from '../meta';
 import mockLayout, { createDumpAttrExpr, createDumpAttrDim } from '../../../../../mocks/layout';
 
-describe('Layout service meta', () => {
+describe('MetaUtils', () => {
   let dimensionInfo: NxDimensionInfo[];
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Layout service meta', () => {
       dimensionInfo[1].qAttrDimInfo.push(attrDim1);
       dimensionInfo[1].qAttrDimInfo.push(attrDim1);
 
-      const meta = Utils.getAttributesMeta(dimensionInfo);
+      const meta = MetaUtils.getAttributesMeta(dimensionInfo);
       expect(Object.keys(meta).length).toBe(2);
       expect(meta.foobar).toBeDefined();
       expect(meta.foobar.index).toBe(0);
@@ -41,20 +41,20 @@ describe('Layout service meta', () => {
       const attrExpsId1 = 'attrExpsId_1';
       it('should return a minMax when the attribute is an expression', () => {
         const attrExps1 = createDumpAttrExpr(attrExpsId1);
-        const minMax = Utils.getMinMax(attrExps1);
+        const minMax = MetaUtils.getMinMax(attrExps1);
         expect(minMax?.min).toEqual(0);
         expect(minMax?.max).toEqual(10);
       });
       it('should not return a minMax when min isNaN', () => {
         const attrExps1 = createDumpAttrExpr(attrExpsId1);
         attrExps1.qMin = 'foobar' as any;
-        const minMax = Utils.getMinMax(attrExps1);
+        const minMax = MetaUtils.getMinMax(attrExps1);
         expect(minMax).toBeUndefined();
       });
       it('should return a minMax when the attribute is an expression', () => {
         const attrExps1 = createDumpAttrExpr(attrExpsId1);
         attrExps1.qMax = 'foobar' as any;
-        const minMax = Utils.getMinMax(attrExps1);
+        const minMax = MetaUtils.getMinMax(attrExps1);
         expect(minMax).toBeUndefined();
       });
     });

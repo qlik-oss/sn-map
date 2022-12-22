@@ -1,5 +1,5 @@
 import GeneralUtils from '../../../../utils/general';
-import Utils from './utils';
+import Util from './utils';
 export class DatasetModel {
   id: string;
   layer: idevio.map.FeatureLayer;
@@ -19,10 +19,10 @@ export class DatasetModel {
 
   update(crs: string, data: PointData[]) {
     this.remove();
-    const info = Utils.getDatasetInfo(data);
+    const info = this.getDatasetInfo(data);
 
     if (info !== null) {
-      if (info.isGeoname) {
+      if (info.isGeoName) {
         this.createLocationDataset(info.columns);
         this.addLocationData(data, info.columns);
       } else {
@@ -39,6 +39,26 @@ export class DatasetModel {
     }
   }
 
+  getDatasetInfo(data: Data[]) {
+    for (const index in data) {
+      const row = data[index];
+      const columns = Object.keys(row);
+      if (row.hasOwnProperty('coords')) {
+        return {
+          columns,
+          isGeoName: false,
+        };
+      }
+      if (row.hasOwnProperty('geoname')) {
+        return {
+          columns: Util.sortColumns(columns), // geoname needs to be first
+          isGeoName: true,
+        };
+      }
+    }
+    return null;
+  }
+
   createLocationDataset(columns: string[]) {
     this.loading = GeneralUtils.createPromise();
     const options = this.getDatasetOptions(columns) as idevio.map.RemoteServiceLocationDatasetOptions;
@@ -53,7 +73,7 @@ export class DatasetModel {
     const collectedData = [];
     for (const index in data) {
       const row = data[index];
-      if (row.id === null || row.geoname === null) {
+      if (row.id === null || row.geoname === null || row.geoname === undefined) {
         continue;
       }
       try {
@@ -73,7 +93,7 @@ export class DatasetModel {
     this.featureTable = {};
     for (const index in data) {
       const row = data[index];
-      if (row.id === null || row.coords === null) {
+      if (row.id === null || row.coords === null || row.coords === undefined) {
         continue;
       }
       try {

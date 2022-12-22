@@ -12,7 +12,7 @@ describe('qae object-definition', () => {
         baseMap: 'default',
         projection: 'default',
         mapLanguage: 'auto',
-        autoZoomOnSelection: false,
+        autoZoomOnSelection: true,
       },
       showTitles: true,
       subtitle: '',

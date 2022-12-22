@@ -1,9 +1,9 @@
 declare interface Data {
   id: number | null;
   dimValue?: string;
-  locationOrLatitude?: string | undefined;
-  geoname?: string;
-  coords?: string[] | [number | string | undefined, number | string | undefined];
+  locationOrLatitude?: string;
+  geoname?: string | undefined | null;
+  coords?: string[] | [number | string | undefined, number | string | undefined] | undefined | null;
   longitude?: string;
   locationCountry?: string;
   locationAdmin1?: string;
