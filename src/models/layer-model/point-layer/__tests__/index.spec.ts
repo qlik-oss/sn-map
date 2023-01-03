@@ -8,7 +8,6 @@ import mapModelMock from '../../../../mocks/map-model';
 
 import { PointLayerModel } from '../';
 
-jest.mock('../../common/data-model');
 jest.mock('../../common/dataset-model');
 jest.mock('../models/symbol-model');
 jest.mock('../../common/layer-model');
@@ -28,11 +27,10 @@ describe('Point model', () => {
 
   it('update should call necessary functions', () => {
     pointLayerModel.setStyles = jest.fn();
+    pointLayerModel.collectData = jest.fn();
     pointLayerModel.update(layout);
 
-    expect(pointLayerModel.dataModel.update).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.dataModel.getData).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.symbolModel.addSymbolToData).toHaveBeenCalledTimes(1);
+    expect(pointLayerModel.collectData).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.datasetModel.update).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.setStyles).toHaveBeenCalledTimes(1);
   });
@@ -52,5 +50,9 @@ describe('Point model', () => {
 
     expect(pointLayerModel.layer.remove).toHaveBeenCalledTimes(1);
     expect(pointLayerModel.datasetModel.remove).toHaveBeenCalledTimes(1);
+  });
+
+  describe('collectData', () => {
+    it('', () => {});
   });
 });

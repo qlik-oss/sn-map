@@ -7,7 +7,7 @@ import MathUtils from '../../../../../utils/math-utils';
 describe('Symbol model', () => {
   let layout: PointLayerLayout;
   let symbolModel: SymbolModel;
-  let data: PointData[];
+  let data: any;
   let layoutService: LayoutService;
   global.idevio = webmapMock.idevio;
 
@@ -23,25 +23,22 @@ describe('Symbol model', () => {
     jest.clearAllMocks();
   });
 
-  describe('addSymbolToData', () => {
-    it('should not add symbols', () => {
-      data = [];
-      symbolModel.addSymbolToData(data, layoutService);
-
-      expect(Object.keys(symbolModel.symbols).length).toBe(0);
-    });
-
-    it('should add symbols', () => {
-      data = [{ id: 0 }];
-      symbolModel.addSymbolToData(data, layoutService);
+  describe('getSymbolKey', () => {
+    it('should add a symbol and return the key', () => {
+      layoutService.meta.attributes = { size: { minValue: 0, maxValue: 0 } } as any;
+      data = { size: 0 };
+      const key = symbolModel.getSymbolKey(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
       expect('10_red' in symbolModel.symbols).toBeDefined();
+      expect(key).toBe('10_red');
     });
 
     it('should only cache one symbol', () => {
-      data = [{ id: 0 }, { id: 0 }];
-      symbolModel.addSymbolToData(data, layoutService);
+      data = { id: 0 };
+      symbolModel.getSymbolKey(data, layoutService);
+      data = { id: 1 };
+      symbolModel.getSymbolKey(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
       expect('10_red' in symbolModel.symbols).toBeDefined();
@@ -76,7 +73,7 @@ describe('Symbol model', () => {
         const attrExprInfo = createDumpAttrExpr('size');
         layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize({ id: 0, size: 99 }, layoutService);
+        symbolModel.getSize(99, layoutService);
         const size = 99;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [0, 10];
@@ -91,7 +88,7 @@ describe('Symbol model', () => {
         const attrExprInfo = createDumpAttrExpr('size');
         layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize({ id: 0, size: 88 }, layoutService);
+        symbolModel.getSize(88, layoutService);
         const size = 88;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [5, 25];
@@ -103,7 +100,7 @@ describe('Symbol model', () => {
       it('should use correct sizeMinMax and quantify', () => {
         layout.size.value = 10;
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize({ id: 0 }, layoutService);
+        symbolModel.getSize(undefined, layoutService);
         const size = 8;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [0, 0];

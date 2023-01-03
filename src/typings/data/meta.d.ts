@@ -3,8 +3,24 @@ declare interface LayoutService {
   getLayoutValue(path: string): any;
   getLayout(): LayerLayout;
   meta: {
+    dimensions: DimensionMeta[];
+    measures: MeasureMeta[];
     attributes: Meta;
   };
+}
+
+declare interface DimensionMeta {
+  title: string;
+  isDimension: boolean;
+  rowIndex: number;
+}
+
+declare interface MeasureMeta {
+  title: string;
+  isDimension: boolean;
+  rowIndex: number;
+  minValue: number;
+  maxValue: number;
 }
 declare interface ExpressionMeta {
   id: string;

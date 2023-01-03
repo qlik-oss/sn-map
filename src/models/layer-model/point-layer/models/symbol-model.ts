@@ -1,50 +1,41 @@
 import MathUtils from '../../../../utils/math-utils';
 
 interface Style {
-  color: string | undefined;
-  size: number;
+  color?: string;
+  size?: number;
 }
 
 export class SymbolModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
-  addSymbolToData(data: PointData[], layoutService: LayoutService) {
-    return data.map((pointData: PointData) => {
-      const style = this.collectStyle(pointData, layoutService);
-      const key = this.makeKey(style);
+  // Create symbol if missing and returns the symbol key
+  getSymbolKey(data: Style, layoutService: LayoutService) {
+    const size = this.getSize(data.size, layoutService);
+    const color = this.getColor(layoutService);
 
-      if (!this.symbols[key]) {
-        this.symbols[key] = this.makeSymbol(style);
-      }
-      return { ...pointData, key };
-    });
+    const key = this.makeKey({ size, color });
+
+    if (!this.symbols[key]) {
+      this.symbols[key] = this.makeSymbol({ size, color });
+    }
+    return key;
   }
 
-  collectStyle(pointData: PointData, layoutService: LayoutService) {
-    const size = this.getSize(pointData, layoutService) as number;
-    const color = this.getColor(layoutService) as string;
-    return {
-      size,
-      color,
-    };
-  }
-
-  getSize(pointData: PointData, layoutService: LayoutService) {
+  getSize(data: number | undefined, layoutService: LayoutService) {
     let sizeMinMax: { min: number; max: number };
     let size: number | undefined;
     const sizeProps = layoutService.getLayoutValue('size');
-    const sizeIsExpression = pointData.hasOwnProperty('size');
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
-    if (sizeIsExpression) {
+    if (data !== undefined) {
+      size = data;
       const sizeMeta = layoutService.meta.attributes.size;
       const attrExprMinMax = { min: sizeMeta.minValue, max: sizeMeta.maxValue };
       const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
       sizeMinMax =
         autoRadiusValueRange === false ? { min: customMinRangeValue, max: customMaxRangeValue } : attrExprMinMax;
-      size = pointData.size;
     } else {
-      sizeMinMax = { min: 0, max: 0 };
       size = Math.round((radiusMin + radiusMax) / 2);
+      sizeMinMax = { min: 0, max: 0 };
     }
     const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
     return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size;

@@ -146,10 +146,11 @@ describe('Dataset model', () => {
   });
 
   describe('addLocationData', () => {
-    it('should add data', () => {
+    it('should only add data when id and geoname are defined', () => {
       const data = [
-        { id: 0, geoname: null },
-        { id: null, geoname: 'foobar' },
+        { geoname: 'foobar' },
+        { id: 0, geoname: undefined },
+        { id: undefined, geoname: 'foobar' },
         { id: 1, geoname: 'foobar', size: 5 },
       ] as PointData[];
       const order = ['geoname', 'id', 'size'];
@@ -160,10 +161,11 @@ describe('Dataset model', () => {
   });
 
   describe('addFeatureData', () => {
-    it('should add data', () => {
+    it('should only add data when id and coords are defined', () => {
       const data = [
-        { id: 0, coords: null },
-        { id: null, coords: 'foobar' },
+        { coords: 'foobar' },
+        { id: 0, coords: undefined },
+        { id: undefined, coords: 'foobar' },
         { id: 1, coords: 'foobar' },
       ] as PointData[];
       datasetModel.addFeatureData(data);

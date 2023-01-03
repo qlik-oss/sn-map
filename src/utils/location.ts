@@ -1,43 +1,11 @@
 import { getValue } from 'qlik-chart-modules';
 
 module LocationUtils {
-  export function replaceLocationData(attributeData: Data, dimValue: string | undefined, locationType: string) {
-    if (attributeData.locationOrLatitude === undefined) {
-      attributeData.locationOrLatitude = dimValue;
-    }
-
-    const hasLatLong = attributeData.hasOwnProperty('longitude');
-    const locationKind = getLocationKind(attributeData.locationOrLatitude, hasLatLong);
-
-    // Tailor location data to be consumed
-    switch (locationKind) {
-      case 'LATLONGS':
-        attributeData.coords = getLatLong(attributeData.locationOrLatitude, attributeData.longitude);
-        break;
-      case 'STRINGCOORDS':
-        attributeData.coords = parseGeometryString(attributeData.locationOrLatitude);
-        break;
-      case 'NAMES':
-        attributeData.geoname = addLocationSuffix(attributeData, locationType);
-        break;
-      default:
-        attributeData.id = null;
-        break;
-    }
-
-    // Remove old location expressions
-    delete attributeData.locationOrLatitude;
-    delete attributeData.locationCountry;
-    delete attributeData.locationAdmin1;
-    delete attributeData.locationAdmin2;
-    delete attributeData.longitude;
-  }
-
   export function getLocationKind(location: string | number | undefined, isLatLong: boolean) {
     if (isLatLong) {
       return 'LATLONGS';
     }
-    if (location != null && location !== '-') {
+    if (location !== undefined && location !== '-') {
       if (typeof location === 'string' && location.charAt(0) === '[') {
         return 'STRINGCOORDS';
       } else {
@@ -47,14 +15,23 @@ module LocationUtils {
     return 'UNKOWN';
   }
 
+  export function getLocationFromFirstDimension(row: NxCell[]) {
+    if (row[0].qText && row[0].qText !== '[]') {
+      return row[0].qText as string;
+    } else if (row[0].qNum !== undefined) {
+      return row[0].qNum as number;
+    }
+  }
+
   export function getLatLong(latitude: string | number | undefined, longitude: string | number | undefined) {
+    if (latitude === undefined || longitude === undefined) return;
     latitude = typeof latitude === 'string' ? parseFloat(latitude.replace(/,/, '.')) : latitude;
     longitude = typeof longitude === 'string' ? parseFloat(longitude.replace(/,/, '.')) : longitude;
     return [latitude, longitude];
   }
 
   export function parseGeometryString(stringGeom: string | undefined) {
-    if (!stringGeom) return null;
+    if (stringGeom === undefined) return undefined;
 
     const parsedArray = JSON.parse(stringGeom);
     const depth = LocationUtils.switchCoordinatesAndCountDepth(parsedArray);
@@ -89,9 +66,8 @@ module LocationUtils {
     v[1] = tmp;
   }
 
-  export function addLocationSuffix(data: Data, locationType: string) {
+  export function addLocationSuffix(data: LocationData, locationType: string) {
     let location = data.locationOrLatitude;
-
     const hasLocationCountry = getValue(data, 'locationCountry', '').trim().length > 0;
     const hasLocationAdmin1 = getValue(data, 'locationAdmin1', '').trim().length > 0;
     const hadLocationAdmin2 = getValue(data, 'locationAdmin2', '').trim().length > 0;

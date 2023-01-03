@@ -10,9 +10,8 @@ module LayoutService {
     return createLayoutService({
       source: layout,
       metaAdditionsFn: ({ layout }: MetaAttributes) => {
-        const dimensionInfo = getValue(layout, 'qHyperCube.qDimensionInfo', []);
         return {
-          attributes: Meta.getAttributesMeta(dimensionInfo),
+          ...Meta.getHyperCubeMeta(layout.qHyperCube),
         };
       },
     });

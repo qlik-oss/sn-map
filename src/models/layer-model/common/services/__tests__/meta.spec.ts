@@ -18,17 +18,22 @@ describe('MetaUtils', () => {
       const attrExps2 = createDumpAttrExpr('dummy');
       const attrDim1 = createDumpAttrDim('dummy');
       dimensionInfo[0].qAttrExprInfo.push(attrExp1);
-      dimensionInfo[1].qAttrExprInfo.push(attrExps2);
-      dimensionInfo[1].qAttrDimInfo.push(attrDim1);
-      dimensionInfo[1].qAttrDimInfo.push(attrDim1);
 
-      const meta = MetaUtils.getAttributesMeta(dimensionInfo);
-      expect(Object.keys(meta).length).toBe(2);
+      let meta = MetaUtils.getAttributesMeta(dimensionInfo[0], 0);
+      expect(Object.keys(meta).length).toBe(1);
       expect(meta.foobar).toBeDefined();
       expect(meta.foobar.index).toBe(0);
       expect(meta.foobar.dimIndex).toBe(0);
       expect(meta.foobar.isDimension).toBe(false);
 
+      dimensionInfo[1].qAttrExprInfo.push(attrExp1);
+      dimensionInfo[1].qAttrExprInfo.push(attrExps2);
+      dimensionInfo[1].qAttrDimInfo.push(attrDim1);
+      dimensionInfo[1].qAttrDimInfo.push(attrDim1);
+
+      meta = MetaUtils.getAttributesMeta(dimensionInfo[1], 1);
+      expect(Object.keys(meta).length).toBe(2);
+      expect(meta.foobar).toBeDefined();
       expect(meta.dummy).toBeDefined();
       expect(meta.dummy.index).toBe(1);
       expect(meta.dummy.dimIndex).toBe(1);
