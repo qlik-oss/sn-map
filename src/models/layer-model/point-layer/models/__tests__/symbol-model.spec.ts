@@ -66,14 +66,14 @@ describe('Symbol model', () => {
     });
   });
 
-  describe('getSize', () => {
+  describe('getRadius', () => {
     describe('when size is an expression', () => {
       it('should use correct symbol size', () => {
         layout.size.rangeValues = [8, 22];
         const attrExprInfo = createDumpAttrExpr('size');
         layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize(99, layoutService);
+        symbolModel.getRadius(99, layoutService);
         const size = 99;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [0, 10];
@@ -88,7 +88,7 @@ describe('Symbol model', () => {
         const attrExprInfo = createDumpAttrExpr('size');
         layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize(88, layoutService);
+        symbolModel.getRadius(88, layoutService);
         const size = 88;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [5, 25];
@@ -100,7 +100,7 @@ describe('Symbol model', () => {
       it('should use correct sizeMinMax and quantify', () => {
         layout.size.value = 10;
         layoutService = LayoutService.create(layout);
-        symbolModel.getSize(undefined, layoutService);
+        symbolModel.getRadius(undefined, layoutService);
         const size = 8;
         const radiusMinMax = [4, 12];
         const sizeMinMax = [0, 0];
@@ -154,7 +154,7 @@ describe('Symbol model', () => {
   describe('makeKey', () => {
     it('should makeKey', () => {
       const style = {
-        size: 10,
+        radius: 10,
         color: 'red',
       };
       const symbolKey = symbolModel.makeKey(style);
@@ -165,7 +165,7 @@ describe('Symbol model', () => {
   describe('makeSymbol', () => {
     it('should makeSymbol', () => {
       const style = {
-        size: 10,
+        radius: 10,
         color: 'red',
       };
       symbolModel.makeSymbol(style);

@@ -1,27 +1,33 @@
 import MathUtils from '../../../../utils/math-utils';
 
-interface Style {
+interface Data {
   color?: string;
   size?: number;
+}
+
+interface StyleSymbol {
+  radius: number;
+  color: string;
 }
 
 export class SymbolModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
   // Create symbol if missing and returns the symbol key
-  getSymbolKey(data: Style, layoutService: LayoutService) {
-    const size = this.getSize(data.size, layoutService);
+  getSymbolKey(data: Data, layoutService: LayoutService) {
+    const radius = this.getRadius(data.size, layoutService);
     const color = this.getColor(layoutService);
+    const style = { radius, color };
 
-    const key = this.makeKey({ size, color });
+    const key = this.makeKey(style);
 
     if (!this.symbols[key]) {
-      this.symbols[key] = this.makeSymbol({ size, color });
+      this.symbols[key] = this.makeSymbol(style);
     }
     return key;
   }
 
-  getSize(data: number | undefined, layoutService: LayoutService) {
+  getRadius(data: number | undefined, layoutService: LayoutService) {
     let sizeMinMax: { min: number; max: number };
     let size: number | undefined;
     const sizeProps = layoutService.getLayoutValue('size');
@@ -76,13 +82,13 @@ export class SymbolModel {
     }
   }
 
-  makeKey(style: Style) {
-    return `${style.size}_${style.color}`;
+  makeKey(style: StyleSymbol) {
+    return `${style.radius}_${style.color}`;
   }
 
-  makeSymbol(style: Style) {
+  makeSymbol(style: StyleSymbol) {
     return idevio.map.IconFactory.circle({
-      radius: style.size,
+      radius: style.radius,
       color: style.color,
       outline: 'black',
     });
