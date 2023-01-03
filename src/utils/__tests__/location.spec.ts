@@ -69,19 +69,19 @@ describe('LocationUtils', () => {
     it('should return undefined when qText and qNum is invalid', () => {
       row[0].qText = undefined;
       row[0].qNum = undefined;
-      let location = LocationUtils.getLocationFromFirstDimension(row);
+      const location = LocationUtils.getLocationFromFirstDimension(row);
       expect(location).toBeUndefined();
     });
   });
 
   describe('getLatLong', () => {
     it('should return latlong as numbers', () => {
-      let geom = LocationUtils.getLatLong(1, 2);
+      const geom = LocationUtils.getLatLong(1, 2);
       expect(geom).toEqual([1, 2]);
     });
 
     it('should parse input if string', () => {
-      let geom = LocationUtils.getLatLong('6,6', '2,3');
+      const geom = LocationUtils.getLatLong('6,6', '2,3');
       expect(geom).toEqual([6.6, 2.3]);
     });
 

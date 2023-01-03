@@ -1,4 +1,4 @@
-import { layoutService as createLayoutService, getValue } from 'qlik-chart-modules';
+import { layoutService as createLayoutService } from 'qlik-chart-modules';
 import Meta from './meta';
 
 declare interface MetaAttributes {

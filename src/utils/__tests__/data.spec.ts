@@ -1,6 +1,6 @@
 import DataUtils from '../data';
 import LocationUtils from '../location';
-import mockLayout, { createDumpAttrExpr } from '../../mocks/layout';
+import mockLayout from '../../mocks/layout';
 
 jest.mock('../location');
 
