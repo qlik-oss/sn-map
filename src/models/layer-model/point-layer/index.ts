@@ -30,21 +30,18 @@ export class PointLayerModel extends LayerModel implements PointLayerModelInterf
   collectData(layoutService: LayoutService) {
     let collectedData: PointData[] = [];
     const dataPages = layoutService.getDataPages();
-    const meta = getValue(layoutService, 'meta', {});
+    const sizeMeta = getValue(layoutService, 'meta.attributes.size');
     for (const page in dataPages) {
       let dataPage = dataPages[page];
-      if (!dataPage.qMatrix) {
-        continue;
-      }
-
       if (Array.isArray(dataPage)) {
         dataPage = DataUtils.flattenDataPages(dataPage);
       }
+      console.log('page after', dataPage);
 
       const data = dataPage.qMatrix.map((row: NxCell[]) => {
         const elemData = DataUtils.getElemData(row, 0);
         const geom = DataUtils.getGeometry(row, layoutService);
-        const size = DataUtils.getAttribute(row, meta.attributes.size);
+        const size = DataUtils.getAttribute(row, sizeMeta);
         const style = { ...size };
         const key = this.symbolModel.getSymbolKey(style, layoutService);
         return {

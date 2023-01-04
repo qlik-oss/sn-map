@@ -148,9 +148,8 @@ describe('Dataset model', () => {
   describe('addLocationData', () => {
     it('should only add data when id and geoname are defined', () => {
       const data = [
-        { geoname: 'foobar' },
         { id: 0, geoname: undefined },
-        { id: undefined, geoname: 'foobar' },
+        { id: null, geoname: 'foobar' },
         { id: 1, geoname: 'foobar', size: 5 },
       ] as PointData[];
       const order = ['geoname', 'id', 'size'];
@@ -163,9 +162,8 @@ describe('Dataset model', () => {
   describe('addFeatureData', () => {
     it('should only add data when id and coords are defined', () => {
       const data = [
-        { coords: 'foobar' },
         { id: 0, coords: undefined },
-        { id: undefined, coords: 'foobar' },
+        { id: null, coords: 'foobar' },
         { id: 1, coords: 'foobar' },
       ] as PointData[];
       datasetModel.addFeatureData(data);
@@ -192,7 +190,7 @@ describe('Dataset model', () => {
     });
 
     it('should return null when no geoname or coords', () => {
-      const data = [{ id: 0, location: 'foobar' }];
+      const data = [{ id: 0, dimensionValue: 'dim', state: 'X', location: 'foobar' }];
 
       const info = datasetModel.getDatasetInfo(data);
       expect(info).toBe(null);

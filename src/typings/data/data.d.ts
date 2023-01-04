@@ -7,9 +7,9 @@
  * key: used for matching the point to the correct symbol
  */
 declare interface Data {
-  id?: number;
-  dimensionValue?: string;
-  state?: string;
+  id: number | null;
+  dimensionValue: string | null;
+  state: string | null;
   geoname?: string;
   key?: string;
   [key: string]: string | number;

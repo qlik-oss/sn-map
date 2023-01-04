@@ -11,13 +11,11 @@ declare interface LayoutService {
 
 declare interface DimensionMeta {
   title: string;
-  isDimension: boolean;
   rowIndex: number;
 }
 
 declare interface MeasureMeta {
   title: string;
-  isDimension: boolean;
   rowIndex: number;
   minValue: number;
   maxValue: number;

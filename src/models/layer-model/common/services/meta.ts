@@ -12,7 +12,6 @@ module MetaUtils {
     dimensionInfo.forEach((info: NxDimensionInfo) => {
       dimensionMeta.push({
         title: info.qFallbackTitle,
-        isDimension: true,
         rowIndex,
       });
       attributesMeta = { ...attributesMeta, ...getAttributesMeta(info, rowIndex) };
@@ -22,7 +21,6 @@ module MetaUtils {
     measureInfo.forEach((info: NxMeasureInfo) => {
       measureMeta.push({
         title: info.qFallbackTitle,
-        isDimension: true,
         rowIndex,
         minValue: info.qMin,
         maxValue: info.qMax,

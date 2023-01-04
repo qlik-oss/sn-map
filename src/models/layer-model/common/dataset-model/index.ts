@@ -73,7 +73,7 @@ export class DatasetModel {
     const collectedData = [];
     for (const index in data) {
       const row = data[index];
-      if (row.id === undefined || row.geoname === undefined) {
+      if (row.id === null || row.geoname === undefined) {
         continue;
       }
       try {
@@ -93,7 +93,7 @@ export class DatasetModel {
     this.featureTable = {};
     for (const index in data) {
       const row = data[index];
-      if (row.id === undefined || row.coords === undefined) {
+      if (row.id === null || row.coords === undefined) {
         continue;
       }
       try {

@@ -4,8 +4,8 @@ import LocationUtils from './location';
 module DataUtils {
   export function getElemData(row: NxCell[], dimIndex: number) {
     const cell = row[dimIndex];
-    if (cell === null) {
-      return {};
+    if (cell == null) {
+      return { id: null, dimensionValue: null, state: null };
     } else {
       return { id: cell.qElemNumber, dimensionValue: cell.qText, state: cell.qState };
     }

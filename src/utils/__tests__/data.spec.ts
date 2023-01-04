@@ -31,8 +31,10 @@ describe('DataUtils', () => {
     jest.clearAllMocks();
   });
   it('should getElemData', () => {
-    const result = DataUtils.getElemData(row, 0);
+    let result = DataUtils.getElemData(row, 0);
     expect(result.id).toBe(0);
+    result = DataUtils.getElemData(row, 1);
+    expect(result.id).toBeNull();
   });
   describe('getAttribute', () => {
     let cell: NxCell;
@@ -184,6 +186,7 @@ describe('DataUtils', () => {
       dataPages.push({
         qMatrix: [[{ qElemNumber: 0, qState: 'S' }], [{ qElemNumber: 1, qState: 'S' }]],
       });
+      expect(dataPages.length).toBe(2);
       const result = DataUtils.flattenDataPages(dataPages);
       expect(result.qMatrix).toBeDefined();
       expect(result.qMatrix?.length).toBe(3);
