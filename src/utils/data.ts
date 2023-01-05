@@ -33,7 +33,7 @@ module DataUtils {
     return undefined;
   }
 
-  export function getGeometry(row: NxCell[], layoutService: LayoutService) {
+  export function getGeometry(row: NxCell[], layoutService: LayoutService, dimensionIndex: number) {
     const meta = getValue(layoutService, 'meta.attributes', {});
     const locationType = layoutService.getLayoutValue('locationType');
     const data = {
@@ -45,7 +45,7 @@ module DataUtils {
     } as LocationData;
 
     if (data.locationOrLatitude === undefined) {
-      data.locationOrLatitude = LocationUtils.getLocationFromFirstDimension(row);
+      data.locationOrLatitude = LocationUtils.getLocationFromDimension(row, dimensionIndex);
     }
 
     const hasLatLong = data.hasOwnProperty('longitude');

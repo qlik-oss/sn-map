@@ -37,7 +37,7 @@ describe('LocationUtils', () => {
     });
   });
 
-  describe('getLocationFromFirstDimension', () => {
+  describe('getLocationFromDimension', () => {
     let row: NxCell[];
 
     beforeEach(() => {
@@ -52,24 +52,24 @@ describe('LocationUtils', () => {
     });
 
     it('should return qText', () => {
-      const location = LocationUtils.getLocationFromFirstDimension(row);
+      const location = LocationUtils.getLocationFromDimension(row, 0);
       expect(location).toBe('foobar');
     });
 
     it('should return qNum when qText is invalid', () => {
       row[0].qText = undefined;
-      let location = LocationUtils.getLocationFromFirstDimension(row);
+      let location = LocationUtils.getLocationFromDimension(row, 0);
       expect(location).toBe(99);
 
       row[0].qText = '[]';
-      location = LocationUtils.getLocationFromFirstDimension(row);
+      location = LocationUtils.getLocationFromDimension(row, 0);
       expect(location).toBe(99);
     });
 
     it('should return undefined when qText and qNum is invalid', () => {
       row[0].qText = undefined;
       row[0].qNum = undefined;
-      const location = LocationUtils.getLocationFromFirstDimension(row);
+      const location = LocationUtils.getLocationFromDimension(row, 0);
       expect(location).toBeUndefined();
     });
   });

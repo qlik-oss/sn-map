@@ -15,11 +15,11 @@ module LocationUtils {
     return 'UNKOWN';
   }
 
-  export function getLocationFromFirstDimension(row: NxCell[]) {
-    if (row[0].qText && row[0].qText !== '[]') {
-      return row[0].qText as string;
-    } else if (row[0].qNum !== undefined) {
-      return row[0].qNum as number;
+  export function getLocationFromDimension(row: NxCell[], dimensionIndex: number) {
+    if (row[dimensionIndex].qText && row[dimensionIndex].qText !== '[]') {
+      return row[dimensionIndex].qText as string;
+    } else if (row[dimensionIndex].qNum !== undefined) {
+      return row[dimensionIndex].qNum as number;
     }
   }
 

@@ -76,7 +76,7 @@ describe('Point model', () => {
 
       expect(DataUtils.flattenDataPages).toHaveBeenCalledTimes(0);
       expect(DataUtils.getElemData).toHaveBeenCalledWith(row, 0);
-      expect(DataUtils.getGeometry).toHaveBeenCalledWith(row, layoutService);
+      expect(DataUtils.getGeometry).toHaveBeenCalledWith(row, layoutService, 0);
       expect(DataUtils.getAttribute).toHaveBeenCalledWith(row, undefined);
       expect(data).toEqual([{ id: 'foobar', geoname: 'Sweden', size: 22, key: 'size' }]);
     });
