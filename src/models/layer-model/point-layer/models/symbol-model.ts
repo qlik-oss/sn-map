@@ -1,47 +1,51 @@
 import MathUtils from '../../../../utils/math-utils';
-import Meta from '../../common/services/layout-service/meta';
 
-interface Style {
-  color: string | undefined;
-  size: number;
+interface Data {
+  color?: string;
+  size?: number;
+}
+
+interface StyleSymbol {
+  radius: number;
+  color: string;
 }
 
 export class SymbolModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
-  addSymbol(data: PointData[], layoutService: LayoutService) {
-    return data.map((pointData: PointData) => {
-      const style = this.collectStyle(pointData, layoutService);
-      const key = this.makeKey(style);
+  // Create symbol if missing and returns the symbol key
+  getSymbolKey(data: Data, layoutService: LayoutService) {
+    const radius = this.getRadius(data.size, layoutService);
+    const color = this.getColor(layoutService);
+    const style = { radius, color };
 
-      if (!this.symbols[key]) {
-        this.symbols[key] = this.makeSymbol(style);
-      }
-      return { ...pointData, key };
-    });
-  }
+    const key = this.makeKey(style);
 
-  collectStyle(pointData: PointData, layoutService: LayoutService) {
-    const size = this.getSize(pointData, layoutService) as number;
-    const color = this.getColor(layoutService) as string;
-    return {
-      size,
-      color,
-    };
-  }
-
-  // Should only be used for max/min width/radius of point layer and line layer.
-  getSizeFromSliderValue = (value: number) => {
-    if (value < 20) {
-      return Math.ceil(value / 2);
-    } else if (value < 40) {
-      return 10 + (value - 20);
-    } else if (value < 60) {
-      return 30 + (value - 40) * 2;
-    } else {
-      return 70 + (value - 60) * 4;
+    if (!this.symbols[key]) {
+      this.symbols[key] = this.makeSymbol(style);
     }
-  };
+    return key;
+  }
+
+  getRadius(data: number | undefined, layoutService: LayoutService) {
+    let sizeMinMax: { min: number; max: number };
+    let size: number | undefined;
+    const sizeProps = layoutService.getLayoutValue('size');
+    const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
+    if (data !== undefined) {
+      size = data;
+      const sizeMeta = layoutService.meta.attributes.size;
+      const attrExprMinMax = { min: sizeMeta.minValue, max: sizeMeta.maxValue };
+      const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
+      sizeMinMax =
+        autoRadiusValueRange === false ? { min: customMinRangeValue, max: customMaxRangeValue } : attrExprMinMax;
+    } else {
+      size = Math.round((radiusMin + radiusMax) / 2);
+      sizeMinMax = { min: 0, max: 0 };
+    }
+    const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
+    return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size;
+  }
 
   calculateRadiusFromSliderProperties = (sizeProps: SizeProperties) => {
     if (sizeProps.expression && sizeProps.expression.key?.length > 0) {
@@ -58,44 +62,33 @@ export class SymbolModel {
     }
   };
 
-  getSize(pointData: PointData, layoutService: LayoutService) {
-    const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
-    const autoRadiusValueRange = layoutService.getLayoutValue('size.autoRadiusValueRange');
-    const customMinRangeValue = layoutService.getLayoutValue('size.customMinRangeValue');
-    const customMaxRangeValue = layoutService.getLayoutValue('size.customMaxRangeValue');
-    const layout = layoutService.getLayout();
-    const { expressionMeta, value } = pointData.size ?? {};
-    const attrExprMinMax = Meta.getMinMax(layout, expressionMeta); // null if not attribute dependent size
-
-    const sizeMinMax = // Describes the size set either by the input fields or by the min and max values of the radius
-      autoRadiusValueRange === false
-        ? { min: customMinRangeValue, max: customMaxRangeValue }
-        : attrExprMinMax || { min: 0, max: 0 };
-
-    const sizeFromSingleSlider = Math.round((radiusMin + radiusMax) / 2);
-    let sizeFromExpression;
-    if (expressionMeta?.dimIndex === 0) {
-      sizeFromExpression = value;
+  // Should only be used for max/min width/radius of point layer and line layer.
+  getSizeFromSliderValue = (value: number) => {
+    if (value < 20) {
+      return Math.ceil(value / 2);
+    } else if (value < 40) {
+      return 10 + (value - 20);
+    } else if (value < 60) {
+      return 30 + (value - 40) * 2;
+    } else {
+      return 70 + (value - 60) * 4;
     }
-    const size = (sizeFromExpression ?? sizeFromSingleSlider) as number;
-    const quantifyTo = Math.max(1, Math.min(sizeMinMax.max - sizeMinMax.min, 50)); // not necessary to do more than one symbol per pixel
-    return MathUtils.calculateSize(size, [radiusMin, radiusMax], [sizeMinMax.min, sizeMinMax.max], quantifyTo).size; // calculate symbol size
-  }
+  };
 
-  private getColor(layoutService: LayoutService) {
+  getColor(layoutService: LayoutService) {
     const colorMode = layoutService.getLayoutValue('color.mode');
     if (colorMode === 'primary') {
       return layoutService.getLayoutValue('color.paletteColor.color');
     }
   }
 
-  private makeKey(style: Style) {
-    return `${style.size}_${style.color}`;
+  makeKey(style: StyleSymbol) {
+    return `${style.radius}_${style.color}`;
   }
 
-  private makeSymbol(style: Style) {
+  makeSymbol(style: StyleSymbol) {
     return idevio.map.IconFactory.circle({
-      radius: style.size,
+      radius: style.radius,
       color: style.color,
       outline: 'black',
     });

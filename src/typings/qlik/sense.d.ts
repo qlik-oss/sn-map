@@ -51,6 +51,7 @@ declare interface NxAttrDimDef {
 declare interface NxHyperCube {
   qDataPages: NxDataPage[];
   qDimensionInfo: NxDimensionInfo[];
+  qMeasureInfo: NxMeasureInfo[];
 }
 
 declare interface NxDataPage {
@@ -91,6 +92,14 @@ declare interface NxDimensionInfo {
   qGrouping?: string;
   qError?: string;
   title?: string;
+}
+
+declare interface NxMeasureInfo {
+  qFallbackTitle: string;
+  qAttrExprInfo: NxAttrExprInfo[];
+  qAttrDimInfo: NxAttrDimInfo[];
+  qMin: number;
+  qMax: number;
 }
 
 declare interface NxAttrExprInfo {

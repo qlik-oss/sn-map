@@ -2,24 +2,40 @@ declare interface LayoutService {
   getDataPages(): NxDataPage[];
   getLayoutValue(path: string): any;
   getLayout(): LayerLayout;
-  meta: PointMeta;
+  meta: {
+    dimensions: DimensionMeta[];
+    measures: MeasureMeta[];
+    attributes: Meta;
+  };
+}
+
+declare interface DimensionMeta {
+  title: string;
+  rowIndex: number;
+}
+
+declare interface MeasureMeta {
+  title: string;
+  rowIndex: number;
+  minValue: number;
+  maxValue: number;
 }
 declare interface ExpressionMeta {
   id: string;
   index: number;
   dimIndex: number;
   isDimension: boolean;
+  title: string;
+  minValue?: number;
+  maxValue?: number;
 }
 
 declare interface Meta {
-  location: LocationMeta;
+  geoname?: ExpressionMeta;
+  coords?: ExpressionMeta;
+  [key: string]: ExpressionMeta;
 }
 
-declare interface LocationMeta {
-  expressions: ExpressionMeta[];
-  isAuto: boolean;
-  isLatLong: boolean;
-  locationType: string;
+declare interface PointMeta extends Meta {
+  size: ExpressionMeta;
 }
-
-declare interface PointMeta extends Meta {}

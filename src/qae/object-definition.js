@@ -67,7 +67,7 @@ const objectDefinition = () => {
        * @type {boolean=}
        * @default
        */
-      autoZoomOnSelection: false,
+      autoZoomOnSelection: true,
     },
     /**
      * Show title for the visualization.

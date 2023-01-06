@@ -1,30 +1,65 @@
 import { DatasetModel } from '../';
-import mockedWebmap from '../../../../../mocks/webmap';
-
-class MockedDataset extends DatasetModel {
-  dataset: idevio.map.MemoryDataset;
-  loading: PromiseInterface;
-  id: string;
-  constructor() {
-    super();
-    this.id = 'id1';
-    this.dataset = new mockedWebmap.idevio.map.MemoryDataset();
-    this.loading = {
-      resolve: jest.fn(),
-      reject: jest.fn(),
-    };
-  }
-}
+import webmapMock from '../../../../../mocks/webmap';
 
 describe('Dataset model', () => {
   let datasetModel: DatasetModel;
+  let layer: idevio.map.FeatureLayer;
   beforeEach(() => {
-    global.idevio = mockedWebmap.idevio;
-    datasetModel = new MockedDataset();
+    global.idevio = webmapMock.idevio;
+    layer = new webmapMock.idevio.map.FeatureLayer();
+
+    datasetModel = new DatasetModel('id', layer);
+    datasetModel.dataset = new webmapMock.idevio.map.MemoryDataset();
+    datasetModel.loading = {
+      resolve: jest.fn(),
+      reject: jest.fn(),
+    };
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  describe('update', () => {
+    beforeEach(() => {
+      datasetModel.remove = jest.fn();
+      datasetModel.createLocationDataset = jest.fn();
+      datasetModel.createMemoryDataset = jest.fn();
+      datasetModel.addLocationData = jest.fn();
+      datasetModel.addFeatureData = jest.fn();
+    });
+
+    it('should remove, create and set location dataset when data has geonames', () => {
+      datasetModel.getDatasetInfo = jest.fn().mockReturnValue({ isGeoName: true });
+      datasetModel.update('crs', []);
+      expect(datasetModel.remove).toBeCalledTimes(1);
+      expect(datasetModel.getDatasetInfo).toBeCalledTimes(1);
+      expect(datasetModel.createLocationDataset).toBeCalledTimes(1);
+      expect(datasetModel.addLocationData).toBeCalledTimes(1);
+      expect(datasetModel.createMemoryDataset).toBeCalledTimes(0);
+      expect(datasetModel.layer.setDataset).toBeCalledTimes(1);
+    });
+
+    it('should remove, create and set memory dataset when data has no geonames', () => {
+      datasetModel.getDatasetInfo = jest.fn().mockReturnValue({ isGeoName: false });
+      datasetModel.update('crs', []);
+      expect(datasetModel.remove).toBeCalledTimes(1);
+      expect(datasetModel.getDatasetInfo).toBeCalledTimes(1);
+      expect(datasetModel.createLocationDataset).toBeCalledTimes(0);
+      expect(datasetModel.createMemoryDataset).toBeCalledTimes(1);
+      expect(datasetModel.addFeatureData).toBeCalledTimes(1);
+      expect(datasetModel.layer.setDataset).toBeCalledTimes(1);
+    });
+
+    it('should not create and dataset when invalid data', () => {
+      datasetModel.getDatasetInfo = jest.fn().mockReturnValue(null);
+      datasetModel.update('crs', []);
+      expect(datasetModel.remove).toBeCalledTimes(1);
+      expect(datasetModel.getDatasetInfo).toBeCalledTimes(1);
+      expect(datasetModel.createLocationDataset).toBeCalledTimes(0);
+      expect(datasetModel.createMemoryDataset).toBeCalledTimes(0);
+      expect(datasetModel.layer.setDataset).toBeCalledTimes(0);
+    });
   });
 
   describe('removeAll', () => {
@@ -80,26 +115,57 @@ describe('Dataset model', () => {
     });
   });
 
+  describe('createLocationDataset', () => {
+    it('should set LocationDataset and a loading promise', () => {
+      const info = {
+        isGeoname: true,
+        columns: ['name'],
+      };
+      datasetModel.getDatasetOptions = jest.fn().mockReturnValue({
+        columnNames: ['name'],
+        name: 'foobar',
+      });
+      datasetModel.createLocationDataset(info.columns);
+
+      expect(global.idevio.map.LocationDataset.create).toHaveBeenCalledWith(
+        'i:///pointgeom/default',
+        'SERVICE',
+        expect.objectContaining({ name: 'foobar' })
+      );
+      expect(datasetModel.loading).toBeInstanceOf(Promise);
+    });
+  });
+
+  describe('createMemoryDataset', () => {
+    it('should set MemoryDataset', () => {
+      global.idevio.map.MemoryDataset = webmapMock.idevio.map.MemoryDataset;
+      datasetModel.createMemoryDataset('crs');
+
+      expect(datasetModel.dataset).toBeInstanceOf(webmapMock.idevio.map.MemoryDataset);
+    });
+  });
+
   describe('addLocationData', () => {
-    it('should add data', () => {
+    it('should only add data when id and geoname are defined', () => {
       const data = [
-        { id: 0, geoname: null },
+        { id: 0, geoname: undefined },
         { id: null, geoname: 'foobar' },
-        { id: 1, geoname: 'foobar' },
-      ];
+        { id: 1, geoname: 'foobar', size: 5 },
+      ] as PointData[];
+      const order = ['geoname', 'id', 'size'];
       (datasetModel.dataset as idevio.map.LocationDataset).addData = jest.fn();
-      datasetModel.addLocationData(data);
-      expect((datasetModel.dataset as idevio.map.LocationDataset).addData).toHaveBeenCalledWith([[1, 'foobar']]);
+      datasetModel.addLocationData(data, order);
+      expect((datasetModel.dataset as idevio.map.LocationDataset).addData).toHaveBeenCalledWith([['foobar', 1, 5]]);
     });
   });
 
   describe('addFeatureData', () => {
-    it('should add data', () => {
+    it('should only add data when id and coords are defined', () => {
       const data = [
-        { id: 0, coords: null },
+        { id: 0, coords: undefined },
         { id: null, coords: 'foobar' },
         { id: 1, coords: 'foobar' },
-      ];
+      ] as PointData[];
       datasetModel.addFeatureData(data);
       expect(Object.keys(datasetModel.featureTable).length).toBe(1);
       expect(datasetModel.featureTable['1']).toBeDefined();
@@ -108,29 +174,23 @@ describe('Dataset model', () => {
 
   describe('getDatasetInfo', () => {
     it('should get coord data', () => {
-      const data = [
-        { id: 0, location: null },
-        { id: 1, coords: 'foobar' },
-      ];
+      const data = [{ id: 0 }, { id: 1, coords: 'foobar' }] as PointData[];
 
       const info = datasetModel.getDatasetInfo(data);
       expect(info?.columns).toEqual(['id', 'coords']);
-      expect(info?.isGeoname).toBe(false);
+      expect(info?.isGeoName).toBe(false);
     });
 
     it('should get geoname data', () => {
-      const data = [
-        { id: 0, location: null },
-        { id: 1, geoname: 'foobar' },
-      ];
+      const data = [{ id: 0 }, { id: 1, geoname: 'foobar' }] as PointData[];
 
       const info = datasetModel.getDatasetInfo(data);
-      expect(info?.columns).toEqual(['id', 'geoname']);
-      expect(info?.isGeoname).toBe(true);
+      expect(info?.columns).toEqual(['geoname', 'id']);
+      expect(info?.isGeoName).toBe(true);
     });
 
     it('should return null when no geoname or coords', () => {
-      const data = [{ id: 0, location: 'foobar' }];
+      const data = [{ id: 0, dimensionValue: 'dim', state: 'X', location: 'foobar' }];
 
       const info = datasetModel.getDatasetInfo(data);
       expect(info).toBe(null);

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import LocationUtils from '../location-utils';
+import LocationUtils from '../location';
 
 describe('LocationUtils', () => {
   describe('getLocationKind', () => {
@@ -37,69 +37,66 @@ describe('LocationUtils', () => {
     });
   });
 
-  describe('addLocationSuffix', () => {
-    let meta: LocationMeta;
-    let data: LocationData;
+  describe('getLocationFromDimension', () => {
+    let row: NxCell[];
 
     beforeEach(() => {
-      meta = {
-        expressions: [],
-        isLatLong: false,
-        isAuto: false,
-        locationType: '',
-      };
-      data = {
-        locationOrLatitude: '',
-        locationCountry: '',
-        locationAdmin1: '',
-        locationAdmin2: '',
-      };
+      row = [
+        {
+          qElemNumber: 0,
+          qState: 'X',
+          qText: 'foobar',
+          qNum: 99,
+        },
+      ];
     });
 
-    it('should return locationOrLatitude when auto', () => {
-      meta.isAuto = true;
-      data.locationOrLatitude = 'foobar';
-      const location = LocationUtils.addLocationSuffix(data, meta);
-      expect(location).toEqual('foobar');
+    it('should return qText', () => {
+      const location = LocationUtils.getLocationFromDimension(row, 0);
+      expect(location).toBe('foobar');
     });
 
-    it('should add location names', () => {
-      data.locationOrLatitude = 'foobar';
-      data.locationCountry = 'country';
-      data.locationAdmin1 = 'admin1';
-      data.locationAdmin2 = 'admin2';
-      const location = LocationUtils.addLocationSuffix(data, meta);
-      expect(location).toEqual('foobar,country,admin1,admin2');
+    it('should return qNum when qText is invalid', () => {
+      row[0].qText = undefined;
+      let location = LocationUtils.getLocationFromDimension(row, 0);
+      expect(location).toBe(99);
+
+      row[0].qText = '[]';
+      location = LocationUtils.getLocationFromDimension(row, 0);
+      expect(location).toBe(99);
     });
 
-    it('should only add locationCountry', () => {
-      data.locationOrLatitude = 'foobar';
-      data.locationCountry = 'country';
-      data.locationAdmin1 = undefined;
-      const location = LocationUtils.addLocationSuffix(data, meta);
-      expect(location).toEqual('foobar,country');
+    it('should return undefined when qText and qNum is invalid', () => {
+      row[0].qText = undefined;
+      row[0].qNum = undefined;
+      const location = LocationUtils.getLocationFromDimension(row, 0);
+      expect(location).toBeUndefined();
+    });
+  });
+
+  describe('getLatLong', () => {
+    it('should return latlong as numbers', () => {
+      const geom = LocationUtils.getLatLong(1, 2);
+      expect(geom).toEqual([1, 2]);
     });
 
-    it('should only add locationCountry and locationAdmin1', () => {
-      data.locationOrLatitude = 'foobar';
-      data.locationCountry = 'country';
-      data.locationAdmin1 = 'admin1';
-      const location = LocationUtils.addLocationSuffix(data, meta);
-      expect(location).toEqual('foobar,country,admin1');
+    it('should parse input if string', () => {
+      const geom = LocationUtils.getLatLong('6,6', '2,3');
+      expect(geom).toEqual([6.6, 2.3]);
     });
 
-    it('should add locationType', () => {
-      meta.locationType = 'Country';
-      data.locationOrLatitude = 'foobar';
-      const location = LocationUtils.addLocationSuffix(data, meta);
-      expect(location).toEqual('foobar:Country');
+    it('should return undefined when invalid latitude or longitude', () => {
+      let geom = LocationUtils.getLatLong(undefined, 0);
+      expect(geom).toBeUndefined();
+      geom = LocationUtils.getLatLong(0, undefined);
+      expect(geom).toBeUndefined();
     });
   });
 
   describe('parseGeometryString', () => {
     it('should return null if undefined', () => {
       const geometryString = LocationUtils.parseGeometryString(undefined);
-      expect(geometryString).toBeNull();
+      expect(geometryString).toBeUndefined();
     });
 
     it('should parse geometry strings correctly', () => {
@@ -193,6 +190,47 @@ describe('LocationUtils', () => {
         ],
         2
       );
+    });
+  });
+
+  describe('addLocationSuffix', () => {
+    let data: LocationData;
+
+    beforeEach(() => {
+      data = {
+        locationOrLatitude: 'foobar',
+        locationCountry: 'country',
+        locationAdmin1: 'admin1',
+        locationAdmin2: 'admin2',
+      };
+    });
+
+    it('should add location names', () => {
+      const location = LocationUtils.addLocationSuffix(data, '');
+      expect(location).toEqual('foobar,country,admin1,admin2');
+    });
+
+    it('should only add location when country is undefined', () => {
+      data.locationCountry = undefined;
+      const location = LocationUtils.addLocationSuffix(data, '');
+      expect(location).toEqual('foobar');
+    });
+
+    it('should only add country when admin1 is undefined', () => {
+      data.locationAdmin1 = undefined;
+      const location = LocationUtils.addLocationSuffix(data, '');
+      expect(location).toEqual('foobar,country');
+    });
+
+    it('should only add country and admin1 when admin2 is undefined', () => {
+      data.locationAdmin2 = undefined;
+      const location = LocationUtils.addLocationSuffix(data, '');
+      expect(location).toEqual('foobar,country,admin1');
+    });
+
+    it('should add locationType', () => {
+      const location = LocationUtils.addLocationSuffix(data, 'Country');
+      expect(location).toEqual('foobar,country,admin1,admin2:Country');
     });
   });
 });

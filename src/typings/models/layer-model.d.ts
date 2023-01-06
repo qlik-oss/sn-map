@@ -15,7 +15,7 @@ declare interface UnknownLayerModelInterface extends LayerModelInterFace {
 declare interface PointLayerModelInterface extends LayerModelInterFace {
   id: string;
   layer: idevio.map.FeatureLayer;
-  datasetModel: PointLayerDatasetModel;
+  datasetModel: DatasetModel;
   symbolModel: SymbolModel;
   update(layout: PointLayerLayout);
   setStyles(): void;

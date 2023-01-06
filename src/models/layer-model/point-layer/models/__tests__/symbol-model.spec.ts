@@ -1,16 +1,18 @@
 import { SymbolModel } from '../symbol-model';
 import webmapMock from '../../../../../mocks/webmap';
-import layoutMock from '../../../../../mocks/layout';
-import LayoutService from '../../services/layout-service';
+import layoutMock, { createDumpAttrExpr } from '../../../../../mocks/layout';
+import LayoutService from '../../../common/services/layout-service';
+import MathUtils from '../../../../../utils/math-utils';
 
 describe('Symbol model', () => {
   let layout: PointLayerLayout;
   let symbolModel: SymbolModel;
-  let data: PointData[];
+  let data: any;
   let layoutService: LayoutService;
   global.idevio = webmapMock.idevio;
 
   beforeEach(() => {
+    MathUtils.calculateSize = jest.fn().mockReturnValue({ relSize: 5, size: 10 });
     layout = JSON.parse(JSON.stringify(layoutMock.layer.point));
     layout.color.paletteColor.color = 'red';
     layoutService = LayoutService.create(layout);
@@ -21,29 +23,90 @@ describe('Symbol model', () => {
     jest.clearAllMocks();
   });
 
-  describe('addSymbol', () => {
-    it('should not add symbols', () => {
-      data = [];
-      symbolModel.addSymbol(data, layoutService);
-
-      expect(Object.keys(symbolModel.symbols).length).toBe(0);
-      expect('8_red' in symbolModel.symbols).toBeFalsy();
-    });
-
-    it('should add symbols', () => {
-      data = [{ id: 0 }];
-      symbolModel.addSymbol(data, layoutService);
+  describe('getSymbolKey', () => {
+    it('should add a symbol and return the key', () => {
+      layoutService.meta.attributes = { size: { minValue: 0, maxValue: 0 } } as any;
+      data = { size: 0 };
+      const key = symbolModel.getSymbolKey(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
-      expect('8_red' in symbolModel.symbols).toBeTruthy();
+      expect('10_red' in symbolModel.symbols).toBeDefined();
+      expect(key).toBe('10_red');
     });
 
     it('should only cache one symbol', () => {
-      data = [{ id: 0 }, { id: 0 }];
-      symbolModel.addSymbol(data, layoutService);
+      data = { id: 0 };
+      symbolModel.getSymbolKey(data, layoutService);
+      data = { id: 1 };
+      symbolModel.getSymbolKey(data, layoutService);
 
       expect(Object.keys(symbolModel.symbols).length).toBe(1);
-      expect('8_red' in symbolModel.symbols).toBeTruthy();
+      expect('10_red' in symbolModel.symbols).toBeDefined();
+    });
+  });
+
+  describe('calculateRadiusFromSliderProperties', () => {
+    it('should return correct radius when size is an expression', () => {
+      layout.size.rangeValues = [8, 22];
+      const { radiusMin, radiusMax } = symbolModel.calculateRadiusFromSliderProperties(layout.size);
+      expect(radiusMin).toEqual(4);
+      expect(radiusMax).toEqual(12);
+    });
+    it('should return correct radius when size is not an expression', () => {
+      layout.size.expression = undefined;
+      layout.size.value = 10;
+      let radius = symbolModel.calculateRadiusFromSliderProperties(layout.size);
+      expect(radius.radiusMin).toEqual(2);
+      expect(radius.radiusMax).toEqual(8);
+
+      layout.size.value = 65;
+      radius = symbolModel.calculateRadiusFromSliderProperties(layout.size);
+      expect(radius.radiusMin).toEqual(45);
+      expect(radius.radiusMax).toEqual(135);
+    });
+  });
+
+  describe('getRadius', () => {
+    describe('when size is an expression', () => {
+      it('should use correct symbol size', () => {
+        layout.size.rangeValues = [8, 22];
+        const attrExprInfo = createDumpAttrExpr('size');
+        layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
+        layoutService = LayoutService.create(layout);
+        symbolModel.getRadius(99, layoutService);
+        const size = 99;
+        const radiusMinMax = [4, 12];
+        const sizeMinMax = [0, 10];
+        const quantifyTo = 10;
+        expect(MathUtils.calculateSize).toHaveBeenCalledWith(size, radiusMinMax, sizeMinMax, quantifyTo);
+      });
+
+      it('should use correct sizeMinMax and quantify when using custom range values', () => {
+        layout.size.autoRadiusValueRange = false;
+        layout.size.customMinRangeValue = 5;
+        layout.size.customMaxRangeValue = 25;
+        const attrExprInfo = createDumpAttrExpr('size');
+        layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
+        layoutService = LayoutService.create(layout);
+        symbolModel.getRadius(88, layoutService);
+        const size = 88;
+        const radiusMinMax = [4, 12];
+        const sizeMinMax = [5, 25];
+        const quantifyTo = 20;
+        expect(MathUtils.calculateSize).toHaveBeenCalledWith(size, radiusMinMax, sizeMinMax, quantifyTo);
+      });
+    });
+    describe('when size is not an expression', () => {
+      it('should use correct sizeMinMax and quantify', () => {
+        layout.size.value = 10;
+        layoutService = LayoutService.create(layout);
+        symbolModel.getRadius(undefined, layoutService);
+        const size = 8;
+        const radiusMinMax = [4, 12];
+        const sizeMinMax = [0, 0];
+        const quantifyTo = 1;
+        expect(MathUtils.calculateSize).toHaveBeenCalledWith(size, radiusMinMax, sizeMinMax, quantifyTo);
+      });
     });
   });
 
@@ -70,75 +133,57 @@ describe('Symbol model', () => {
     });
   });
 
-  describe('calculateRadiusFromSliderProperties', () => {
-    it('should return correct radius when size is an expression', () => {
-      layout.size.rangeValues = [8, 22];
+  describe('getColor', () => {
+    it('should return color if mode is primary', () => {
+      layout.color.mode = 'primary';
+      layout.color.paletteColor.color = 'red';
       layoutService = LayoutService.create(layout);
-      const { radiusMin, radiusMax } = symbolModel.calculateRadiusFromSliderProperties(
-        layoutService.getLayoutValue('size')
-      );
-      expect(radiusMin).toEqual(4);
-      expect(radiusMax).toEqual(12);
+      const color = symbolModel.getColor(layoutService);
+      expect(color).toEqual('red');
     });
-    it('should return correct radius when size is not an expression', () => {
-      layout.size.expression = undefined;
-      layout.size.value = 10;
-      layoutService = LayoutService.create(layout);
-      let radius = symbolModel.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
-      expect(radius.radiusMin).toEqual(2);
-      expect(radius.radiusMax).toEqual(8);
 
-      layout.size.value = 65;
+    it('should return undefined if mode is not primary', () => {
+      layout.color.mode = 'foobar';
+      layout.color.paletteColor.color = 'red';
       layoutService = LayoutService.create(layout);
-      radius = symbolModel.calculateRadiusFromSliderProperties(layoutService.getLayoutValue('size'));
-      expect(radius.radiusMin).toEqual(45);
-      expect(radius.radiusMax).toEqual(135);
+      const color = symbolModel.getColor(layoutService);
+      expect(color).toBeUndefined();
     });
   });
 
-  describe('getSize', () => {
-    it('should return correct symbol size when size is an expression', () => {
-      layout.size.rangeValues = [8, 22];
-      const attrExprInfo = {
-        id: 'size',
-        qMin: 0,
-        qMax: 10,
-        qContinuousAxes: true,
-        qIsCyclic: false,
-        qIsAutoFormat: false,
-        label: '',
-        qFallbackTitle: '',
+  describe('makeKey', () => {
+    it('should makeKey', () => {
+      const style = {
+        radius: 10,
+        color: 'red',
       };
-      layout.qHyperCube.qDimensionInfo[0].qAttrExprInfo = [attrExprInfo];
-      layoutService = LayoutService.create(layout);
-      const symbolSize = symbolModel.getSize(
-        { id: 0, size: { value: 8, expressionMeta: { index: 0, dimIndex: 0, id: 'size', isDimension: false } } },
-        layoutService
-      );
-      expect(symbolSize).toEqual(10);
-    });
-
-    it('should return correct symbol size when size is not an expression', () => {
-      layout.size.expression = undefined;
-      layout.size.value = 10;
-      layoutService = LayoutService.create(layout);
-      const symbolSize = symbolModel.getSize({ id: 0 }, layoutService);
-      expect(symbolSize).toEqual(5);
+      const symbolKey = symbolModel.makeKey(style);
+      expect(symbolKey).toEqual('10_red');
     });
   });
 
-  it('should get styles', () => {
-    data = [{ id: 0 }];
-    symbolModel.addSymbol(data, layoutService);
-    const style = symbolModel.getStyles()[0];
-    const expected = {
-      type: 'symbol',
-      icons: {
-        red: undefined,
-      },
-      iconKey: 'key',
-    };
+  describe('makeSymbol', () => {
+    it('should makeSymbol', () => {
+      const style = {
+        radius: 10,
+        color: 'red',
+      };
+      symbolModel.makeSymbol(style);
+      expect(webmapMock.idevio.map.IconFactory.circle).toBeCalledTimes(1);
+    });
+  });
 
-    expect(style).toEqual(expected);
+  describe('getStyles', () => {
+    it('should return styles', () => {
+      symbolModel.symbols = 'foobar' as any;
+      const style = symbolModel.getStyles()[0];
+      const expected = {
+        type: 'symbol',
+        icons: 'foobar',
+        iconKey: 'key',
+      };
+
+      expect(style).toEqual(expected);
+    });
   });
 });

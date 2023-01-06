@@ -48,6 +48,11 @@ const qHyperCube = {
       qAttrExprInfo: [],
       qAttrDimInfo: [],
     },
+    {
+      qFallbackTitle: '',
+      qAttrExprInfo: [],
+      qAttrDimInfo: [],
+    },
   ],
   qDataPages: [dataPage],
   qMode: 'S',

@@ -6,12 +6,12 @@ module MathUtils {
    * Calculates the scaled size or width
    */
   export function calculateSize(
-    sizeValue: number,
+    sizeValue: number | undefined,
     range: number[],
     valueMinMax: number[],
     n: number
   ): { relSize: number; size: number } {
-    if (isNaN(sizeValue) || sizeValue == null) {
+    if (sizeValue === undefined || sizeValue === null || isNaN(sizeValue)) {
       return { relSize: NaN, size: NaN };
     }
     const v = MathUtils.clamp(sizeValue, valueMinMax[0], valueMinMax[1]);

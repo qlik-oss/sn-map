@@ -1,17 +1,17 @@
 import { layoutService as createLayoutService } from 'qlik-chart-modules';
-import Meta from '../../common/services/layout-service/meta';
+import Meta from './meta';
 
 declare interface MetaAttributes {
-  layout: PointLayerLayout;
+  layout: LayerLayout;
 }
 
 module LayoutService {
-  export function create(layout: PointLayerLayout) {
+  export function create(layout: LayerLayout) {
     return createLayoutService({
       source: layout,
       metaAdditionsFn: ({ layout }: MetaAttributes) => {
         return {
-          location: Meta.getLocationMeta(layout),
+          ...Meta.getHyperCubeMeta(layout.qHyperCube),
         };
       },
     });
