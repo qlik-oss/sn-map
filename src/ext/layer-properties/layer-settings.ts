@@ -1,3 +1,4 @@
+import getAreaLayerDefinition from './area-layer';
 import getPointLayerDefinition from './point-layer';
 import getGeodataLayerDefinition from './geodata-layer';
 import DefaultFields from '../utils/default-fields';
@@ -12,6 +13,7 @@ export default function layerSettings({ translator }: EnvironmentType) {
 
   function getLayerDefs() {
     const layerDefinitions: { [key: string]: any } = {
+      AreaLayer: getAreaLayerDefinition({ translator }),
       PointLayer: getPointLayerDefinition({ translator }),
       GeodataLayer: getGeodataLayerDefinition({ translator }),
     };
@@ -64,6 +66,7 @@ export default function layerSettings({ translator }: EnvironmentType) {
         optionsBoldSelect: true,
         options: function () {
           const sourceMap: { [key: string]: string } = {
+            AreaLayer: '../resources/extensions/qliktech/mapchart/img/layer_area.png',
             PointLayer: '../resources/extensions/qliktech/mapchart/img/layer_point.png',
             GeodataLayer: '../resources/extensions/qliktech/mapchart/img/bg_default.png',
           };
