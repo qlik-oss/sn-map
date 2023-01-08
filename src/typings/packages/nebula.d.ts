@@ -18,5 +18,6 @@ declare type RectType = {
 
 declare interface Selections {
   isActive(): boolean;
-  begin(path: string): void;
+  begin(path: string | string[]): void;
+  cancel(): Promise<undefined>;
 }

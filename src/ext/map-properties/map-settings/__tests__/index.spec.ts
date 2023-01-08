@@ -31,6 +31,7 @@ describe('Map settings', () => {
       expect(settings.items.properties.items).toHaveProperty('projection');
       expect(settings.items.properties.items).toHaveProperty('mapLanguage');
       expect(settings.items.properties.items).toHaveProperty('useImperialUnits');
+      expect(settings.items.properties.items).toHaveProperty('selectionType');
       expect(BaseMapPropertiesModel).toHaveBeenCalledTimes(1);
     });
   });

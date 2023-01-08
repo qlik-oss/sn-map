@@ -50,6 +50,8 @@ class WebMap {
   viewGeoBounds = jest.fn();
   getViewBounds = jest.fn();
   setViewBounds = jest.fn();
+  geoToDisplay = jest.fn();
+  displayToGeo = jest.fn();
 
   setStyle = jest.fn();
 
@@ -193,6 +195,8 @@ const webmap = {
       LocationDataset,
       Feature,
       PointFeature: jest.fn(),
+      LineStringFeature: jest.fn(),
+      PolygonFeature: jest.fn(),
       Icon: jest.fn(),
       IconFactory,
       Tool: jest.fn(),

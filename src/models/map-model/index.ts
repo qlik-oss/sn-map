@@ -16,6 +16,7 @@ export class MapModel implements MapModelInterFace {
   layers: LayersHandler;
   autoZoomService: AutoZoomService;
   parentDiv: HTMLElement;
+  webMapElement: HTMLElement;
 
   constructor(webMapElement: HTMLElement, layout: MapLayout) {
     this.id = layout.qInfo.qId;
@@ -23,6 +24,7 @@ export class MapModel implements MapModelInterFace {
     this.autoZoomService = new AutoZoomService();
     this.toolsModel = new ToolsModel();
     this.parentDiv = getValue(webMapElement, 'parentElement.parentElement');
+    this.webMapElement = webMapElement;
 
     const wmOptions: idevio.map.WebMapOptions = {
       div: webMapElement,

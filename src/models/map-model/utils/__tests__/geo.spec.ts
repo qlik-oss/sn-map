@@ -3,8 +3,8 @@ import { mergeBounds, getBoundsWidth, mergeBoundsArray } from '../geo';
 describe('geo-utils', () => {
   describe('mergeBounds', () => {
     it('should return correct mergeBounds when bounds are higher than the mergedBounds', () => {
-      const bounds1 = { min: [1, 1], max: [2, 2] };
-      const bounds2 = { min: [10, 10], max: [20, 20] };
+      const bounds1: Rectangle = { min: [1, 1], max: [2, 2] };
+      const bounds2: Rectangle = { min: [10, 10], max: [20, 20] };
       const newBounds = mergeBounds(bounds2, bounds1);
       expect(newBounds.min[0]).toEqual(1);
       expect(newBounds.min[1]).toEqual(1);
@@ -12,8 +12,8 @@ describe('geo-utils', () => {
       expect(newBounds.max[1]).toEqual(20);
     });
     it('should return correct mergeBounds when the mergedBounds are higher than bounds', () => {
-      const bounds1 = { min: [10, 10], max: [20, 20] };
-      const bounds2 = { min: [1, 1], max: [2, 2] };
+      const bounds1: Rectangle = { min: [10, 10], max: [20, 20] };
+      const bounds2: Rectangle = { min: [1, 1], max: [2, 2] };
       const newBounds = mergeBounds(bounds2, bounds1);
       expect(newBounds.min[0]).toEqual(1);
       expect(newBounds.min[1]).toEqual(1);
@@ -23,12 +23,12 @@ describe('geo-utils', () => {
   });
   describe('getBoundsWidth', () => {
     it('should return correct width', () => {
-      const bounds = { min: [1, 1], max: [2.1, 2.1] };
+      const bounds: Rectangle = { min: [1, 1], max: [2.1, 2.1] };
       const width = getBoundsWidth(bounds);
       expect(width).toEqual(1.1);
     });
     it('should return correct width when min is more than max (sanity check to check changes in absolute)', () => {
-      const bounds = { min: [2.1, 2.1], max: [1, 1] };
+      const bounds: Rectangle = { min: [2.1, 2.1], max: [1, 1] };
       const width = getBoundsWidth(bounds);
       expect(width).toEqual(-1.1);
     });

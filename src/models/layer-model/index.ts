@@ -90,6 +90,30 @@ export class LayersHandler {
     });
   }
 
+  /**
+   * Checks if any of the maps layers has features.
+   * @param ignoreExcludedFromAutoZoom if true will ignore layers which have exclFromAutozoom set to true.
+   */
+  hasFeatures(ignoreExcludedFromAutoZoom: boolean) {
+    if (!this.models || this.models.length === 0) {
+      return false;
+    }
+
+    let hasFeatures = false;
+    for (let i = 0; i < this.models.length; i++) {
+      const datasetModel = getValue(this.models[i], 'datasetModel', false);
+      if (ignoreExcludedFromAutoZoom && datasetModel.layout.exclFromAutozoom) {
+        continue;
+      }
+      if (datasetModel.hasFeatures()) {
+        hasFeatures = true;
+        break;
+      }
+    }
+
+    return hasFeatures;
+  }
+
   async done() {
     const promises: PromiseInterface[] = [];
     this.models.forEach((layer) => {

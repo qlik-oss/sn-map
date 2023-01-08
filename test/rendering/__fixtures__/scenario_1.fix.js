@@ -386,6 +386,7 @@ export default () => ({
           projection: 'default',
           mapLanguage: 'auto',
           useImperialUnits: false,
+          selectionType: 'lasso',
           autoZoomOnSelection: false,
           showScaleBar: true,
           showDebugInfo: false,

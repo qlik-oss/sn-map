@@ -10,6 +10,7 @@ import useInteractions from '../use-interactions';
 
 import mapModelMock from '../../mocks/map-model';
 import webmapMock from '../../mocks/webmap';
+import * as useSelectionToolbar from '../use-selection-toolbar';
 
 jest.mock('../../models/selection-model');
 
@@ -33,6 +34,7 @@ describe('use-interactions', () => {
       select: true,
       active: true,
     });
+    jest.spyOn(useSelectionToolbar, 'default').mockReturnValue({});
   });
 
   afterEach(() => {

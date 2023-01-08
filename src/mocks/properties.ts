@@ -91,6 +91,7 @@ const properties = {
       projection: 'default',
       mapLanguage: 'auto',
       useImperialUnits: false,
+      selectionType: 'lasso',
       showLegend: true,
       showScaleBar: true,
       showDebugInfo: true,
