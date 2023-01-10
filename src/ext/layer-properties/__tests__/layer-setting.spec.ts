@@ -34,6 +34,8 @@ describe('layer-settings', () => {
   });
   it('should return correct options', () => {
     const options = settings.items.addLayer.options();
-    expect(options[0].src).toEqual('../resources/extensions/qliktech/mapchart/img/layer_point.png');
+    expect(options[0].src).toEqual('../resources/extensions/qliktech/mapchart/img/layer_area.png');
+    expect(options[1].src).toEqual('../resources/extensions/qliktech/mapchart/img/layer_point.png');
+    expect(options[2].src).toEqual('../resources/extensions/qliktech/mapchart/img/bg_default.png');
   });
 });

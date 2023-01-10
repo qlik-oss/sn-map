@@ -144,6 +144,13 @@ const layout = {
       type: 'Layer',
       qHyperCube,
     },
+    area: {
+      cId: 'layer-id',
+      type: 'Area',
+      qHyperCube,
+      color,
+      ...location,
+    } as AreaLayerLayout,
     point: {
       cId: 'layer-id',
       type: 'PointLayer',

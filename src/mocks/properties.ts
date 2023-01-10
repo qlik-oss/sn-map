@@ -1,3 +1,5 @@
+import LayerType from '../utils/const/layer-type';
+
 const qDimension = {
   qLibraryId: '',
   qDef: {
@@ -100,9 +102,16 @@ const properties = {
     visualization: 'map',
   },
   layer: {
+    area: {
+      cId: 'layer-id',
+      type: LayerType.AREA,
+      qHyperCubeDef,
+      ...locationProperties,
+      ...colorProperties,
+    },
     point: {
       cId: 'layer-id',
-      type: 'PointLayer',
+      type: LayerType.POINT,
       qHyperCubeDef,
       ...locationProperties,
       ...colorProperties,
@@ -110,7 +119,7 @@ const properties = {
     },
     geodata: {
       cId: 'layer-id',
-      type: 'GeodataLayer',
+      type: LayerType.GEODATA,
       title: '',
       dataType: 'tms',
       tms: tmsProperties,

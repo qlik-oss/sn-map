@@ -1,18 +1,15 @@
 import { getValue } from 'qlik-chart-modules';
+import LocationType from './const/location-type';
+import DataUtils from './data';
 
 module LocationUtils {
-  export function getLocationKind(location: string | number | undefined, isLatLong: boolean) {
-    if (isLatLong) {
-      return 'LATLONGS';
+  export function getLocation(row: NxCell[], layoutService: LayoutService, dimensionIndex: number) {
+    const metaLocation = getValue(layoutService, 'meta.attributes.locationOrLatitude');
+    if (metaLocation === undefined) {
+      return getLocationFromDimension(row, dimensionIndex);
     }
-    if (location !== undefined && location !== '-') {
-      if (typeof location === 'string' && location.charAt(0) === '[') {
-        return 'STRINGCOORDS';
-      } else {
-        return 'NAMES';
-      }
-    }
-    return 'UNKOWN';
+
+    return DataUtils.getAttribute(row, metaLocation).locationOrLatitude;
   }
 
   export function getLocationFromDimension(row: NxCell[], dimensionIndex: number) {
@@ -23,6 +20,55 @@ module LocationUtils {
     }
   }
 
+  export function getGeometry(
+    locationOrLatitude: string | number | undefined,
+    locationKind: string,
+    row: NxCell[],
+    layoutService: LayoutService
+  ) {
+    if (locationOrLatitude === undefined) return;
+    const meta = getValue(layoutService, 'meta.attributes', {});
+    const locationType = layoutService.getLayoutValue('locationType');
+    const data = {
+      locationOrLatitude,
+      ...DataUtils.getAttribute(row, meta.longitude),
+      ...DataUtils.getAttribute(row, meta.locationCountry),
+      ...DataUtils.getAttribute(row, meta.locationAdmin1),
+      ...DataUtils.getAttribute(row, meta.locationAdmin2),
+    } as LocationData;
+
+    switch (locationKind) {
+      case LocationType.LATLONGS:
+        return LocationUtils.getLatLong(locationOrLatitude, data.longitude);
+      case LocationType.STRINGCOORDS:
+        return LocationUtils.parseGeometryString(locationOrLatitude as string);
+      case LocationType.NAMES:
+        return LocationUtils.addLocationSuffix(data, locationType);
+      default:
+        return;
+    }
+  }
+
+  export function getLocationKind(page: NxDataPage, layoutService: LayoutService, dimensionIndex: number) {
+    for (const index in page.qMatrix) {
+      const row = page.qMatrix[index];
+      const location = getLocation(row, layoutService, dimensionIndex);
+
+      const isLatLong = layoutService.getLayoutValue('isLatLong');
+      if (isLatLong) {
+        return LocationType.LATLONGS;
+      }
+      if (location !== undefined && location !== '-') {
+        if (typeof location === 'string' && location.charAt(0) === '[') {
+          return LocationType.STRINGCOORDS;
+        } else {
+          return LocationType.NAMES;
+        }
+      }
+    }
+    return LocationType.UNKOWN;
+  }
+
   export function getLatLong(latitude: string | number | undefined, longitude: string | number | undefined) {
     if (latitude === undefined || longitude === undefined) return;
     latitude = typeof latitude === 'string' ? parseFloat(latitude.replace(/,/, '.')) : latitude;
@@ -31,7 +77,7 @@ module LocationUtils {
   }
 
   export function parseGeometryString(stringGeom: string | undefined) {
-    if (stringGeom === undefined) return undefined;
+    if (stringGeom === undefined) return;
 
     const parsedArray = JSON.parse(stringGeom);
     const depth = LocationUtils.switchCoordinatesAndCountDepth(parsedArray);

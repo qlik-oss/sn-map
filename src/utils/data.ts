@@ -1,5 +1,4 @@
 import { getValue } from 'qlik-chart-modules';
-import LocationUtils from './location';
 
 module DataUtils {
   export function getElemData(row: NxCell[], dimIndex: number) {
@@ -31,35 +30,6 @@ module DataUtils {
       return value.qText as string;
     }
     return undefined;
-  }
-
-  export function getGeometry(row: NxCell[], layoutService: LayoutService, dimensionIndex: number) {
-    const meta = getValue(layoutService, 'meta.attributes', {});
-    const locationType = layoutService.getLayoutValue('locationType');
-    const data = {
-      ...getAttribute(row, meta.locationOrLatitude),
-      ...getAttribute(row, meta.longitude),
-      ...getAttribute(row, meta.locationCountry),
-      ...getAttribute(row, meta.locationAdmin1),
-      ...getAttribute(row, meta.locationAdmin2),
-    } as LocationData;
-
-    if (data.locationOrLatitude === undefined) {
-      data.locationOrLatitude = LocationUtils.getLocationFromDimension(row, dimensionIndex);
-    }
-
-    const hasLatLong = data.hasOwnProperty('longitude');
-    const locationKind = LocationUtils.getLocationKind(data.locationOrLatitude, hasLatLong);
-    switch (locationKind) {
-      case 'LATLONGS':
-        return { coords: LocationUtils.getLatLong(data.locationOrLatitude, data.longitude) };
-      case 'STRINGCOORDS':
-        return { coords: LocationUtils.parseGeometryString(data.locationOrLatitude as string) };
-      case 'NAMES':
-        return { geoname: LocationUtils.addLocationSuffix(data, locationType) };
-      default:
-        return {};
-    }
   }
 
   /**

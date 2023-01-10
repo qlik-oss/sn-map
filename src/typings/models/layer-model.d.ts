@@ -1,35 +1,43 @@
 declare interface LayerModelInterFace {
+  id: string;
   mapModel: MapModelInterFace;
   index: number;
   setIndex(index: number): void;
-  update(layout: GaLayersLayout);
+}
+
+declare interface CommonLayerModelInterface extends LayerModelInterFace {
+  layer: idevio.map.FeatureLayer;
+  datasetModel: DatasetModel;
+  collectData(layoutService: LayoutService);
+  extractData(row: NxCell[], layoutService: LayoutService, locationType: LayerTypeName);
+  setStyles(): void;
+  remove(): void;
 }
 
 declare interface UnknownLayerModelInterface extends LayerModelInterFace {
-  id: string;
   layer: idevio.map.Layer;
   update();
   remove(): void;
 }
 
-declare interface PointLayerModelInterface extends LayerModelInterFace {
-  id: string;
-  layer: idevio.map.FeatureLayer;
-  datasetModel: DatasetModel;
-  symbolModel: SymbolModel;
+declare interface PointLayerModelInterface extends CommonLayerModelInterface {
+  styleModel: StyleModel;
   update(layout: PointLayerLayout);
-  setStyles(): void;
-  remove(): void;
+}
+
+declare interface AreaLayerModelInterface extends CommonLayerModelInterface {
+  styleModel: StyleModel;
+  update(layout: AreaLayerLayout);
 }
 
 declare interface GeodataLayerModelInterface extends LayerModelInterFace {
-  id: string;
   layer: idevio.map.TiledImageLayer;
   update(layout: GeodataLayerProperties);
   remove(): void;
 }
 
 declare type GaLayersModelInterface =
+  | AreaLayerModelInterface
   | PointLayerModelInterface
   | GeodataLayerModelInterface
   | UnknownLayerModelInterface;

@@ -1,3 +1,4 @@
+import { getValue } from 'qlik-chart-modules';
 import MathUtils from '../../../../utils/math-utils';
 
 interface Data {
@@ -10,11 +11,11 @@ interface StyleSymbol {
   color: string;
 }
 
-export class SymbolModel {
+export class StyleModel {
   symbols: { [key: string]: idevio.map.Icon } = {};
 
   // Create symbol if missing and returns the symbol key
-  getSymbolKey(data: Data, layoutService: LayoutService) {
+  getStyleKey(data: Data, layoutService: LayoutService) {
     const radius = this.getRadius(data.size, layoutService);
     const color = this.getColor(layoutService);
     const style = { radius, color };
@@ -34,7 +35,7 @@ export class SymbolModel {
     const { radiusMin, radiusMax } = this.calculateRadiusFromSliderProperties(sizeProps);
     if (data !== undefined) {
       size = data;
-      const sizeMeta = layoutService.meta.attributes.size;
+      const sizeMeta = getValue(layoutService, 'meta.attributes.size');
       const attrExprMinMax = { min: sizeMeta.minValue, max: sizeMeta.maxValue };
       const { autoRadiusValueRange, customMinRangeValue, customMaxRangeValue } = sizeProps;
       sizeMinMax =
@@ -98,7 +99,7 @@ export class SymbolModel {
     const style: idevio.map.SymbolStyle = {
       type: 'symbol',
       icons: this.symbols,
-      iconKey: 'key',
+      iconKey: 'styleKey',
     };
 
     return [style];
