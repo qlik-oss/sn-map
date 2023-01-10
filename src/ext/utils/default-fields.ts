@@ -45,14 +45,14 @@ module DefaultFields {
   export function setColor(layerProps: LayerProperties, layers: LayerProperties[]) {
     const defaultColorValues = DefaultProperties.COLOR;
 
-    if (!layerProps.color || !(layerProps.color.auto === false)) return;
+    if (!layerProps.color) return;
     // first attemt is to set to first unused
     let index = -1;
     for (let c = 0; c < defaultColorValues.length; c++) {
       let ok = true;
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
-        if (layer.color && !layer.color.auto && layer.color.mode === 'primary') {
+        if (layer.color && layer.color.mode === 'primary') {
           if (layer.color.paletteColor.index === defaultColorValues[c].index) {
             ok = false;
             break;
@@ -70,9 +70,8 @@ module DefaultFields {
       index = layers.length % defaultColorValues.length;
     }
     const defaultColor = defaultColorValues[index];
-    layerProps.color.auto = false;
     layerProps.color.mode = 'primary';
-    layerProps.color.paletteColor = { index: defaultColor.index, color: defaultColor.color };
+    layerProps.color.paletteColor = defaultColor;
   }
 }
 

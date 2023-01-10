@@ -1,9 +1,7 @@
-import LayerType from '../../../../utils/const/layer-type';
-
-export default function getColorProperties(type: LayerTypeName) {
+export default function getColorProperties() {
   return {
     color: {
-      auto: !(type === LayerType.AREA || type === LayerType.POINT),
+      auto: true,
       mode: 'primary',
       paletteColor: { index: 6, color: '#4477aa' },
     },

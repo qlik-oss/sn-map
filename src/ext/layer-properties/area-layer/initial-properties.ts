@@ -9,7 +9,7 @@ export default function getInitialProperties() {
     type: LayerType.AREA,
     cId: Util.generateId(),
     ...getDataProperties(1, 10000),
-    ...getColorProperties(LayerType.AREA),
     ...getLocationProperties(LayerType.AREA),
+    ...getColorProperties(),
   };
 }

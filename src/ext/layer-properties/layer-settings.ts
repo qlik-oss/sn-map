@@ -53,9 +53,9 @@ export default function layerSettings({ translator }: EnvironmentType) {
           const layerType = getValue(properties, 'mapSettings._layerType', '');
           if (layerType.length) {
             const layerProps = getLayerDefs()[layerType].initialProperties;
-            properties.mapSettings._layerType = '';
             DefaultFields.setColor(layerProps, properties.gaLayers);
             Utils.insertLayer(layerProps, properties.gaLayers);
+            properties.mapSettings._layerType = '';
           }
         },
         // -- Subpanel def --

@@ -10,8 +10,8 @@ export default function getInitialProperties() {
     type: LayerType.POINT,
     cId: Util.generateId(),
     ...getDataProperties(1, 10000),
-    ...getSizeProperties(LayerType.POINT),
-    ...getColorProperties(LayerType.POINT),
     ...getLocationProperties(LayerType.POINT),
+    ...getSizeProperties(LayerType.POINT),
+    ...getColorProperties(),
   };
 }
