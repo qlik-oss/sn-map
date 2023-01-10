@@ -359,6 +359,12 @@ declare namespace idevio {
       setCoordinates(coordinate: Coordinate): void;
     }
 
+    class PolygonFeature extends Feature {
+      constructor(dataset: Dataset, options: PolygonFeatureOptions);
+      getCoordinates(): Coordinate[][];
+      setCoordinates(coordinate: Coordinate[][]): void;
+    }
+
     interface RemoteServiceLocationDatasetOptions extends LocationDatasetOptions {
       /**
        * String that is appended to each location id. A location id may contain type specification and containing areas
@@ -473,6 +479,36 @@ declare namespace idevio {
       static polygon(options: PolygonIconOptions): Icon;
     }
 
+    interface LayerStyle {
+      /** Defines what should be drawn. Each subclass has its type, such as line or polygon. */
+      type: 'line' | 'polygon' | 'symbol' | 'text';
+      /** If not visible it is ignored in the presentation. */
+      visible?: boolean;
+      /** The visualization will not be visible when zoomed in more than this. Default: 0 */
+      minRes?: number;
+      /** The visualization will not be visible when zoomed out more than this. Default: 99999999 */
+      maxRes?: number;
+    }
+
+    interface StyleWithColor {
+      /**
+       * Defines the color of the lines.
+       * When attribute dependent colors are used then all objects with attributes not mapped in colors get this color.
+       * All CSS colors can be used.
+       * Default: #ff9900
+       */
+      color?: string;
+      /** Defines the name of the attribute to use for attribute dependent colors. */
+      colorKey?: string;
+      /**
+       * A mapping from attribute values to colors.
+       * The value of the attribute colorKey is used as a key into this object to look up a color.
+       * If no color is defined for a value then the default color defined in color is used.
+       * Example: {"1":"#ff0000", "3":"#00ff00"}
+       */
+      colors?: object;
+    }
+
     interface SymbolStyle extends LayerStyle {
       type: 'symbol';
       /**
@@ -489,6 +525,12 @@ declare namespace idevio {
        * If no icon is defined for a value then the default icon defined in icon is used.
        */
       icons?: object;
+    }
+
+    interface PolygonStyle extends LayerStyle, StyleWithColor {
+      type: 'polygon';
+      /** Defines the color of the outline. If no color is specified the outline will not be present. */
+      outline?: string;
     }
 
     interface Tool {

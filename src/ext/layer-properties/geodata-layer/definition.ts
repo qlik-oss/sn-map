@@ -7,7 +7,7 @@ export default function geodataLayerDefinition({ translator }: EnvironmentType) 
     schemaIgnore: true,
     translation: 'geo.GeodataLayer',
     component: 'accordion',
-    cacheKey: 'GeodataLayer',
+    cacheKey: LayerType.GEODATA,
     title: function (layerProperties: GeodataLayerProperties) {
       return layerProperties.title !== '' ? layerProperties.title : translator.get('geo.dropmenu.noName');
     },

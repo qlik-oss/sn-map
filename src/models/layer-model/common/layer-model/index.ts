@@ -1,3 +1,5 @@
+import { LayerModelInterFace } from '../../../../typings/models/layer-model';
+
 export abstract class LayerModel implements LayerModelInterFace {
   abstract layer: idevio.map.Layer;
   abstract update(layout: GaLayersLayout): void;

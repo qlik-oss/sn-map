@@ -5,7 +5,7 @@ import getFormatProperties from './formats/initial-properties';
 
 export default function getInitialProperties() {
   return {
-    type: 'GeodataLayer',
+    type: LayerType.GEODATA,
     cId: Util.generateId(),
     ...getFormatProperties(),
     ...getOptionsProperties(LayerType.GEODATA),

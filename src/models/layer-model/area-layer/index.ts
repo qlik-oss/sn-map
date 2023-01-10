@@ -1,15 +1,15 @@
 import { getValue } from 'qlik-chart-modules';
 import { DatasetModel } from '../common/dataset-model';
-import { StyleModel } from './models/style-model';
 import { LayerModel } from '../common/layer-model';
+import { StyleModel } from './models/style-model';
 import LayoutService from '../common/services/layout-service';
 import DataUtils from '../../../utils/data';
 import LocationUtils from '../../../utils/location';
 import LayerType from '../../../utils/const/layer-type';
 import LocationType from '../../../utils/const/location-type';
-import { PointLayerModelInterface } from '../../../typings/models/layer-model';
+import { AreaLayerModelInterface } from '../../../typings/models/layer-model';
 
-export class PointLayerModel extends LayerModel implements PointLayerModelInterface {
+export class AreaLayerModel extends LayerModel implements AreaLayerModelInterface {
   id: string;
   layer: idevio.map.FeatureLayer;
   datasetModel: DatasetModel;
@@ -19,11 +19,11 @@ export class PointLayerModel extends LayerModel implements PointLayerModelInterf
     super(mapModel);
     this.id = id;
     this.layer = new idevio.map.FeatureLayer(mapModel.map, { drawOrder: 1001, pickable: true });
-    this.datasetModel = new DatasetModel(id, this.layer, 'i:///pointgeom/default', LayerType.POINT);
+    this.datasetModel = new DatasetModel(id, this.layer, 'i:///areageom/default', LayerType.AREA);
     this.styleModel = new StyleModel();
   }
 
-  update(layout: PointLayerLayout) {
+  update(layout: AreaLayerLayout) {
     const layoutService = LayoutService.create(layout);
     const data = this.collectData(layoutService);
     this.datasetModel.update(data);
@@ -59,20 +59,15 @@ export class PointLayerModel extends LayerModel implements PointLayerModelInterf
   }
 
   extractData(row: NxCell[], layoutService: LayoutService, locationType: string) {
-    const sizeMeta = getValue(layoutService, 'meta.attributes.size');
-
     const elemData = DataUtils.getElemData(row, 0);
     const location = LocationUtils.getLocation(row, layoutService, 0);
     const geom = LocationUtils.getGeometry(location, locationType, row, layoutService);
-    const size = DataUtils.getAttribute(row, sizeMeta);
-    const style = { ...size };
-    const styleKey = this.styleModel.getStyleKey(style, layoutService);
+    const styleKey = this.styleModel.getStyleKey(layoutService);
 
     return {
       geom,
       attributes: {
         ...elemData,
-        ...size,
         styleKey,
       },
     };

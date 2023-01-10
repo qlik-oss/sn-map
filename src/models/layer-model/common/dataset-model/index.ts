@@ -1,5 +1,6 @@
+import LayerType from '../../../../utils/const/layer-type';
+import LocationType from '../../../../utils/const/location-type';
 import GeneralUtils from '../../../../utils/general';
-import Util from './utils';
 export class DatasetModel {
   id: string;
   layer: idevio.map.FeatureLayer;
@@ -7,30 +8,33 @@ export class DatasetModel {
   dataset: idevio.map.MemoryDataset | idevio.map.LocationDataset;
   loading: PromiseInterface;
   featureTable: any;
+  layerType: LayerType;
+  crs: string;
+  locationType: string;
 
-  constructor(id: string, layer: idevio.map.FeatureLayer, geom: string = 'i:///pointgeom/default') {
+  constructor(id: string, layer: idevio.map.FeatureLayer, geom: string, layerType: LayerType) {
     this.id = id;
     this.layer = layer;
     this.geom = geom;
     this.dataset = this.layer.getDataset();
     this.loading = GeneralUtils.createPromise().resolve();
     this.featureTable = {};
+    this.layerType = layerType;
+    this.geom = geom;
+    (this.crs = ''), (this.locationType = LocationType.UNKOWN);
   }
 
-  update(crs: string, data: PointData[]) {
+  update(data: Data[]) {
     this.remove();
-    const info = this.getDatasetInfo(data);
-
-    if (info !== null) {
-      if (info.isGeoName) {
-        this.createLocationDataset(info.columns);
-        this.addLocationData(data, info.columns);
-      } else {
-        this.createMemoryDataset(crs);
-        this.addFeatureData(data);
-      }
-      this.layer.setDataset(this.dataset);
+    if (this.locationType === LocationType.UNKOWN || !data.length) return;
+    if (this.locationType === LocationType.NAMES) {
+      this.createLocationDataset(data);
+      this.addLocationData(data);
+    } else {
+      this.createMemoryDataset();
+      this.addFeatureData(data);
     }
+    this.layer.setDataset(this.dataset);
   }
 
   remove() {
@@ -39,75 +43,45 @@ export class DatasetModel {
     }
   }
 
-  getDatasetInfo(data: Data[]) {
-    for (const index in data) {
-      const row = data[index];
-      const columns = Object.keys(row);
-      if (row.hasOwnProperty('coords')) {
-        return {
-          columns,
-          isGeoName: false,
-        };
-      }
-      if (row.hasOwnProperty('geoname')) {
-        return {
-          columns: Util.sortColumns(columns), // geoname needs to be first
-          isGeoName: true,
-        };
-      }
-    }
-    return null;
-  }
-
-  createLocationDataset(columns: string[]) {
+  createLocationDataset(data: Data[]) {
     this.loading = GeneralUtils.createPromise();
-    const options = this.getDatasetOptions(columns) as idevio.map.RemoteServiceLocationDatasetOptions;
+    // geoname needs to be the first attribute for location lookup.
+    const columnNames = ['geoname'].concat(Object.keys(data[0].attributes));
+    const options = this.getDatasetOptions(columnNames) as idevio.map.RemoteServiceLocationDatasetOptions;
     this.dataset = idevio.map.LocationDataset.create(this.geom, 'SERVICE', options);
   }
 
-  createMemoryDataset(crs: string) {
-    this.dataset = new idevio.map.MemoryDataset({ name: this.id, crs });
+  createMemoryDataset() {
+    this.dataset = new idevio.map.MemoryDataset({ name: this.id, crs: this.crs });
   }
 
-  addLocationData(data: PointData[], dataOrder: string[]) {
-    const collectedData = [];
-    for (const index in data) {
-      const row = data[index];
-      if (row.id === null || row.geoname === undefined) {
-        continue;
-      }
-      try {
-        const locationData: PointData[] = [];
-        dataOrder.forEach((key) => {
-          locationData.push(row[key] as any);
-        });
-        collectedData.push(locationData);
-      } catch {
-        console.log('Failed lookup; ', row.geoname);
-      }
-    }
-    (this.dataset as idevio.map.LocationDataset).addData(collectedData);
+  addLocationData(data: Data[]) {
+    const locationData = data.map((row) => {
+      return [row.geom].concat(Object.values(row.attributes));
+    });
+    (this.dataset as idevio.map.LocationDataset).addData(locationData);
   }
 
-  addFeatureData(data: PointData[]) {
+  addFeatureData(data: Data[]) {
     this.featureTable = {};
-    for (const index in data) {
-      const row = data[index];
-      if (row.id === null || row.coords === undefined) {
-        continue;
-      }
+    data.forEach((row) => {
+      let featureData = {
+        coordinate: row.geom,
+        attributes: row.attributes,
+      };
       try {
-        const coords = row.coords;
-        delete row.coords;
-        const feature = new idevio.map.PointFeature(this.dataset, {
-          coordinate: coords,
-          attributes: row,
-        });
-        this.featureTable[String(row.id)] = feature;
+        switch (this.layerType) {
+          case LayerType.POINT:
+            this.featureTable[String(row.attributes.id)] = new idevio.map.PointFeature(this.dataset, featureData);
+            break;
+          case LayerType.AREA:
+            this.featureTable[String(row.attributes.id)] = new idevio.map.PolygonFeature(this.dataset, featureData);
+            break;
+        }
       } catch {
-        console.log('Failed lookup; ', row.coords);
+        console.error('Location error:', row.geom);
       }
-    }
+    });
   }
 
   getDatasetOptions(columnNames: string[]) {

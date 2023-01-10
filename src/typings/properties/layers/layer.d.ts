@@ -19,7 +19,7 @@ declare interface LayerLayout extends LayerPropertiesBase {
 
 declare interface UnknownLayerProperties extends LayerProperties {}
 
-declare type GaLayersLayout = PointLayerLayout | GeodataLayerProperties | UnknownLayerProperties;
+declare type GaLayersLayout = AreaLayerLayout | PointLayerLayout | GeodataLayerProperties | UnknownLayerProperties;
 
 /** Layer type name. */
-declare type LayerTypeName = 'PointLayer' | 'GeodataLayer' | 'AreaLayer';
+declare type LayerTypeName = 'AreaLayer' | 'PointLayer' | 'GeodataLayer';

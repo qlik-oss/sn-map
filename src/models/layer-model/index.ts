@@ -1,7 +1,10 @@
+import { getValue } from 'qlik-chart-modules';
 import { PointLayerModel } from './point-layer/';
 import { GeodataLayerModel } from './geodata-layer/';
 import { UnknownLayerModel } from './unkown-layer';
-import { getValue } from 'qlik-chart-modules';
+import LayerType from '../../utils/const/layer-type';
+import { AreaLayerModel } from './area-layer';
+import { GaLayersModelInterface } from '../../typings/models/layer-model';
 
 export class LayersHandler {
   mapModel: MapModelInterFace;
@@ -41,9 +44,11 @@ export class LayersHandler {
 
   createLayerModel(layerLayout: GaLayersLayout) {
     switch (layerLayout.type) {
-      case 'PointLayer':
+      case LayerType.AREA:
+        return new AreaLayerModel(this.mapModel, layerLayout.cId);
+      case LayerType.POINT:
         return new PointLayerModel(this.mapModel, layerLayout.cId);
-      case 'GeodataLayer':
+      case LayerType.GEODATA:
         return new GeodataLayerModel(this.mapModel, layerLayout.cId);
       default:
         return new UnknownLayerModel(this.mapModel, layerLayout.cId);
@@ -52,17 +57,16 @@ export class LayersHandler {
 
   updateLayerModel(layerModel: GaLayersModelInterface, layerLayout: GaLayersLayout) {
     switch (layerLayout.type) {
-      case 'PointLayer':
-        (layerModel as PointLayerModel).update(layerLayout as PointLayerLayout);
-        break;
-      case 'GeodataLayer':
-        (layerModel as GeodataLayerModel).update(layerLayout as GeodataLayerProperties);
+      case LayerType.AREA:
+      case LayerType.POINT:
+      case LayerType.GEODATA:
+        layerModel.update(layerLayout as any);
         break;
     }
   }
 
   cleanLayerModels() {
-    [...this.models].forEach((layer) => {
+    this.models.forEach((layer) => {
       if (this.layerIds.indexOf(layer.id) === -1) {
         this.removeLayer(layer);
       }

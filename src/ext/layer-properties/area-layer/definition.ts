@@ -3,13 +3,14 @@ import getColorDefinition from '../common/color/definition';
 import getDataDefinition from '../common/data/definition';
 import getLocationDefinition from '../common/location/definition';
 import Util from '../../utils/layers';
+import LayerType from '../../../utils/const/layer-type';
 
 export default function areaLayerDefinition({ translator }: EnvironmentType) {
   return {
     schemaIgnore: true,
     translation: 'geo.AreaLayer',
     component: 'accordion',
-    cacheKey: 'AreaLayer',
+    cacheKey: LayerType.AREA,
     title: function (properties: AreaLayerProperties, handler: Object) {
       const qDimensions = getValue(properties, 'qHyperCubeDef.qDimensions');
       return Util.getLayerTitle(qDimensions, handler) || translator.get('geo.dropmenu.noName');
@@ -19,7 +20,7 @@ export default function areaLayerDefinition({ translator }: EnvironmentType) {
       general: { show: false },
       metadata: { show: false },
       data: getDataDefinition(1, 0, { translator }),
-      location: getLocationDefinition(translator, 'AreaLayer'),
+      location: getLocationDefinition(translator, LayerType.AREA),
       color: getColorDefinition(),
     },
   };

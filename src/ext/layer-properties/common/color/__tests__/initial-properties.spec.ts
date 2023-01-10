@@ -13,4 +13,11 @@ describe('color initial-properties', () => {
     expect(initialProperties.color.auto).toEqual(false);
     expect(initialProperties.color.mode).toEqual('primary');
   });
+
+  it('should return initial definition for AreaLayer type', () => {
+    const type: LayerTypeName = 'AreaLayer';
+    const initialProperties = getInitialProperties(type);
+    expect(initialProperties.color.auto).toEqual(false);
+    expect(initialProperties.color.mode).toEqual('primary');
+  });
 });

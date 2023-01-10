@@ -10,6 +10,7 @@ import { GeodataLayerModel } from '../geodata-layer';
 
 import { PointLayerModel } from '../point-layer/';
 import { UnknownLayerModel } from '../unkown-layer';
+import { AreaLayerModel } from '../area-layer';
 
 describe('Layer models', () => {
   let layout: PointLayerLayout;
@@ -107,6 +108,12 @@ describe('Layer models', () => {
       layout.type = 'undefined';
       const layer = layerHandler.createLayerModel(layout);
       expect(layer).toBeInstanceOf(UnknownLayerModel);
+    });
+
+    it('should return a point layer model', () => {
+      layout.type = 'AreaLayer';
+      const layer = layerHandler.createLayerModel(layout);
+      expect(layer).toBeInstanceOf(AreaLayerModel);
     });
 
     it('should return a point layer model', () => {
