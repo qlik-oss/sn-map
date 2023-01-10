@@ -65,7 +65,7 @@ export class DatasetModel {
   addFeatureData(data: Data[]) {
     this.featureTable = {};
     data.forEach((row) => {
-      let featureData = {
+      const featureData = {
         coordinate: row.geom,
         attributes: row.attributes,
       };

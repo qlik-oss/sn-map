@@ -6,7 +6,6 @@ import LayoutService from '../../../common/services/layout-service';
 describe('Symbol model', () => {
   let layout: AreaLayerLayout;
   let styleModel: StyleModel;
-  let data: any;
   let layoutService: LayoutService;
   global.idevio = webmapMock.idevio;
 
@@ -31,9 +30,7 @@ describe('Symbol model', () => {
     });
 
     it('should only cache one symbol', () => {
-      data = { id: 0 };
       styleModel.getStyleKey(layoutService);
-      data = { id: 1 };
       styleModel.getStyleKey(layoutService);
 
       expect(Object.keys(styleModel.colorTable).length).toBe(1);
