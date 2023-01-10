@@ -1,14 +1,14 @@
-import { LayerModelInterFace } from '../../../../typings/models/layer-model';
-
 export abstract class LayerModel implements LayerModelInterFace {
   abstract layer: idevio.map.Layer;
   abstract update(layout: GaLayersLayout): void;
 
   mapModel: MapModelInterFace;
+  id: string;
   index: number = -1;
 
-  constructor(mapModel: MapModelInterFace) {
+  constructor(mapModel: MapModelInterFace, id: string) {
     this.mapModel = mapModel;
+    this.id = id;
   }
 
   setIndex(index: number) {

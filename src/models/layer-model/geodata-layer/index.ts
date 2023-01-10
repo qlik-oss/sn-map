@@ -3,7 +3,6 @@ import Formats from './formats';
 import { getValue } from 'qlik-chart-modules';
 
 export class GeodataLayerModel extends LayerModel implements GeodataLayerModelInterface {
-  id: string;
   layer!: idevio.map.TiledImageLayer | idevio.map.StaticImageLayer;
   dataset!: idevio.map.TiledImageDataset;
   currentUrl: string | undefined;
@@ -11,8 +10,7 @@ export class GeodataLayerModel extends LayerModel implements GeodataLayerModelIn
   oldProps!: TMSProperties | ImageProperties | WMSProperties;
 
   constructor(mapModel: MapModelInterFace, id: string) {
-    super(mapModel);
-    this.id = id;
+    super(mapModel, id);
   }
 
   update(layout: GeodataLayerProperties) {

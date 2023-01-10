@@ -8,8 +8,8 @@ import webmapMock from '../../../../../mocks/webmap';
 class MockedLayer extends LayerModel {
   layer: idevio.map.FeatureLayer;
 
-  constructor(map: any) {
-    super(map);
+  constructor(map: any, id: string) {
+    super(map, id);
     this.layer = new idevio.map.FeatureLayer(map);
   }
 
@@ -25,7 +25,7 @@ describe('LayerModel', () => {
   beforeEach(() => {
     const div = document.createElement('div');
     map = new idevio.map.WebMap({ div });
-    layerModel = new MockedLayer(map);
+    layerModel = new MockedLayer(map, 'id');
   });
 
   afterEach(() => {

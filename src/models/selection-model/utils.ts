@@ -1,5 +1,5 @@
 module Utils {
-  export function getLayerIndex(feature: idevio.map.Feature, layers: PointLayerModelInterface[]) {
+  export function getLayerIndex(feature: idevio.map.Feature, layers: CommonLayerModelInterface[]) {
     for (let i = 0; i < layers.length; i++) {
       if (layers[i].datasetModel.dataset === feature.getDataset()) {
         return i;

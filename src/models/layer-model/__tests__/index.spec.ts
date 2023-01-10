@@ -110,7 +110,7 @@ describe('Layer models', () => {
       expect(layer).toBeInstanceOf(UnknownLayerModel);
     });
 
-    it('should return a point layer model', () => {
+    it('should return a area layer model', () => {
       layout.type = 'AreaLayer';
       const layer = layerHandler.createLayerModel(layout);
       expect(layer).toBeInstanceOf(AreaLayerModel);

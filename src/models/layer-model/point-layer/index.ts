@@ -7,17 +7,14 @@ import DataUtils from '../../../utils/data';
 import LocationUtils from '../../../utils/location';
 import LayerType from '../../../utils/const/layer-type';
 import LocationType from '../../../utils/const/location-type';
-import { PointLayerModelInterface } from '../../../typings/models/layer-model';
 
 export class PointLayerModel extends LayerModel implements PointLayerModelInterface {
-  id: string;
   layer: idevio.map.FeatureLayer;
   datasetModel: DatasetModel;
   styleModel: StyleModel;
 
   constructor(mapModel: MapModelInterFace, id: string) {
-    super(mapModel);
-    this.id = id;
+    super(mapModel, id);
     this.layer = new idevio.map.FeatureLayer(mapModel.map, { drawOrder: 1001, pickable: true });
     this.datasetModel = new DatasetModel(id, this.layer, 'i:///pointgeom/default', LayerType.POINT);
     this.styleModel = new StyleModel();

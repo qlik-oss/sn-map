@@ -21,7 +21,7 @@ describe('Symbol model', () => {
   });
 
   describe('getStyleKey', () => {
-    it('should add a symbol and return the key', () => {
+    it('should add a color and return the key', () => {
       const key = styleModel.getStyleKey(layoutService);
 
       expect(Object.keys(styleModel.colorTable).length).toBe(1);
@@ -29,7 +29,7 @@ describe('Symbol model', () => {
       expect(key).toBe('red');
     });
 
-    it('should only cache one symbol', () => {
+    it('should only cache one color', () => {
       styleModel.getStyleKey(layoutService);
       styleModel.getStyleKey(layoutService);
 

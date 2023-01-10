@@ -8,11 +8,11 @@ export class DatasetModel {
   dataset: idevio.map.MemoryDataset | idevio.map.LocationDataset;
   loading: PromiseInterface;
   featureTable: any;
-  layerType: LayerType;
+  layerType: LayerTypeName;
   crs: string;
   locationType: string;
 
-  constructor(id: string, layer: idevio.map.FeatureLayer, geom: string, layerType: LayerType) {
+  constructor(id: string, layer: idevio.map.FeatureLayer, geom: string, layerType: LayerTypeName) {
     this.id = id;
     this.layer = layer;
     this.geom = geom;

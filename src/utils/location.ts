@@ -76,8 +76,8 @@ module LocationUtils {
     return [latitude, longitude];
   }
 
-  export function parseGeometryString(stringGeom: string) {
-    if (stringGeom === undefined) return undefined;
+  export function parseGeometryString(stringGeom: string | undefined) {
+    if (stringGeom === undefined) return;
 
     const parsedArray = JSON.parse(stringGeom);
     const depth = LocationUtils.switchCoordinatesAndCountDepth(parsedArray);

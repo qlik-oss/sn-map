@@ -4,7 +4,6 @@ import { GeodataLayerModel } from './geodata-layer/';
 import { UnknownLayerModel } from './unkown-layer';
 import LayerType from '../../utils/const/layer-type';
 import { AreaLayerModel } from './area-layer';
-import { GaLayersModelInterface } from '../../typings/models/layer-model';
 
 export class LayersHandler {
   mapModel: MapModelInterFace;
