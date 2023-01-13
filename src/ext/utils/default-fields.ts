@@ -10,9 +10,7 @@ module DefaultFields {
     dimField = isRegularField ? dimField : FieldsModel.fieldNameFromLibraryDimension(dimension.qLibraryId);
 
     const setProps = (key: string, label: string, type: string) => {
-      layerProps.locationOrLatitude.key = key;
-      layerProps.locationOrLatitude.label = label;
-      layerProps.locationOrLatitude.type = type;
+      layerProps.locationOrLatitude = { key, label, type };
       layerProps.locationDefault = key;
     };
 

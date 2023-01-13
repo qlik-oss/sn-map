@@ -77,10 +77,10 @@ const getSizeLayout = (translator: TranslatorType) => ({
       },
       type: 'array',
       component: 'slider',
-      min: min,
-      max: max,
+      min,
+      max,
       step: 1,
-      defaultValue: defaultValue,
+      defaultValue,
       show: function (props: PointLayerProperties) {
         return props.size.expression && props.size.expression.key?.length > 0;
       },
@@ -159,7 +159,7 @@ const getSizeLayout = (translator: TranslatorType) => ({
     }
     return {
       ref: 'size.customMaxRangeValue',
-      translation: translation,
+      translation,
       expression: 'optional',
       type: 'number',
       defaultValue: 0,

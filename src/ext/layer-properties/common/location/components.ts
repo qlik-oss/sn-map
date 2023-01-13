@@ -3,6 +3,13 @@ import LocationUtils from './utils';
 import { getValue } from 'qlik-chart-modules';
 
 export default function getLocationComponents(translator: TranslatorType) {
+  const handleLocationChange = (ref: string, props: LayerProperties) => {
+    const expr = getValue(props, `${ref}locationOrLatitude`);
+    const dimIndex = ref === 'endPoint.' && props.qHyperCubeDef.qDimensions.length > 1 ? 1 : 0;
+    ExpressionFields.setLibraryDimensionWorkaround(props, expr);
+    LocationUtils.updateLocationAttributeExpressions(ref, props, dimIndex);
+  };
+
   const location = (ref: string) => {
     return {
       ref: `${ref}locationOrLatitude`,
@@ -20,9 +27,7 @@ export default function getLocationComponents(translator: TranslatorType) {
       },
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = getValue(props, `${ref}locationOrLatitude`);
-        ExpressionFields.setLibraryDimensionWorkaround(props, expr);
-        LocationUtils.setLocationAttributeExpression(props);
+        handleLocationChange(ref, props);
       },
     };
   };
@@ -41,9 +46,7 @@ export default function getLocationComponents(translator: TranslatorType) {
       },
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = getValue(props, `${ref}longitude`);
-        ExpressionFields.setLibraryDimensionWorkaround(props, expr);
-        LocationUtils.updateLocationAttributeExpressions(props);
+        handleLocationChange(ref, props);
       },
     };
   };
@@ -62,9 +65,7 @@ export default function getLocationComponents(translator: TranslatorType) {
       },
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = getValue(props, `${ref}locationCountry`);
-        ExpressionFields.setLibraryDimensionWorkaround(props, expr);
-        LocationUtils.updateLocationAttributeExpressions(props);
+        handleLocationChange(ref, props);
       },
     };
   };
@@ -87,9 +88,7 @@ export default function getLocationComponents(translator: TranslatorType) {
       },
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = getValue(props, `${ref}locationAdmin1`);
-        ExpressionFields.setLibraryDimensionWorkaround(props, expr);
-        LocationUtils.updateLocationAttributeExpressions(props);
+        handleLocationChange(ref, props);
       },
     };
   };
@@ -113,9 +112,7 @@ export default function getLocationComponents(translator: TranslatorType) {
       },
       change: function (props: LayerProperties) {
         // Do not remove, component throws if not available
-        const expr = getValue(props, `${ref}locationAdmin2`);
-        ExpressionFields.setLibraryDimensionWorkaround(props, expr);
-        LocationUtils.updateLocationAttributeExpressions(props);
+        handleLocationChange(ref, props);
       },
     };
   };
@@ -127,7 +124,8 @@ export default function getLocationComponents(translator: TranslatorType) {
       type: 'boolean',
       defaultValue: false,
       change: function (props: LayerProperties) {
-        LocationUtils.updateLocationAttributeExpressions(props);
+        const dimIndex = ref === 'endPoint.' && props.qHyperCubeDef.qDimensions.length > 1 ? 1 : 0;
+        LocationUtils.updateLocationAttributeExpressions(ref, props, dimIndex);
       },
     };
   };
@@ -147,7 +145,8 @@ export default function getLocationComponents(translator: TranslatorType) {
         return !getValue(props, `${ref}isLatLong`);
       },
       change: function (props: LayerProperties) {
-        LocationUtils.updateLocationAttributeExpressions(props);
+        const dimIndex = ref === 'endPoint.' && props.qHyperCubeDef.qDimensions.length > 1 ? 1 : 0;
+        LocationUtils.updateLocationAttributeExpressions(ref, props, dimIndex);
       },
     };
   };
@@ -228,6 +227,68 @@ export default function getLocationComponents(translator: TranslatorType) {
     };
   };
 
+  const startEndPoint = (ref: string) => {
+    return {
+      ref,
+      type: 'boolean',
+      component: 'dropdown',
+      defaultValue: true,
+      options: [
+        { value: true, translation: 'geo.properties.startEndPoint' },
+        { value: false, translation: 'geo.properties.lineGeometry' },
+      ],
+    };
+  };
+
+  const pathField = (ref: string) => {
+    return {
+      type: 'items',
+      items: {
+        pathField: {
+          ref,
+          label: translator.get('geo.properties.lineGeometryField'),
+          type: 'object',
+          component: 'color-by-dropdown',
+          schemaIgnore: true,
+          defaultValue: {},
+          libraryItemType: 'dimension',
+          show: function (props: LayerProperties) {
+            return props.path && !props.path.startEndPoint;
+          },
+          change: function (props: LayerProperties) {
+            // Do not remove, component throws if not available
+            const expr = getValue(props, `${ref}`);
+            ExpressionFields.setLibraryDimensionWorkaround(props, expr);
+          },
+        },
+        pathText: {
+          component: 'text',
+          translation: 'geo.properties.lineGeometry.hint',
+          style: 'hint', // "sHeader", "message"
+          show: function (props: LayerProperties) {
+            return props.path && !props.path.startEndPoint;
+          },
+        },
+      },
+    };
+  };
+
+  const startPointHeader = () => {
+    return {
+      component: 'text',
+      translation: 'geo.properties.startPoint',
+      style: 'sHeader',
+    };
+  };
+
+  const endPointHeader = () => {
+    return {
+      component: 'text',
+      translation: 'geo.properties.endPoint',
+      style: 'sHeader',
+    };
+  };
+
   const locationComponents = {
     location,
     longitude,
@@ -241,6 +302,10 @@ export default function getLocationComponents(translator: TranslatorType) {
     latLongText,
     locationNameCountryInstruction,
     locationNameAdmin1Instruction,
+    startEndPoint,
+    pathField,
+    startPointHeader,
+    endPointHeader,
   };
 
   return locationComponents;

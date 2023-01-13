@@ -1,6 +1,7 @@
 import getAreaLayerDefinition from './area-layer';
 import getPointLayerDefinition from './point-layer';
 import getGeodataLayerDefinition from './geodata-layer';
+import getLineLayerDefinition from './line-layer';
 import DefaultFields from '../utils/default-fields';
 import Utils from '../utils/layers';
 import { getValue } from 'qlik-chart-modules';
@@ -15,6 +16,7 @@ export default function layerSettings({ translator }: EnvironmentType) {
     const layerDefinitions: { [key: string]: any } = {
       AreaLayer: getAreaLayerDefinition({ translator }),
       PointLayer: getPointLayerDefinition({ translator }),
+      LineLayer: getLineLayerDefinition({ translator }),
       GeodataLayer: getGeodataLayerDefinition({ translator }),
     };
 
@@ -68,6 +70,7 @@ export default function layerSettings({ translator }: EnvironmentType) {
           const sourceMap: { [key: string]: string } = {
             AreaLayer: '../resources/extensions/qliktech/mapchart/img/layer_area.png',
             PointLayer: '../resources/extensions/qliktech/mapchart/img/layer_point.png',
+            LineLayer: '../resources/extensions/qliktech/mapchart/img/layer_line.png',
             GeodataLayer: '../resources/extensions/qliktech/mapchart/img/bg_default.png',
           };
           const layerDefs = getLayerDefs();

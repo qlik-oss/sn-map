@@ -1,3 +1,4 @@
+import { getValue } from 'qlik-chart-modules';
 import LayerType from '../../../../utils/const/layer-type';
 import DefaultFields from '../../../utils/default-fields';
 import DataUtils from './utils';
@@ -10,7 +11,7 @@ export default function getDataDefinition(
   const helpText = {
     component: 'text',
     translation: 'geo.properties.dimension.hint',
-    style: 'hint', // "sHeader", "message"
+    style: 'hint',
     show: function (props: LayerProperties) {
       return props.qHyperCubeDef.qDimensions.length === 0;
     },
@@ -28,6 +29,9 @@ export default function getDataDefinition(
           }
           case LayerType.POINT: {
             return translator.get('Visualizations.Descriptions.Point');
+          }
+          case LayerType.LINE: {
+            return translator.get('Visualizations.Descriptions.Line');
           }
           default:
             return '';
@@ -49,6 +53,12 @@ export default function getDataDefinition(
           properties.locationOrLatitude.label = '';
           properties.locationOrLatitude.type = '';
         }
+        if (getValue(properties, 'qHyperCubeDef.qDimensions', []).length > 0) {
+          DataUtils.updateAttributeExpressions(properties);
+        }
+      },
+      move: function (_dimension: any, properties: LayerProperties) {
+        DataUtils.updateAttributeExpressions(properties);
       },
     },
     measure: {
