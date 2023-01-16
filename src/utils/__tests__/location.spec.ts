@@ -3,43 +3,65 @@
  */
 
 import LocationUtils from '../location';
+import mockLayout from '../../mocks/layout';
+import DataUtils from '../data';
 
 describe('LocationUtils', () => {
-  describe('getLocationKind', () => {
-    it('should return LATLONGS when isLatLong is true', () => {
-      const location = '';
-      const kind = LocationUtils.getLocationKind(location, true);
-      expect(kind).toEqual('LATLONGS');
-    });
+  let layoutServiceMock: any;
+  let row: NxCell[];
 
-    it('should return STRINGCOORDS when bracketed location', () => {
-      const location = '[foobar]';
-      const kind = LocationUtils.getLocationKind(location, false);
-      expect(kind).toEqual('STRINGCOORDS');
-    });
+  beforeEach(() => {
+    layoutServiceMock = {
+      meta: {
+        attributes: {
+          locationOrLatitude: {
+            id: 'locationOrLatitude',
+            dimIndex: 0,
+            index: 0,
+          },
+          locationCountry: {
+            id: 'locationCountry',
+            dimIndex: 0,
+            index: 1,
+          },
+          longitude: {
+            id: 'longitude',
+            dimIndex: 0,
+            index: 2,
+          },
+        },
+      },
+      getLayoutValue: () => 'foobar',
+    };
+    row = [
+      {
+        qElemNumber: 0,
+        qText: 'foobar',
+        qState: 'X',
+        qAttrExps: {
+          qValues: [
+            { qText: 'location', qNum: 0 },
+            { qText: 'country', qNum: 0 },
+            { qText: '0', qNum: 0 },
+          ],
+        },
+      },
+    ];
+  });
 
-    it('should return NAMES when string location', () => {
-      const location = 'foobar';
-      const kind = LocationUtils.getLocationKind(location, false);
-      expect(kind).toEqual('NAMES');
+  describe('getLocation', () => {
+    it('should return location from expression', () => {
+      const location = LocationUtils.getLocation(row, layoutServiceMock, 0);
+      expect(location).toBe('location');
     });
-
-    it('should return NAMES when number location', () => {
-      const location = 1;
-      const kind = LocationUtils.getLocationKind(location, false);
-      expect(kind).toEqual('NAMES');
-    });
-
-    it('should return UNKOWN when invalid location', () => {
-      const location = '-';
-      const kind = LocationUtils.getLocationKind(location, false);
-      expect(kind).toEqual('UNKOWN');
+    it('should return location from dimension', () => {
+      layoutServiceMock.meta.attributes = {};
+      const location = LocationUtils.getLocation(row, layoutServiceMock, 0);
+      expect(location).toBe('foobar');
     });
   });
 
   describe('getLocationFromDimension', () => {
-    let row: NxCell[];
-
     beforeEach(() => {
       row = [
         {
@@ -71,6 +93,94 @@ describe('LocationUtils', () => {
       row[0].qNum = undefined;
       const location = LocationUtils.getLocationFromDimension(row, 0);
       expect(location).toBeUndefined();
+    });
+  });
+
+  describe('getGeometry', () => {
+    it('should return coords geom when location is LATLONGS', () => {
+      const geom = LocationUtils.getGeometry(1, 'LATLONGS', row, layoutServiceMock);
+      expect(geom).toEqual([1, 0]);
+    });
+
+    it('should return coords geom when location is STRINGCOORDS', () => {
+      const geom = LocationUtils.getGeometry('[3.1,2.7]', 'STRINGCOORDS', row, layoutServiceMock);
+      expect(geom).toEqual([2.7, 3.1]);
+    });
+
+    it('should return geoname geom when location is NAMES', () => {
+      const geom = LocationUtils.getGeometry('Sweden', 'NAMES', row, layoutServiceMock);
+      expect(geom).toEqual('Sweden,country:foobar');
+    });
+
+    it('should return undefined when unknown location', () => {
+      const geom = LocationUtils.getGeometry('Sweden', 'foobar', row, layoutServiceMock);
+      expect(geom).toBeUndefined();
+    });
+
+    it('should return undefined when undefined locationOrLatitude', () => {
+      const geom = LocationUtils.getGeometry(undefined, 'NAMES', row, layoutServiceMock);
+      expect(geom).toBeUndefined();
+    });
+  });
+
+  describe('getLocationKind', () => {
+    let page: NxDataPage;
+
+    beforeEach(() => {
+      page = JSON.parse(JSON.stringify(mockLayout)).layer.base.qHyperCube.qDataPages[0];
+      row = [
+        {
+          qElemNumber: 0,
+          qState: 'X',
+          qText: 'foobar',
+          qNum: 99,
+          qAttrExps: {
+            qValues: [],
+          },
+        },
+      ];
+      layoutServiceMock.getLayoutValue = jest.fn().mockReturnValue(false);
+      layoutServiceMock.meta.attributes = {};
+    });
+
+    it('should return LATLONGS when isLatLong is true', () => {
+      page.qMatrix = [row];
+      layoutServiceMock.getLayoutValue = jest.fn().mockReturnValue(true);
+      const kind = LocationUtils.getLocationKind(page, layoutServiceMock, 0);
+      expect(kind).toEqual('LATLONGS');
+    });
+
+    it('should return STRINGCOORDS when bracketed location', () => {
+      row[0].qText = '[foobar]';
+      page.qMatrix = [row];
+      const kind = LocationUtils.getLocationKind(page, layoutServiceMock, 0);
+      expect(kind).toEqual('STRINGCOORDS');
+    });
+
+    it('should return NAMES when string location', () => {
+      const kind = LocationUtils.getLocationKind(page, layoutServiceMock, 0);
+      expect(kind).toEqual('NAMES');
+    });
+
+    it('should return NAMES when number location', () => {
+      layoutServiceMock.meta.attributes = {
+        locationOrLatitude: {
+          id: 'locationOrLatitude',
+          dimIndex: 0,
+          index: 0,
+        },
+      };
+      page.qMatrix = [row];
+      DataUtils.getAttribute = jest.fn().mockReturnValue({ locationOrLatitude: 10 });
+      const kind = LocationUtils.getLocationKind(page, layoutServiceMock, 0);
+      expect(kind).toEqual('NAMES');
+    });
+
+    it('should return UNKOWN when invalid location', () => {
+      row[0].qText = '-';
+      page.qMatrix = [row];
+      const kind = LocationUtils.getLocationKind(page, layoutServiceMock, 0);
+      expect(kind).toEqual('UNKOWN');
     });
   });
 

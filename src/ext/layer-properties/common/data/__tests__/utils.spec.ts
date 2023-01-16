@@ -1,18 +1,23 @@
 import DataUtils from '../utils';
 import LocationUtils from '../../location/utils';
-import * as sizeDefinition from '../../size/definition';
+import { updateSizeExpression } from '../../size/definition';
 import mockProperties from '../../../../../mocks/properties';
 
 jest.mock('../../location/utils');
+jest.mock('../../size/definition');
 
 describe('data utils', () => {
-  let updateSizeExpressionSpy: any;
-  beforeEach(() => {
-    updateSizeExpressionSpy = jest.spyOn(sizeDefinition, 'updateSizeExpression').mockImplementation(() => {});
+  afterEach(() => {
+    jest.clearAllMocks();
   });
-  it('should update attribute expressions', () => {
+  it('should update location expressions', () => {
+    DataUtils.updateAttributeExpressions(mockProperties.layer.area);
+    expect(LocationUtils.updateLocationAttributeExpressions).toHaveBeenCalled();
+    expect(updateSizeExpression).not.toHaveBeenCalled();
+  });
+  it('should update size and location expressions when PointLayer', () => {
     DataUtils.updateAttributeExpressions(mockProperties.layer.point);
     expect(LocationUtils.updateLocationAttributeExpressions).toHaveBeenCalled();
-    expect(updateSizeExpressionSpy).toHaveBeenCalled();
+    expect(updateSizeExpression).toHaveBeenCalled();
   });
 });

@@ -54,6 +54,8 @@ describe('data definition', () => {
   it('should check dimension description', () => {
     let description = definition.items.data.dimension.description(props);
     expect(description).toEqual('Visualizations.Descriptions.Point');
+    description = definition.items.data.dimension.description({ type: 'AreaLayer' });
+    expect(description).toEqual('Visualizations.Descriptions.Area');
     description = definition.items.data.dimension.description({ type: '' });
     expect(description).toEqual('');
   });

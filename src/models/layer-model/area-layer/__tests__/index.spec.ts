@@ -9,7 +9,7 @@ import LayoutService from '../../common/services/layout-service';
 import DataUtils from '../../../../utils/data';
 import LocationUtils from '../../../../utils/location';
 
-import { PointLayerModel } from '../';
+import { AreaLayerModel } from '../';
 
 jest.mock('../../common/dataset-model');
 jest.mock('../models/style-model');
@@ -17,13 +17,13 @@ jest.mock('../../common/layer-model');
 jest.mock('../../../../utils/data');
 jest.mock('../../../../utils/location');
 
-describe('Point model', () => {
-  let pointLayerModel: PointLayerModel;
-  let layout: PointLayerLayout;
+describe('Area model', () => {
+  let areaLayerModel: AreaLayerModel;
+  let layout: AreaLayerLayout;
   beforeEach(() => {
     global.idevio = webmapMock.idevio;
-    layout = layoutMock.layer.point;
-    pointLayerModel = new PointLayerModel(mapModelMock, layout.cId);
+    layout = layoutMock.layer.area;
+    areaLayerModel = new AreaLayerModel(mapModelMock, layout.cId);
   });
 
   afterEach(() => {
@@ -31,36 +31,36 @@ describe('Point model', () => {
   });
 
   it('update should call necessary functions', () => {
-    pointLayerModel.setStyles = jest.fn();
-    pointLayerModel.collectData = jest.fn();
-    pointLayerModel.update(layout);
+    areaLayerModel.setStyles = jest.fn();
+    areaLayerModel.collectData = jest.fn();
+    areaLayerModel.update(layout);
 
-    expect(pointLayerModel.collectData).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.datasetModel.update).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.setStyles).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.collectData).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.datasetModel.update).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.setStyles).toHaveBeenCalledTimes(1);
   });
 
   it('should set styles', () => {
-    pointLayerModel.styleModel.getStyles = jest.fn().mockImplementation(() => {
+    areaLayerModel.styleModel.getStyles = jest.fn().mockImplementation(() => {
       return 'foobar';
     });
-    pointLayerModel.setStyles();
+    areaLayerModel.setStyles();
 
-    expect(pointLayerModel.styleModel.getStyles).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.layer.setStyles).toHaveBeenCalledWith('foobar');
+    expect(areaLayerModel.styleModel.getStyles).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.layer.setStyles).toHaveBeenCalledWith('foobar');
   });
 
   it('should remove layer and dataset', () => {
-    pointLayerModel.remove();
+    areaLayerModel.remove();
 
-    expect(pointLayerModel.layer.remove).toHaveBeenCalledTimes(1);
-    expect(pointLayerModel.datasetModel.remove).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.layer.remove).toHaveBeenCalledTimes(1);
+    expect(areaLayerModel.datasetModel.remove).toHaveBeenCalledTimes(1);
   });
 
   describe('collectData', () => {
     let layoutService: LayoutService;
     beforeEach(() => {
-      layout = JSON.parse(JSON.stringify(layoutMock.layer.point));
+      layout = JSON.parse(JSON.stringify(layoutMock.layer.area));
       layoutService = LayoutService.create(layout);
     });
 
@@ -69,25 +69,25 @@ describe('Point model', () => {
     });
 
     it('should call necessary functions for extracting data and modify dataset settings', () => {
-      pointLayerModel.extractData = jest.fn();
+      areaLayerModel.extractData = jest.fn();
       LocationUtils.getLocationKind = jest.fn().mockReturnValue('foobar_location');
-      pointLayerModel.collectData(layoutService);
+      areaLayerModel.collectData(layoutService);
 
       expect(DataUtils.flattenDataPages).not.toHaveBeenCalled();
-      expect(pointLayerModel.extractData).toHaveBeenCalledTimes(1);
+      expect(areaLayerModel.extractData).toHaveBeenCalledTimes(1);
       expect(LocationUtils.getLocationKind).toHaveBeenCalledTimes(1);
-      expect(pointLayerModel.datasetModel.locationType).toBe('foobar_location');
+      expect(areaLayerModel.datasetModel.locationType).toBe('foobar_location');
     });
 
     it('should flatten dataPage it is an array', () => {
-      pointLayerModel.extractData = jest.fn();
+      areaLayerModel.extractData = jest.fn();
       DataUtils.flattenDataPages = jest.fn().mockReturnValue({ qMatrix: [{}] });
       layout.qHyperCube.qDataPages = [[{ qMatrix: [{}] }, { qMatrix: [{}] }], { qMatrix: [{}] }] as any;
       layoutService = LayoutService.create(layout);
 
-      pointLayerModel.collectData(layoutService);
+      areaLayerModel.collectData(layoutService);
       expect(DataUtils.flattenDataPages).toHaveBeenCalledTimes(1);
-      expect(pointLayerModel.extractData).toHaveBeenCalledTimes(2);
+      expect(areaLayerModel.extractData).toHaveBeenCalledTimes(2);
       expect(LocationUtils.getLocationKind).toHaveBeenCalledTimes(1);
     });
   });
@@ -95,7 +95,7 @@ describe('Point model', () => {
   describe('extractData', () => {
     let layoutService: LayoutService;
     beforeEach(() => {
-      layout = JSON.parse(JSON.stringify(layoutMock.layer.point));
+      layout = JSON.parse(JSON.stringify(layoutMock.layer.area));
       layoutService = LayoutService.create(layout);
     });
 
@@ -110,13 +110,12 @@ describe('Point model', () => {
         state: 'X',
       };
       DataUtils.getElemData = jest.fn().mockReturnValue(elem);
-      DataUtils.getAttribute = jest.fn().mockReturnValue({ size: 10 });
       LocationUtils.getLocation = jest.fn();
       LocationUtils.getGeometry = jest.fn().mockReturnValue('Sweden');
-      pointLayerModel.styleModel.getStyleKey = jest.fn().mockReturnValue('foobar_key');
+      areaLayerModel.styleModel.getStyleKey = jest.fn().mockReturnValue('foobar_key');
 
-      const result = pointLayerModel.extractData([], layoutService, 'NAMES');
-      expect(result).toEqual({ geom: 'Sweden', attributes: { ...elem, size: 10, styleKey: 'foobar_key' } });
+      const result = areaLayerModel.extractData([], layoutService, 'NAMES');
+      expect(result).toEqual({ geom: 'Sweden', attributes: { ...elem, styleKey: 'foobar_key' } });
       expect(LocationUtils.getLocation).toHaveBeenCalledTimes(1);
     });
   });

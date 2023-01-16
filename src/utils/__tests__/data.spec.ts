@@ -1,5 +1,4 @@
 import DataUtils from '../data';
-import LocationUtils from '../location';
 import mockLayout from '../../mocks/layout';
 
 jest.mock('../location');
@@ -30,11 +29,13 @@ describe('DataUtils', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('should getElemData', () => {
-    let result = DataUtils.getElemData(row, 0);
-    expect(result.id).toBe(0);
-    result = DataUtils.getElemData(row, 1);
-    expect(result.id).toBeNull();
+  describe('getElementData', () => {
+    it('should return element data', () => {
+      let result = DataUtils.getElemData(row, 0);
+      expect(result.id).toBe(0);
+      result = DataUtils.getElemData(row, 1);
+      expect(result.id).toBeNull();
+    });
   });
   describe('getAttribute', () => {
     let cell: NxCell;
@@ -103,76 +104,6 @@ describe('DataUtils', () => {
       value = { qNum: 'string' };
       const result = DataUtils.extractValue(value, meta);
       expect(result).toBeUndefined();
-    });
-  });
-
-  describe('getGeometry', () => {
-    let layoutServiceMock: any;
-
-    beforeEach(() => {
-      layoutServiceMock = {
-        meta: {
-          attributes: {
-            locationOrLatitude: {
-              id: 'locationOrLatitude',
-              dimIndex: 0,
-              index: 0,
-            },
-          },
-        },
-        getLayoutValue: () => 'foobar',
-      };
-      row = [
-        {
-          qElemNumber: 0,
-          qText: 'foobar',
-          qState: 'X',
-          qAttrExps: {
-            qValues: [{ qText: 'foobar', qNum: 0 }],
-          },
-        },
-      ];
-    });
-
-    it('should return coords geom when location is LATLONGS', () => {
-      LocationUtils.getLocationKind = jest.fn().mockReturnValue('LATLONGS');
-      const geom = DataUtils.getGeometry(row, layoutServiceMock, 0);
-
-      expect(LocationUtils.getLocationFromDimension).not.toHaveBeenCalled();
-      expect(LocationUtils.getLatLong).toHaveBeenCalledTimes(1);
-      expect(geom).toHaveProperty('coords');
-    });
-
-    it('should return coords geom when location is STRINGCOORDS', () => {
-      LocationUtils.getLocationKind = jest.fn().mockReturnValue('STRINGCOORDS');
-      const geom = DataUtils.getGeometry(row, layoutServiceMock, 0);
-
-      expect(LocationUtils.getLocationFromDimension).not.toHaveBeenCalled();
-      expect(LocationUtils.parseGeometryString).toHaveBeenCalledTimes(1);
-      expect(geom).toHaveProperty('coords');
-    });
-
-    it('should return geoname geom when location is NAMES', () => {
-      LocationUtils.getLocationKind = jest.fn().mockReturnValue('NAMES');
-      const geom = DataUtils.getGeometry(row, layoutServiceMock, 0);
-
-      expect(LocationUtils.getLocationFromDimension).not.toHaveBeenCalled();
-      expect(LocationUtils.addLocationSuffix).toHaveBeenCalledTimes(1);
-      expect(geom).toHaveProperty('geoname');
-    });
-
-    it('should return empty object when unknown location', () => {
-      layoutServiceMock.meta.attributes = {};
-      LocationUtils.getLocationFromDimension = jest.fn().mockReturnValue('dimension');
-      LocationUtils.getLocationKind = jest.fn().mockReturnValue('foobar');
-      const geom = DataUtils.getGeometry(row, layoutServiceMock, 0);
-
-      expect(LocationUtils.getLocationFromDimension).toHaveBeenCalledWith(row, 0);
-      expect(LocationUtils.getLocationKind).toHaveBeenCalledWith('dimension', false);
-      expect(LocationUtils.getLatLong).not.toHaveBeenCalled();
-      expect(LocationUtils.parseGeometryString).not.toHaveBeenCalled();
-      expect(LocationUtils.addLocationSuffix).not.toHaveBeenCalled();
-      expect(geom).toEqual({});
     });
   });
 

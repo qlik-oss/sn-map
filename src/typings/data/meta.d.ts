@@ -33,9 +33,6 @@ declare interface ExpressionMeta {
 declare interface Meta {
   geoname?: ExpressionMeta;
   coords?: ExpressionMeta;
+  size?: ExpressionMeta;
   [key: string]: ExpressionMeta;
-}
-
-declare interface PointMeta extends Meta {
-  size: ExpressionMeta;
 }

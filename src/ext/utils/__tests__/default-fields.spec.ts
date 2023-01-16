@@ -86,14 +86,6 @@ describe('Default fields', () => {
   });
 
   describe('setColor', () => {
-    it('should not set the default color of the new layer when color is set to auto', () => {
-      layerProperties.color.auto = true;
-      const newLayer = JSON.parse(JSON.stringify(layerProperties));
-      defaultFields.setColor(layerProperties, [newLayer]);
-      expect(layerProperties.color.mode).toBeUndefined();
-      expect(layerProperties.color.paletteColor).toBeUndefined();
-    });
-
     it('should set the default color of the new layer when color of previous layers does exist', () => {
       const newLayer = JSON.parse(JSON.stringify(layerProperties));
       newLayer.color = { auto: false, paletteColor: { index: 6 }, mode: 'primary' };
