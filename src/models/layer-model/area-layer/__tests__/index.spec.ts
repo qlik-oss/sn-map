@@ -17,7 +17,7 @@ jest.mock('../../common/layer-model');
 jest.mock('../../../../utils/data');
 jest.mock('../../../../utils/location');
 
-describe('Point model', () => {
+describe('Area model', () => {
   let areaLayerModel: AreaLayerModel;
   let layout: AreaLayerLayout;
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe('Point model', () => {
   describe('collectData', () => {
     let layoutService: LayoutService;
     beforeEach(() => {
-      layout = JSON.parse(JSON.stringify(layoutMock.layer.point));
+      layout = JSON.parse(JSON.stringify(layoutMock.layer.area));
       layoutService = LayoutService.create(layout);
     });
 
@@ -95,7 +95,7 @@ describe('Point model', () => {
   describe('extractData', () => {
     let layoutService: LayoutService;
     beforeEach(() => {
-      layout = JSON.parse(JSON.stringify(layoutMock.layer.point));
+      layout = JSON.parse(JSON.stringify(layoutMock.layer.area));
       layoutService = LayoutService.create(layout);
     });
 

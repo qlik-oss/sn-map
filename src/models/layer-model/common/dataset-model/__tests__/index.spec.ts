@@ -52,7 +52,7 @@ describe('Dataset model', () => {
       expect(datasetModel.layer.setDataset).toBeCalledTimes(1);
     });
 
-    it('should remove, create and set memory dataset when locationType LATLONGS', () => {
+    it('should remove, create and set memory dataset when locationType is LATLONGS', () => {
       datasetModel.locationType = 'LATLONGS';
       datasetModel.update(data);
       expect(datasetModel.remove).toBeCalledTimes(1);
