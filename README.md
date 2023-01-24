@@ -56,6 +56,62 @@ These are optional settings to configure which map server you want to use. If no
   - serverUrl - host url for map server.
   - serverKey - key for map server.
 
+## Area Layer
+
+An area layer presents areas on your map, such as countries or states. With polygon geometry loaded into a field, it can present any custom area.
+
+With an area layer, each dimension value corresponds to a presented area.
+
+### Example
+
+```js
+nuked.render({
+  type: 'map',
+  element,
+  properties: {
+    gaLayers: [
+      {
+        type: 'AreaLayer',
+        qHyperCubeDef: {
+          qDimensions: [
+            {
+              qDef: {
+                qFieldDefs: ['Countries'],
+              },
+              qAttributeExpressions: [
+                {
+                  qExpression: 'Polygons',
+                  id: 'locationOrLatitude',
+                },
+              ],
+            },
+          ],
+          qMeasures: [],
+          qInitialDataFetch: [
+            {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 1,
+              qHeight: 1000,
+            },
+          ],
+        },
+        color: {
+          mode: 'primary',
+          paletteColor: {
+            color: '#f8981d',
+          },
+        },
+        id: 'tWTdanX',
+      },
+    ],
+    mapSettings: {
+      showScaleBar: true,
+    },
+  },
+});
+```
+
 ## Point Layer
 
 A point layer overlays individual locations on a map, representing them with shapes.
@@ -70,7 +126,7 @@ nuked.render({
   element,
   options: {
     configuration: {
-      serverUrl: 'https://maps.qlikcloud.com' ,
+      serverUrl: 'https://maps.qlikcloud.com',
       serverKey: ... ,
     },
   },
@@ -177,62 +233,6 @@ nuked.render({
     mapSettings: {
       showScaleBar: true,
       projection: 'default',
-    },
-  },
-});
-```
-
-## Area Layer
-
-An area layer presents areas on your map, such as countries or states. With polygon geometry loaded into a field, it can present any custom area.
-
-With an area layer, each dimension value corresponds to a presented area.
-
-### Example
-
-```js
-nuked.render({
-  type: 'map',
-  element,
-  properties: {
-    gaLayers: [
-      {
-        type: 'AreaLayer',
-        qHyperCubeDef: {
-          qDimensions: [
-            {
-              qDef: {
-                qFieldDefs: ['Countries'],
-              },
-              qAttributeExpressions: [
-                {
-                  qExpression: 'Polygons',
-                  id: 'locationOrLatitude',
-                },
-              ],
-            },
-          ],
-          qMeasures: [],
-          qInitialDataFetch: [
-            {
-              qLeft: 0,
-              qTop: 0,
-              qWidth: 1,
-              qHeight: 1000,
-            },
-          ],
-        },
-        color: {
-          mode: 'primary',
-          paletteColor: {
-            color: '#f8981d',
-          },
-        },
-        id: 'tWTdanX',
-      },
-    ],
-    mapSettings: {
-      showScaleBar: true,
     },
   },
 });

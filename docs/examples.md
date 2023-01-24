@@ -12,7 +12,7 @@
 
 ![map point layer](../assets/sn-map-point-geodata.png)
 
-Here we have a point layer that uses two expressions to specify its coordinates and a geodata layer for the background map.
+Here we have a point layer that uses a field to specify its coordinates and a geodata layer for the background map.
 
 ```js
 nuked.render({
@@ -27,18 +27,14 @@ nuked.render({
           {
             qDef: {
               qFieldDefs: [
-                'Sale'
+                'Station'
               ],
             },
             qAttributeExpressions: [
               {
-                qExpression: 'latitude',
-                id: 'locationCountry'
+                qExpression: 'coordinates',
+                id: 'locationOrLatitude'
               },
-              {
-                qExpression: 'longitude',
-                id: 'longitude'
-              }
             ],
           }
         ],
@@ -58,7 +54,7 @@ nuked.render({
       color: {
         mode: 'primary',
         paletteColor: {
-          color: '#4477aa'
+          color: 'blue'
         },
       },
       id: 'tWTdanX'
@@ -98,7 +94,7 @@ nuked.render({
   element,
   options: {
     configuration: {
-      serverUrl: ... ,
+      serverUrl: 'https://maps.qlikcloud.com',
       serverKey: ... ,
     },
   },
@@ -176,7 +172,7 @@ nuked.render({
   element,
   options: {
     configuration: {
-      serverUrl: ... ,
+      serverUrl: 'https://maps.qlikcloud.com',
       serverKey: ... ,
     },
   },
