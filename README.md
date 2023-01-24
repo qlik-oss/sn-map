@@ -40,7 +40,10 @@ nuked.render({
   type: 'map',
   element,
   options: {
-    configuration: { serverUrl: ...,  serverKey: ... }
+    configuration: {
+      serverUrl: ... ,
+      serverKey: ... ,
+    }
   },
   properties: {
     ...
@@ -56,13 +59,15 @@ These are optional settings to configure which map server you want to use. If no
   - serverUrl - host url for map server.
   - serverKey - key for map server.
 
+---
+
 ## Area Layer
 
 An area layer presents areas on your map, such as countries or states. With polygon geometry loaded into a field, it can present any custom area.
 
 With an area layer, each dimension value corresponds to a presented area.
 
-### Example
+### Examples
 
 ```js
 nuked.render({
