@@ -8,7 +8,7 @@ export default function getInitialProperties() {
   return {
     type: LayerType.AREA,
     cId: Util.generateId(),
-    ...getDataProperties(1, 10000),
+    ...getDataProperties(1, 1000),
     ...getLocationProperties(LayerType.AREA),
     ...getColorProperties(),
   };

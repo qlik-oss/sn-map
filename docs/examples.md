@@ -1,8 +1,18 @@
 ## Examples
 
-### Map with a tms geodata layer and point layer
+---
 
-![map point layer](../assets/sn-map-example1.png)
+- [Point and geodata layer](#point-and-geodata-layer)
+- [Point layer with size by expression](#point-layer-with-size-by-expression)
+- [Area layer single country](#area-layer-single-country)
+
+---
+
+### Point and geodata layer
+
+![map point layer](../assets/sn-map-point-geodata.png)
+
+Here we have a point layer that uses a field to specify its coordinates and a geodata layer for the background map.
 
 ```js
 nuked.render({
@@ -17,14 +27,14 @@ nuked.render({
           {
             qDef: {
               qFieldDefs: [
-                'Municipality'
+                'Station'
               ],
             },
             qAttributeExpressions: [
               {
-                qExpression: 'SE',
-                id: 'locationCountry'
-              }
+                qExpression: 'coordinates',
+                id: 'locationOrLatitude'
+              },
             ],
           }
         ],
@@ -44,13 +54,8 @@ nuked.render({
       color: {
         mode: 'primary',
         paletteColor: {
-          index: 6,
-          color: '#4477aa'
+          color: 'blue'
         },
-      },
-      locationOrLatitude: {
-        key: 'Municipality',
-        type: 'expression'
       },
       id: 'tWTdanX'
     },
@@ -77,6 +82,138 @@ nuked.render({
 });
 ```
 
-### More examples
+### Point layer with size by expression
 
-Point layer examples can be found [here](./point-layer.md) and geodata layer examples can be found [here](./geodata-layer.md)
+![map point layer with size by expression](../assets/sn-map-point-layer-size.png)
+
+In this example we are connected to one of Qlik's cloud server to utilize the location lookup. The libraryItem for locationOrLatitude is a municipality field. We use a locationCountry expression to only lookup municipalities in Sweden.
+
+```js
+nuked.render({
+  type: 'map',
+  element,
+  options: {
+    configuration: {
+      serverUrl: 'https://maps.qlikcloud.com',
+      serverKey: ... ,
+    },
+  },
+  properties: {
+    gaLayers: [
+      {
+        type: 'PointLayer',
+        qHyperCubeDef: {
+          qDimensions: [
+            {
+              qDef: {
+                qFieldDefs: [
+                  'id'
+                ],
+              },
+              qAttributeExpressions: [
+                {
+                  qExpression: 'SE',
+                  id: 'locationCountry'
+                },
+                {
+                  qExpression: 'Avg(Price)',
+                  id: 'size'
+                }
+              ],
+              qAttributeDimensions: [
+                {
+                  qLibraryId: 'jqZDM',
+                  id: 'locationOrLatitude'
+                },
+              ],
+            }
+          ],
+          qMeasures: [],
+          qInitialDataFetch: [
+            {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 1,
+              qHeight: 10000
+            }
+          ],
+        },
+        size: {
+          autoRadiusValueRange: true,
+          rangeValues: [5, 25],
+          expression: {
+            key: 'Avg(Price)',
+            type: 'expression',
+          },
+        },
+        color: {
+          mode: 'primary',
+          paletteColor: {
+            color: '#f8981d'
+          },
+        },
+        id: 'tWTdanX'
+      }
+    ],
+    mapSettings: {},
+  },
+});
+```
+
+### Area layer single country
+
+![map area layer](../assets/sn-map-area-layer-lookup.png)
+
+Here we put Japan as the dimension and use the location lookup by being connected to Qlik's cloud server to retrieve the polygon. As we don't specify a locationOrLatitude expression the map will use the dimension as the location.
+
+```js
+nuked.render({
+  type: 'map',
+  element,
+  options: {
+    configuration: {
+      serverUrl: 'https://maps.qlikcloud.com',
+      serverKey: ... ,
+    },
+  },
+  properties: {
+    gaLayers: [
+      {
+        type: 'AreaLayer',
+        qHyperCubeDef: {
+          qDimensions: [
+            {
+              qDef: {
+                qFieldDefs: [
+                  "'=Japan'"
+                ],
+              },
+              qAttributeExpressions: [],
+            }
+          ],
+          qMeasures: [],
+          qInitialDataFetch: [
+            {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 1,
+              qHeight: 1
+            }
+          ],
+        },
+        color: {
+          mode: 'primary',
+          paletteColor: {
+            color: '#f8981d'
+          },
+        },
+        id: 'tWTdanX'
+      }
+    ],
+    mapSettings: {
+      baseMap: 'pale',
+      showScaleBar: true,
+    },
+  },
+});
+```

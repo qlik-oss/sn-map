@@ -1,4 +1,4 @@
-# sn-map (experimental)
+# sn-map
 
 ## A map for nebula.js.
 
@@ -6,6 +6,7 @@ Maps enable you to view your data geographically. Maps have many ways to present
 
 ### Layers
 
+- Area layer: An area layer presents areas on a map, such as countries or states. With polygon geometry loaded into a field, it can present any custom area.
 - Point layer: A point layer overlays individual locations on a map, representing them with shapes.
 - Geodata layer: A geodata layer enables you to display a custom base map for your map visualization.
 
@@ -39,7 +40,10 @@ nuked.render({
   type: 'map',
   element,
   options: {
-    configuration: { serverUrl: ...,  serverKey: ... }
+    configuration: {
+      serverUrl: ... ,
+      serverKey: ... ,
+    }
   },
   properties: {
     ...
@@ -55,9 +59,71 @@ These are optional settings to configure which map server you want to use. If no
   - serverUrl - host url for map server.
   - serverKey - key for map server.
 
-## Examples
+---
 
-### Map with a point layer
+## Area Layer
+
+An area layer presents areas on your map, such as countries or states. With polygon geometry loaded into a field, it can present any custom area.
+
+With an area layer, each dimension value corresponds to a presented area.
+
+### Examples
+
+```js
+nuked.render({
+  type: 'map',
+  element,
+  properties: {
+    gaLayers: [
+      {
+        type: 'AreaLayer',
+        qHyperCubeDef: {
+          qDimensions: [
+            {
+              qDef: {
+                qFieldDefs: ['Countries'],
+              },
+              qAttributeExpressions: [
+                {
+                  qExpression: 'Polygons',
+                  id: 'locationOrLatitude',
+                },
+              ],
+            },
+          ],
+          qMeasures: [],
+          qInitialDataFetch: [
+            {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 1,
+              qHeight: 1000,
+            },
+          ],
+        },
+        color: {
+          mode: 'primary',
+          paletteColor: {
+            color: '#f8981d',
+          },
+        },
+        id: 'tWTdanX',
+      },
+    ],
+    mapSettings: {
+      showScaleBar: true,
+    },
+  },
+});
+```
+
+## Point Layer
+
+A point layer overlays individual locations on a map, representing them with shapes.
+
+Point layers use circular bubbles. The size of the points are fixed and can be colored with a single color.
+
+### Example
 
 ```js
 nuked.render({
@@ -65,7 +131,7 @@ nuked.render({
   element,
   options: {
     configuration: {
-      serverUrl: 'https://maps.qlikcloud.com' ,
+      serverUrl: 'https://maps.qlikcloud.com',
       serverKey: ... ,
     },
   },
@@ -109,13 +175,8 @@ nuked.render({
         color: {
           mode: 'primary',
           paletteColor: {
-            index: 9,
             color: '#f8981d'
           },
-        },
-        locationOrLatitude: {
-          key: 'latitude',
-          type: 'expression'
         },
         isLatLong: true,
         id: 'tWTdanX'
@@ -128,7 +189,17 @@ nuked.render({
 });
 ```
 
-### Map with a wms geodata layer
+## Geodata Layer
+
+Geodata layers enable you to display a custom base map for your map visualization.
+
+A geodata layer could, for example, be a map of an airport that then has a point layer with WIFI hotspot locations overlaid on it. If the custom base map format supports transparency, you can overlay it on top of another map. Sn-map supports the following custom maps formats as geodata layers:
+
+- Tile map services (TMS)
+- Web Map Service (WMS)
+- Image URL (Image)
+
+### Example
 
 ```js
 nuked.render({
