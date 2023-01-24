@@ -107,7 +107,6 @@ export default objectDefinition;
  * @property {qHyperCubeDef} qHyperCubeDef
  * @property {color} color Set to use automatic coloring.
  * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
- * @property {boolean=} locationNamesAuto If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
  * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
  * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
@@ -123,7 +122,6 @@ export default objectDefinition;
  * @property {size} size Set to define the size of the shape.
  * @property {color} color Set to use automatic coloring.
  * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
- * @property {boolean=} locationNamesAuto If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
  * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
  * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
@@ -202,8 +200,7 @@ export default objectDefinition;
 /**
  * Color information structure. Holds the actual color and index in palette.
  * @typedef {object} paletteColor
- * @property {string} color - Color as hex string (mandatory if index: -1)
- * @property {number} index - Index in palette
+ * @property {string} color - Color as hex string
  */
 
 /**

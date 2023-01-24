@@ -26,7 +26,7 @@
             "autoZoomOnSelection": {
               "description": "Set to true if you want to auto zoom when making selections.",
               "optional": true,
-              "defaultValue": false,
+              "defaultValue": true,
               "type": "boolean"
             },
             "baseMap": {
@@ -122,6 +122,52 @@
     }
   },
   "definitions": {
+    "AreaLayer": {
+      "description": "PointLayer overlays individual locations on a map, representing them with shapes.",
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Defines the layer type",
+          "kind": "literal",
+          "value": "'AreaLayer'"
+        },
+        "cId": {
+          "description": "ID that must be unique within the current chart.",
+          "type": "string"
+        },
+        "qHyperCubeDef": {
+          "type": "#/definitions/qHyperCubeDef"
+        },
+        "color": {
+          "description": "Set to use automatic coloring.",
+          "type": "#/definitions/color"
+        },
+        "locationOrLatitude": {
+          "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationType": {
+          "description": "Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.",
+          "optional": true,
+          "type": "string"
+        },
+        "locationCountry": {
+          "description": "Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationAdmin1": {
+          "description": "Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        },
+        "locationAdmin2": {
+          "description": "Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.",
+          "optional": true,
+          "type": "#/definitions/ExpressionProperty"
+        }
+      }
+    },
     "AttributeDimensionProperties": {
       "description": "Extends `NxAttrDimDef`, see Engine API: `NxAttrDimDef`.",
       "extends": [
@@ -221,6 +267,9 @@
       "description": "Map layers",
       "kind": "union",
       "items": [
+        {
+          "type": "#/definitions/AreaLayer"
+        },
         {
           "type": "#/definitions/PointLayer"
         },
@@ -365,12 +414,8 @@
       "kind": "object",
       "entries": {
         "color": {
-          "description": "Color as hex string (mandatory if index: -1)",
+          "description": "Color as hex string",
           "type": "string"
-        },
-        "index": {
-          "description": "Index in palette",
-          "type": "number"
         }
       }
     },
@@ -401,11 +446,6 @@
         "locationOrLatitude": {
           "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
           "type": "#/definitions/ExpressionProperty"
-        },
-        "locationNamesAuto": {
-          "description": "If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.",
-          "optional": true,
-          "type": "boolean"
         },
         "locationType": {
           "description": "Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.",
