@@ -197,7 +197,7 @@ nuked.render({
               qLeft: 0,
               qTop: 0,
               qWidth: 1,
-              qHeight: 10000
+              qHeight: 1
             }
           ],
         },
