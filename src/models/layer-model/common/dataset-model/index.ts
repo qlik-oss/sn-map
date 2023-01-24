@@ -65,20 +65,22 @@ export class DatasetModel {
   addFeatureData(data: Data[]) {
     this.featureTable = {};
     data.forEach((row) => {
-      const featureData = {
-        coordinate: row.geom,
-        attributes: row.attributes,
-      };
       try {
         switch (this.layerType) {
           case LayerType.POINT:
-            this.featureTable[String(row.attributes.id)] = new idevio.map.PointFeature(this.dataset, featureData);
+            this.featureTable[String(row.attributes.id)] = new idevio.map.PointFeature(this.dataset, {
+              coordinate: row.geom,
+              attributes: row.attributes,
+            });
             break;
           case LayerType.AREA:
-            this.featureTable[String(row.attributes.id)] = new idevio.map.PolygonFeature(this.dataset, featureData);
+            this.featureTable[String(row.attributes.id)] = new idevio.map.PolygonFeature(this.dataset, {
+              coordinates: row.geom,
+              attributes: row.attributes,
+            });
             break;
         }
-      } catch {
+      } catch (err) {
         console.error('Location error:', row.geom);
       }
     });
