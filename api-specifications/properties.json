@@ -123,7 +123,7 @@
   },
   "definitions": {
     "AreaLayer": {
-      "description": "AreaLayer presents areas on a map, such as countries or states with polygons.",
+      "description": "AreaLayer presents areas on a map, such as countries or states with polygons. In the hyperCube you can set qAttributeExpressions and qAttributeDimensions with a corresponding id to add expressions to the layer.",
       "kind": "object",
       "entries": {
         "type": {
@@ -142,35 +142,15 @@
           "description": "Set to use automatic coloring.",
           "type": "#/definitions/color"
         },
-        "locationOrLatitude": {
-          "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
         "locationType": {
           "description": "Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.",
           "optional": true,
           "type": "string"
-        },
-        "locationCountry": {
-          "description": "Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
-        "locationAdmin1": {
-          "description": "Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
-        "locationAdmin2": {
-          "description": "Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
         }
       }
     },
     "AttributeDimensionProperties": {
-      "description": "Extends `NxAttrDimDef`, see Engine API: `NxAttrDimDef`.",
+      "description": "Use qAttributeDimensions and the id property to add expressions to the layer. Only library dimensions can be used. You can set the following expressions.\nlocationOrLatitude - This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.\nlongitude (PointLater) - Longitude field used if isLatLong is true.\nlocationCountry - Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.\nlocationAdmin1 - Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.\nlocationAdmin2 - Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.\nExtends `NxAttrDimDef`, see Engine API: `NxAttrDimDef`.",
       "extends": [
         {
           "type": "NxAttrDimDef"
@@ -179,7 +159,22 @@
       "kind": "object",
       "entries": {
         "id": {
-          "description": "One of: `colorByAlternative`: colors the chart using different dimensions (can be used together with color.mode=\"byDimension\") or `colorByExpression` together with color.mode=\"byExpression\".",
+          "description": "Can be locationOrLatitude, longitude, locationCountry, locationAdmin1 or locationAdmin2.",
+          "type": "string"
+        }
+      }
+    },
+    "AttributeExpressionProperties": {
+      "description": "Use qAttributeExpressions and the id property to add expressions to the layer. Regular fields and library measures can be used. You can set the following expressions.\nlocationOrLatitude - This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.\nlongitude (PointLater) - Longitude field used if isLatLong is true.\nlocationCountry - Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.\nlocationAdmin1 - Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.\nlocationAdmin2 - Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.\nsize (PointLayer) - Set to define the size of the shape.\nExtends `NxAttrExprDef`, see Engine API: `NxAttrExprDef`.",
+      "extends": [
+        {
+          "type": "NxAttrExprDef"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "id": {
+          "description": "Can be locationOrLatitude, longitude, locationCountry, locationAdmin1, locationAdmin2 or size.",
           "type": "string"
         }
       }
@@ -225,6 +220,12 @@
       ],
       "kind": "object",
       "entries": {
+        "qAttributeExpressions": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/AttributeExpressionProperties"
+          }
+        },
         "qAttributeDimensions": {
           "kind": "array",
           "items": {
@@ -421,7 +422,7 @@
       }
     },
     "PointLayer": {
-      "description": "PointLayer overlays individual locations on a map, representing them with shapes.",
+      "description": "PointLayer overlays individual locations on a map, representing them with shapes. In the hyperCube you can set qAttributeExpressions and qAttributeDimensions with a corresponding id to add expressions to the layer.",
       "kind": "object",
       "entries": {
         "type": {
@@ -444,35 +445,10 @@
           "description": "Set to use automatic coloring.",
           "type": "#/definitions/color"
         },
-        "locationOrLatitude": {
-          "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
         "locationType": {
           "description": "Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.",
           "optional": true,
           "type": "string"
-        },
-        "locationCountry": {
-          "description": "Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
-        "locationAdmin1": {
-          "description": "Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
-        "locationAdmin2": {
-          "description": "Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
-        },
-        "longitude": {
-          "description": "Longitude field used if isLatLong is true.",
-          "optional": true,
-          "type": "#/definitions/ExpressionProperty"
         },
         "isLatLong": {
           "description": "If true, the location is specified as latitude and longitude fields in locationOrLatitude and longitude. Otherwise the location is a geometry or name in locationOrLatitude.",
