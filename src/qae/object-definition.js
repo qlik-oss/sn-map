@@ -100,13 +100,13 @@ export default objectDefinition;
  */
 
 /**
- * PointLayer overlays individual locations on a map, representing them with shapes.
+ * AreaLayer presents areas on a map, such as countries or states with polygons.
  * @typedef {object} AreaLayer
  * @property {'AreaLayer'} type Defines the layer type
  * @property {string} cId ID that must be unique within the current chart.
  * @property {qHyperCubeDef} qHyperCubeDef
  * @property {color} color Set to use automatic coloring.
- * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
+ * @property {ExpressionProperty=} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
  * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
  * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
@@ -121,7 +121,7 @@ export default objectDefinition;
  * @property {qHyperCubeDef} qHyperCubeDef
  * @property {size} size Set to define the size of the shape.
  * @property {color} color Set to use automatic coloring.
- * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
+ * @property {ExpressionProperty=} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
  * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
  * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.

@@ -123,7 +123,7 @@
   },
   "definitions": {
     "AreaLayer": {
-      "description": "PointLayer overlays individual locations on a map, representing them with shapes.",
+      "description": "AreaLayer presents areas on a map, such as countries or states with polygons.",
       "kind": "object",
       "entries": {
         "type": {
@@ -144,6 +144,7 @@
         },
         "locationOrLatitude": {
           "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
+          "optional": true,
           "type": "#/definitions/ExpressionProperty"
         },
         "locationType": {
@@ -445,6 +446,7 @@
         },
         "locationOrLatitude": {
           "description": "This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.",
+          "optional": true,
           "type": "#/definitions/ExpressionProperty"
         },
         "locationType": {
