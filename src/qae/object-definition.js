@@ -100,35 +100,24 @@ export default objectDefinition;
  */
 
 /**
- * PointLayer overlays individual locations on a map, representing them with shapes.
+ * AreaLayer presents areas on a map, such as countries or states with polygons. In the hyperCube you can set qAttributeExpressions and qAttributeDimensions with a corresponding id to add expressions to the layer.
  * @typedef {object} AreaLayer
  * @property {'AreaLayer'} type Defines the layer type
  * @property {string} cId ID that must be unique within the current chart.
  * @property {qHyperCubeDef} qHyperCubeDef
  * @property {color} color Set to use automatic coloring.
- * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
- * @property {boolean=} locationNamesAuto If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
- * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
- * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
- * @property {ExpressionProperty=} locationAdmin2 Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.
  */
 
 /**
- * PointLayer overlays individual locations on a map, representing them with shapes.
+ * PointLayer overlays individual locations on a map, representing them with shapes. In the hyperCube you can set qAttributeExpressions and qAttributeDimensions with a corresponding id to add expressions to the layer.
  * @typedef {object} PointLayer
  * @property {'PointLayer'} type Defines the layer type
  * @property {string} cId ID that must be unique within the current chart.
  * @property {qHyperCubeDef} qHyperCubeDef
  * @property {size} size Set to define the size of the shape.
  * @property {color} color Set to use automatic coloring.
- * @property {ExpressionProperty} locationOrLatitude This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
- * @property {boolean=} locationNamesAuto If true, names in locationOrLatitude are restricted by values in locationType, locationCountry, locationAdmin1 and locationAdmin2 where not empty.
  * @property {string=} locationType Type that restricts names in locationOrLatitude to a certain type, coded in internal coding used by the location service.
- * @property {ExpressionProperty=} locationCountry Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
- * @property {ExpressionProperty=} locationAdmin1 Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
- * @property {ExpressionProperty=} locationAdmin2 Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.
- * @property {ExpressionProperty=} longitude Longitude field used if isLatLong is true.
  * @property {boolean=} isLatLong If true, the location is specified as latitude and longitude fields in locationOrLatitude and longitude. Otherwise the location is a geometry or name in locationOrLatitude.
  */
 
@@ -154,6 +143,7 @@ export default objectDefinition;
  * Extends `NxDimension`, see Engine API: `NxDimension`.
  * @typedef {object} DimensionProperties
  * @extends NxDimension
+ * @property {AttributeExpressionProperties[]} qAttributeExpressions
  * @property {AttributeDimensionProperties[]} qAttributeDimensions
  * @property {InlineDimensionDef} qDef
  */
@@ -168,10 +158,30 @@ export default objectDefinition;
  */
 
 /**
+ * Use qAttributeExpressions and the id property to add expressions to the layer. Regular fields and library measures can be used. You can set the following expressions.
+ * locationOrLatitude - This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
+ * longitude (PointLater) - Longitude field used if isLatLong is true.
+ * locationCountry - Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
+ * locationAdmin1 - Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
+ * locationAdmin2 - Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.
+ * size (PointLayer) - Set to define the size of the shape.
+ * Extends `NxAttrExprDef`, see Engine API: `NxAttrExprDef`.
+ * @typedef {object} AttributeExpressionProperties
+ * @extends NxAttrExprDef
+ * @property {string} id Can be locationOrLatitude, longitude, locationCountry, locationAdmin1, locationAdmin2 or size.
+ */
+
+/**
+ * Use qAttributeDimensions and the id property to add expressions to the layer. Only library dimensions can be used. You can set the following expressions.
+ * locationOrLatitude - This can be either a latitude (if isLatLong is true), a geometry or a name of a geographic feature.
+ * longitude (PointLater) - Longitude field used if isLatLong is true.
+ * locationCountry - Country that restricts names in locationOrLatitude to the country that the expression evaluates to. Country names, ISO alpha 2 or 3 codes are allowed.
+ * locationAdmin1 - Area name or code that restricts names in locationOrLatitude to the first order administrative division that the expression evaluates to. Only used if locationCountry is specified.
+ * locationAdmin2 - Area name or code that restricts names in locationOrLatitude to the second order administrative division that the expression evaluates to. Only used if locationAdmin1 is specified.
  * Extends `NxAttrDimDef`, see Engine API: `NxAttrDimDef`.
  * @typedef {object} AttributeDimensionProperties
  * @extends NxAttrDimDef
- * @property {string} id - One of: `colorByAlternative`: colors the chart using different dimensions (can be used together with color.mode="byDimension") or `colorByExpression` together with color.mode="byExpression".
+ * @property {string} id Can be locationOrLatitude, longitude, locationCountry, locationAdmin1 or locationAdmin2.
  */
 
 /**
@@ -202,8 +212,7 @@ export default objectDefinition;
 /**
  * Color information structure. Holds the actual color and index in palette.
  * @typedef {object} paletteColor
- * @property {string} color - Color as hex string (mandatory if index: -1)
- * @property {number} index - Index in palette
+ * @property {string} color - Color as hex string
  */
 
 /**
