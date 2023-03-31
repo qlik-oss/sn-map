@@ -16,14 +16,13 @@
     "api-specifications",
     "core",
     "dist",
-    "sn-map.js",
-    "sn-map.qext",
     "sn-map-ext"
   ],
   "engines": {
     "node": ">=8"
   },
   "main": "dist/sn-map.js",
+  "systemjs": "dist/sn-map.systemjs.js",
   "scripts": {
     "build": "node ./scripts/build.js --core --ext",
     "build:watch": "node ./scripts/build.js --ext --mode development -w",
