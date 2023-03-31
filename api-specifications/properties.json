@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/sn-map:properties",
     "description": "Map generic object definition",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "license": "MIT",
     "stability": "experimental",
     "x-qlik-visibility": "public"
