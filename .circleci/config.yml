@@ -155,7 +155,7 @@ jobs:
           name: Run unit tests
           command: |
             ./cc-test-reporter before-build
-            yarn test:unit
+            yarn test:unit --maxWorkers=4
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
       - run:
           name: Install playwright
