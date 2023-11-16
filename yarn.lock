@@ -2499,25 +2499,25 @@
     fs-extra "11.1.1"
     inquirer "8.2.6"
 
-"@nebula.js/cli-sense@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@nebula.js/cli-sense/-/cli-sense-3.0.4.tgz#53ee5c4465911426f5415154461688e0315bda52"
-  integrity sha512-LEpSDyHhXmfHr33XpwuH/v5UGVMvPNe9M05ByOSHv95MKR7GzeooD8mW8n0l23jcAqJcw/BK672p4wtsweGPDA==
+"@nebula.js/cli-sense@4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@nebula.js/cli-sense/-/cli-sense-4.7.0.tgz#03a62db141d3ac67077deaad1d71ecdd4a27ef3b"
+  integrity sha512-9zeDEthVbxdp9btZh7fyecVICZD/r8UkC+LvIKHs3vC06OXnX6FSER/dVRJieFDfxEP8JIb+wHwQjDYYTggD/g==
   dependencies:
-    "@babel/cli" "7.19.3"
-    "@babel/core" "7.19.3"
-    "@babel/preset-env" "7.19.3"
-    "@nebula.js/stardust" "^3.0.4"
-    "@rollup/plugin-commonjs" "22.0.2"
-    "@rollup/plugin-node-resolve" "14.1.0"
-    "@rollup/plugin-replace" "4.0.0"
+    "@babel/cli" "7.23.0"
+    "@babel/core" "7.23.3"
+    "@babel/preset-env" "7.23.3"
+    "@nebula.js/stardust" "^4.7.0"
+    "@rollup/plugin-babel" "6.0.4"
+    "@rollup/plugin-commonjs" "25.0.7"
+    "@rollup/plugin-node-resolve" "15.2.3"
+    "@rollup/plugin-replace" "5.0.5"
+    "@rollup/plugin-terser" "0.4.4"
     extend "3.0.2"
-    fs-extra "10.1.0"
+    fs-extra "11.1.1"
     node-event-emitter "0.0.1"
-    rollup "2.79.1"
-    rollup-plugin-babel "4.4.0"
-    rollup-plugin-terser "7.0.2"
-    yargs "17.6.0"
+    rollup "4.4.0"
+    yargs "17.7.2"
 
 "@nebula.js/cli-serve@3.0.4":
   version "3.0.4"
@@ -2550,12 +2550,12 @@
     import-cwd "3.0.0"
     yargs "17.7.2"
 
-"@nebula.js/stardust@^3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@nebula.js/stardust/-/stardust-3.0.4.tgz#aabe6ca12b5b7bee3ab437df92e4ab68173621c0"
-  integrity sha512-lBMXkbxVLRC8qKsW4vmyCc4zAAyBthGlcm0z1ZbtwrSQyt53SEtD2vZw/mp5CM5GQZO6mE6bC9ABpAMhUOWRyQ==
+"@nebula.js/stardust@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@nebula.js/stardust/-/stardust-4.7.0.tgz#654ef8b49350f033bc682f8ef1f7cb9cf7508cd2"
+  integrity sha512-X3RJKBXoZJSzZBdpDzw5HOy8SlK+tnJXNu+57Z2MdFZJKREe44J07mcOqZryG2vgalcfxdX+UQ5KyIt64mAnZA==
   dependencies:
-    "@types/qlik-engineapi" "12.67.12"
+    "@types/qlik-engineapi" "12.67.16"
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
@@ -3074,10 +3074,10 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
-"@types/qlik-engineapi@12.67.12":
-  version "12.67.12"
-  resolved "https://registry.yarnpkg.com/@types/qlik-engineapi/-/qlik-engineapi-12.67.12.tgz#454966501cc48f5cd5092b3f4022c8a82ab681fa"
-  integrity sha512-b5F9+pikUXCahd8phenSZfTddQXlmnw+VMPPtuOB6J3GNNEZG/o0dYFOMeAo1VuFgLaD3R/Ew/+dn4QG7cpPNw==
+"@types/qlik-engineapi@12.67.16":
+  version "12.67.16"
+  resolved "https://registry.yarnpkg.com/@types/qlik-engineapi/-/qlik-engineapi-12.67.16.tgz#3c4d3c6282275cfd7ce2efb393098bb6d0a82caf"
+  integrity sha512-NiwMX6zrV162lRcupTdrgoT2YtKZy97zJ70rRGLdJTWcaMOWUgAhM1ufzhmp3ir1KlNArI4Ds8ojfxA80SpwKQ==
 
 "@types/qs@*":
   version "6.9.7"
@@ -5677,15 +5677,6 @@ fs-constants@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs-constants/-/fs-constants-1.0.0.tgz#6be0de9be998ce16af8afc24497b9ee9b7ccd9ad"
   integrity sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==
-
-fs-extra@10.1.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
-  integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^6.0.1"
-    universalify "^2.0.0"
 
 fs-extra@11.1.0:
   version "11.1.0"
