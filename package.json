@@ -54,7 +54,7 @@
     "@material-ui/core": "^4.12.4",
     "@nebula.js/cli": "4.7.0",
     "@nebula.js/cli-build": "4.7.0",
-    "@nebula.js/cli-sense": "4.7.0",
+    "@nebula.js/cli-sense": "5.4.2",
     "@nebula.js/cli-serve": "3.0.4",
     "@playwright/test": "1.28.1",
     "@rollup/plugin-typescript": "^11.0.0",
