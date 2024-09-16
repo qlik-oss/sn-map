@@ -52,22 +52,22 @@
     "@babel/preset-typescript": "^7.18.6",
     "@jest/types": "^29.3.1",
     "@material-ui/core": "^4.12.4",
-    "@nebula.js/cli": "3.0.4",
-    "@nebula.js/cli-build": "3.0.4",
-    "@nebula.js/cli-sense": "3.0.4",
+    "@nebula.js/cli": "4.7.0",
+    "@nebula.js/cli-build": "4.7.0",
+    "@nebula.js/cli-sense": "4.7.0",
     "@nebula.js/cli-serve": "3.0.4",
     "@playwright/test": "1.28.1",
     "@rollup/plugin-typescript": "^11.0.0",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.2.4",
-    "@types/node": "^18.11.15",
+    "@types/node": "^22.5.0",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
     "@types/requirejs": "^2.1.34",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "babel-jest": "^29.3.1",
-    "eslint": "8.29.0",
+    "eslint": "9.9.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
@@ -86,7 +86,7 @@
     "typescript": "^5.0.2"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=3.0.4",
+    "@nebula.js/stardust": ">=4.7.0",
     "axios": "^1.2.1"
   }
 }
