@@ -86,7 +86,7 @@
     "typescript": "^5.0.2"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=4.7.0",
+    "@nebula.js/stardust": ">=5.4.2",
     "axios": "^1.2.1"
   }
 }
